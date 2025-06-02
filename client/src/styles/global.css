@@ -303,11 +303,10 @@
 	}
 
 	.loginBottom {
-		@apply relative min-h-[60vh] bg-gray-normal rounded-tl-[200px] login-bottom-rounded-effect flex items-end justify-center text-white;
+		@apply relative min-h-[60vh] bg-gray-normal rounded-tl-[200px] login-bottom-rounded-effect flex justify-center text-white;
 
 		p {
-			@apply mb-23;
-
+			@apply mt-48;
 			a {
 				@apply font-bold hover:underline;
 			}
