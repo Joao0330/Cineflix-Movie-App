@@ -252,6 +252,23 @@
 }
 
 @layer components {
+	/* Header */
+	.header {
+		@apply p-5 absolute left-0 right-0 top-0 z-10 flex justify-center;
+
+		nav {
+			@apply text-gray-300 text-lg;
+
+			ul {
+				@apply flex items-center gap-20;
+
+				li {
+					@apply hover:text-white transition-colors duration-300;
+				}
+			}
+		}
+	}
+
 	/* Welcome page */
 	.welcome {
 		@apply relative min-h-screen bg-[url(/assets/welcome-bg.jpg)] bg-cover bg-center welcome-hero-rounded-effect;
