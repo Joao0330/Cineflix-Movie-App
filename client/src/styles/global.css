@@ -254,7 +254,7 @@
 @layer components {
 	/* Header */
 	.header {
-		@apply p-5 absolute left-0 right-0 top-0 z-10 flex justify-center;
+		@apply p-5 absolute left-0 right-0 top-0 z-10 flex justify-center border border-red-600;
 
 		nav {
 			@apply text-gray-300 text-lg;
@@ -357,5 +357,14 @@
 				@apply hover:text-gray-400 transition-colors duration-300;
 			}
 		}
+	}
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+	}
+  body {
+    @apply bg-background text-foreground;
 	}
 }
