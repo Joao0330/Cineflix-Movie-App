@@ -3,10 +3,10 @@ import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@
 
 export function NavMain() {
 	return (
-		<SidebarMenu>
+		<SidebarMenu className='mt-8'>
 			<SidebarGroup>
 				<SidebarMenuItem>
-					<SidebarMenuButton tooltip='Home'>
+					<SidebarMenuButton tooltip='Home' className='cursor-pointer'>
 						<HomeIcon className='size-4' />
 						<span>Home</span>
 					</SidebarMenuButton>

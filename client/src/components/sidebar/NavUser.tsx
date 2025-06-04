@@ -2,13 +2,21 @@ import { BadgeCheck, ChevronsUpDown, LogOut } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
+import { useAuth } from '@/context/AuthContext';
 
 export function NavUser({ user }: { user: User }) {
 	const { isMobile } = useSidebar();
+	const { logout } = useAuth();
 
 	return (
 		<SidebarMenu>
+			<SidebarMenuItem className='mb-5 self-end'>
+				<SidebarMenuButton className='flex items-center justify-center w-10' tooltip='Toggle menu'>
+					<SidebarTrigger className='cursor-pointer' />
+				</SidebarMenuButton>
+			</SidebarMenuItem>
+
 			<SidebarMenuItem>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
@@ -45,7 +53,11 @@ export function NavUser({ user }: { user: User }) {
 							Account
 						</DropdownMenuItem>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={async () => {
+								await logout();
+							}}
+						>
 							<LogOut />
 							Log out
 						</DropdownMenuItem>

@@ -240,6 +240,10 @@
 	@apply after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-overlay;
 }
 
+@utility homeOverlay {
+	@apply after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-r after:from-black/100 after:via-black/40 after:to-fuchsia-500/0;
+}
+
 @utility container-sm {
 	@apply max-w-[1000px] mx-auto my-0;
 }
@@ -254,7 +258,7 @@
 @layer components {
 	/* Header */
 	.header {
-		@apply p-5 absolute left-0 right-0 top-0 z-10 flex justify-center border border-red-600;
+		@apply p-5 absolute left-0 right-0 top-0 z-10 flex justify-center;
 
 		nav {
 			@apply text-gray-300 text-lg;
@@ -361,10 +365,10 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+	* {
+		@apply border-border outline-ring/50;
 	}
-  body {
-    @apply bg-background text-foreground;
+	body {
+		@apply bg-background text-foreground;
 	}
 }
