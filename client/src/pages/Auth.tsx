@@ -1,4 +1,4 @@
-import { AuthForm } from '@/components/AuthForm';
+import { AuthForm } from '@/components/auth/AuthForm';
 import { Link } from 'react-router';
 
 export const Auth = ({ type }: AuthProps) => {

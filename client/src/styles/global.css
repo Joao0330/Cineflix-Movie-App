@@ -273,6 +273,55 @@
 		}
 	}
 
+	/* Home page */
+	.home {
+		@apply relative min-h-screen bg-cover bg-center flex flex-col justify-between homeOverlay;
+
+		.home__movieInfo {
+			@apply relative z-5 container-sm pt-25 text-white;
+
+			h1 {
+				@apply text-9xl font-bebas-neue;
+			}
+
+			> div {
+				@apply mt-5 flex items-center gap-10;
+
+				div {
+					@apply flex items-center gap-5;
+
+					span {
+						@apply text-sm border rounded-4xl p-2;
+					}
+				}
+			}
+
+			p {
+				@apply mt-10 w-1/2 leading-7;
+			}
+		}
+
+		.home__popular {
+			@apply relative z-5 container-sm flex flex-col gap-5 mt-30 mb-10;
+
+			h2 {
+				@apply text-xl font-medium;
+			}
+
+			div {
+				@apply flex gap-2;
+
+				figure {
+					@apply relative border border-gray-400 rounded-md overflow-hidden;
+
+					figcaption {
+						@apply absolute bottom-0 p-2 font-medium;
+					}
+				}
+			}
+		}
+	}
+
 	/* Welcome page */
 	.welcome {
 		@apply relative min-h-screen bg-[url(/assets/welcome-bg.jpg)] bg-cover bg-center welcome-hero-rounded-effect;

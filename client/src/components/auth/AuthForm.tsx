@@ -1,9 +1,9 @@
 import { loginSchema, registerSchema } from '@/schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Form, FormControl, FormField, FormItem, FormMessage } from './ui/form';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
 import { formFieldData } from '@/data/formFieldData';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router';
