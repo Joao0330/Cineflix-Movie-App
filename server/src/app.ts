@@ -5,6 +5,7 @@ import { env } from './env';
 import { ZodError } from 'zod';
 import { authRoutes } from './http/controllers/auth/routes';
 import fastifyCookie from '@fastify/cookie';
+import { movieRoutes } from './http/controllers/movies/routes';
 
 export const app = fastify();
 
@@ -25,6 +26,7 @@ app.register(fastifyJwt, {
 
 // Register routes
 app.register(authRoutes);
+app.register(movieRoutes);
 
 app.setErrorHandler((error, request, reply) => {
 	if (error instanceof ZodError) {

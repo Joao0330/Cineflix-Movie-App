@@ -13,7 +13,6 @@ export const router = createBrowserRouter([
 		element: <PublicRoute />,
 		children: [
 			{
-				path: '/',
 				element: <AuthLayout />,
 				children: [
 					{ path: '/', element: <Welcome /> },
@@ -28,9 +27,10 @@ export const router = createBrowserRouter([
 		element: <ProtectedRoute />,
 		children: [
 			{
-				path: '/home',
 				element: <AppLayout />,
-				children: [{ path: '', element: <Home /> }],
+				children: [
+					{ index: true, element: <Home /> }, // or path: ''
+				],
 			},
 		],
 	},

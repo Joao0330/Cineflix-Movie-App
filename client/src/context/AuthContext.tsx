@@ -3,6 +3,7 @@ import { googleLogout } from '@react-oauth/google';
 import { api } from '@/lib/axios';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { toast } from 'sonner';
+import { Loader } from '@/components/Loader';
 
 interface AuthContextData {
 	isLoading: boolean;
@@ -101,9 +102,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		checkAuth();
 	}, []);
 
-	return (
-		<AuthContext.Provider value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle }}>{isLoading ? <div>Loading...</div> : children}</AuthContext.Provider>
-	);
+	return <AuthContext.Provider value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle }}>{isLoading ? <Loader /> : children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

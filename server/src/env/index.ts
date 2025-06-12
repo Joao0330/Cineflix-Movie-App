@@ -6,6 +6,9 @@ const envSchema = z.object({
 	PORT: z.coerce.number().default(3333),
 	JWT_SECRET: z.string(),
 	JWT_REFRESH_SECRET: z.string(),
+	GOOGLE_CLIENT_ID: z.string(),
+	GOOGLE_CLIENT_SECRET: z.string(),
+	TMDB_ACCESS_TOKEN: z.string(),
 });
 
 const _env = envSchema.safeParse(process.env);

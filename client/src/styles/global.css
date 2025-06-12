@@ -8,6 +8,7 @@
 	--font-montserrat: 'Montserrat', sans-serif;
 	--font-bebas-neue: 'Bebas Neue', sans-serif;
 	--color-gray-normal: #34353f;
+	--color-gray-transparent: rgba(93, 94, 100, 0.5);
 	--color-gray-dark: #232329;
 	--color-blue-light: #4d68f0;
 	--color-overlay: rgba(0, 0, 0, 0.438);
@@ -244,6 +245,10 @@
 	@apply after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-r after:from-black/100 after:via-black/40 after:to-fuchsia-500/0;
 }
 
+@utility movieCardOverlay {
+	@apply after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-t after:from-black/100 after:via-black/40 after:to-fuchsia-500/0;
+}
+
 @utility container-sm {
 	@apply max-w-[1000px] mx-auto my-0;
 }
@@ -278,10 +283,10 @@
 		@apply relative min-h-screen bg-cover bg-center flex flex-col justify-between homeOverlay;
 
 		.home__movieInfo {
-			@apply relative z-5 container-sm pt-25 text-white;
+			@apply flex flex-col items-start relative z-5 container-sm pt-25 text-white;
 
 			h1 {
-				@apply text-9xl font-bebas-neue;
+				@apply text-8xl font-bebas-neue;
 			}
 
 			> div {
@@ -299,6 +304,10 @@
 			p {
 				@apply mt-10 w-1/2 leading-7;
 			}
+
+			a {
+				@apply flex items-center gap-3 mt-15 bg-gray-transparent py-3 px-5 rounded-4xl transition-colors duration-300 hover:bg-gray-normal;
+			}
 		}
 
 		.home__popular {
@@ -309,13 +318,17 @@
 			}
 
 			div {
-				@apply flex gap-2;
+				@apply flex gap-2 w-full;
 
 				figure {
-					@apply relative border border-gray-400 rounded-md overflow-hidden;
+					@apply relative w-[150px] h-[220px] movieCardOverlay border border-gray-400 rounded-md  overflow-hidden;
+
+					img {
+						@apply w-full h-full;
+					}
 
 					figcaption {
-						@apply absolute bottom-0 p-2 font-medium;
+						@apply absolute z-10 bottom-0 left-0 right-0 p-2 text-white text-sm font-medium;
 					}
 				}
 			}
@@ -409,6 +422,48 @@
 			a {
 				@apply hover:text-gray-400 transition-colors duration-300;
 			}
+		}
+	}
+
+	/* Loader */
+	.loader {
+		@apply flex justify-center items-center opacity-90 transition-all duration-500 z-[9999] h-screen bg-primary;
+
+		& svg {
+			width: 3.25em;
+			transform-origin: center;
+			animation: rotate4 2s linear infinite;
+		}
+
+		& circle {
+			fill: none;
+			stroke: theme(--color-blue-800);
+			stroke-width: 2;
+			stroke-dasharray: 1, 200;
+			stroke-dashoffset: 0;
+			stroke-linecap: round;
+			animation: dash4 1.5s ease-in-out infinite;
+		}
+	}
+	@keyframes rotate4 {
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	@keyframes dash4 {
+		0% {
+			stroke-dasharray: 1, 200;
+			stroke-dashoffset: 0;
+		}
+
+		50% {
+			stroke-dasharray: 90, 200;
+			stroke-dashoffset: -35px;
+		}
+
+		100% {
+			stroke-dashoffset: -125px;
 		}
 	}
 }

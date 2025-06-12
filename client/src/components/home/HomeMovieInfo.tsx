@@ -1,18 +1,34 @@
-const HomeMovieInfo = () => {
+import { useFetchMovieGenres } from '@/hooks/useFetchMovies';
+import { createGenreLookup } from '@/lib/utils';
+import { Loader } from '../Loader';
+import { Link } from 'react-router';
+import { Info } from 'lucide-react';
+
+export const HomeMovieInfo = ({ mainMovie }: { mainMovie: Movie }) => {
+	const { data: genres, isLoading, error } = useFetchMovieGenres();
+
+	if (isLoading) return <Loader />;
+	if (error) return <div>Error loading movies: {error.message}</div>;
+
+	const genreLookup = createGenreLookup(genres || []);
+
 	return (
 		<div className='home__movieInfo'>
-			<h1>Title</h1>
+			<h1>{mainMovie.title}</h1>
 			<div>
-				<span>2025</span>
+				<span>{new Date(mainMovie.release_date).getFullYear()}</span>
 				<div>
-					<span>action</span>
-					<span>adventure</span>
+					{mainMovie.genre_ids.map(genreId => (
+						<span key={genreId}>{genreLookup[genreId]}</span>
+					))}
 				</div>
 			</div>
+			<p>{mainMovie.overview}</p>
 
-			<p>The wildly funny and touching story of a lonely Hawaiian girl and the fugitive alien who helps to mend her broken family.</p>
+			<Link to={`/movies/${mainMovie.id}`}>
+				<Info />
+				<span>More Info</span>
+			</Link>
 		</div>
 	);
 };
-
-export default HomeMovieInfo;
