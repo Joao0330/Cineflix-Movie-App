@@ -16,7 +16,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				<NavMain />
 			</SidebarContent>
 			<SidebarFooter>{user && <NavUser user={user} />}</SidebarFooter>
-			<SidebarRail />
+			<SidebarRail className='bg-sidebar' />
 		</Sidebar>
 	);
 }

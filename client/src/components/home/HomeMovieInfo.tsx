@@ -3,6 +3,7 @@ import { createGenreLookup } from '@/lib/utils';
 import { Loader } from '../Loader';
 import { Link } from 'react-router';
 import { Info } from 'lucide-react';
+import { MobileToggleButton } from '../sidebar/MobileToggleButton';
 
 export const HomeMovieInfo = ({ mainMovie }: { mainMovie: Movie }) => {
 	const { data: genres, isLoading, error } = useFetchMovieGenres();
@@ -13,22 +14,25 @@ export const HomeMovieInfo = ({ mainMovie }: { mainMovie: Movie }) => {
 	const genreLookup = createGenreLookup(genres || []);
 
 	return (
-		<div className='home__movieInfo'>
-			<h1>{mainMovie.title}</h1>
-			<div>
-				<span>{new Date(mainMovie.release_date).getFullYear()}</span>
+		<>
+			<div className='home__movieInfo'>
+				<MobileToggleButton />
+				<h1>{mainMovie.title}</h1>
 				<div>
-					{mainMovie.genre_ids.map(genreId => (
-						<span key={genreId}>{genreLookup[genreId]}</span>
-					))}
+					<span>{new Date(mainMovie.release_date).getFullYear()}</span>
+					<div>
+						{mainMovie.genre_ids.map(genreId => (
+							<span key={genreId}>{genreLookup[genreId]}</span>
+						))}
+					</div>
 				</div>
-			</div>
-			<p>{mainMovie.overview}</p>
+				<p>{mainMovie.overview}</p>
 
-			<Link to={`/movies/${mainMovie.id}`}>
-				<Info />
-				<span>More Info</span>
-			</Link>
-		</div>
+				<Link to={`/movies/${mainMovie.id}`}>
+					<Info />
+					<span>More Info</span>
+				</Link>
+			</div>
+		</>
 	);
 };

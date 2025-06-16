@@ -161,7 +161,7 @@
 
 	--card-foreground: oklch(0.985 0 0);
 
-	--popover: oklch(0.205 0 0);
+	--popover: oklch(0% 0 0);
 
 	--popover-foreground: oklch(0.985 0 0);
 
@@ -199,7 +199,7 @@
 
 	--chart-5: oklch(0.645 0.246 16.439);
 
-	--sidebar: oklch(0.205 0 0);
+	--sidebar: oklch(0% 0 0);
 
 	--sidebar-foreground: oklch(0.985 0 0);
 
@@ -211,7 +211,7 @@
 
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 
-	--sidebar-border: oklch(1 0 0 / 10%);
+	--sidebar-border: oklch(0% 0 0 / 0.1);
 
 	--sidebar-ring: oklch(0.556 0 0);
 }
@@ -263,7 +263,7 @@
 @layer components {
 	/* Header */
 	.header {
-		@apply p-5 absolute left-0 right-0 top-0 z-10 flex justify-center;
+		@apply p-5 absolute left-0 right-0 top-0 z-10 flex px-[3rem] sm:px-0 sm:justify-center;
 
 		nav {
 			@apply text-gray-300 text-lg;
@@ -280,13 +280,13 @@
 
 	/* Home page */
 	.home {
-		@apply relative min-h-screen bg-cover bg-center flex flex-col justify-between homeOverlay;
+		@apply relative min-h-screen bg-cover bg-center flex flex-col justify-between items-center px-[3rem] homeOverlay;
 
 		.home__movieInfo {
 			@apply flex flex-col items-start relative z-5 container-sm pt-25 text-white;
 
 			h1 {
-				@apply text-8xl font-bebas-neue;
+				@apply text-6xl font-bebas-neue sm:text-8xl;
 			}
 
 			> div {
@@ -296,13 +296,13 @@
 					@apply flex items-center gap-5;
 
 					span {
-						@apply text-sm border rounded-4xl p-2;
+						@apply text-sm border border-white rounded-4xl p-2;
 					}
 				}
 			}
 
 			p {
-				@apply mt-10 w-1/2 leading-7;
+				@apply mt-10 leading-7 lg:w-1/2;
 			}
 
 			a {
@@ -311,17 +311,17 @@
 		}
 
 		.home__popular {
-			@apply relative z-5 container-sm flex flex-col gap-5 mt-30 mb-10;
+			@apply relative w-full z-5 container-sm flex flex-col items-center gap-1 mt-20 mb-10 sm:mt-30;
 
 			h2 {
 				@apply text-xl font-medium;
 			}
 
 			div {
-				@apply flex gap-2 w-full;
+				@apply flex gap-2 w-[400px] lg:w-[650px] xl:w-[900px];
 
 				figure {
-					@apply relative w-[150px] h-[220px] movieCardOverlay border border-gray-400 rounded-md  overflow-hidden;
+					@apply relative w-[130px] h-[200px] movieCardOverlay border border-gray-400 rounded-md overflow-hidden;
 
 					img {
 						@apply w-full h-full;

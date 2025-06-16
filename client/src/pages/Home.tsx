@@ -1,5 +1,3 @@
-import { AppSidebar } from '@/components/sidebar/AppSidebar';
-import { SidebarProvider } from '@/components/ui/sidebar';
 import { HomeMovieInfo } from '@/components/home/HomeMovieInfo';
 import { HomePopularMovies } from '@/components/home/HomePopularMovies';
 import { useFetchPopularMovies } from '@/hooks/useFetchMovies';
@@ -23,10 +21,6 @@ export const Home = () => {
 		>
 			<HomeMovieInfo mainMovie={mainMovie} />
 			<HomePopularMovies />
-
-			<SidebarProvider className='dark'>
-				<AppSidebar />
-			</SidebarProvider>
 		</section>
 	);
 };

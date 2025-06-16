@@ -11,7 +11,7 @@ export const HomePopularMovies = () => {
 		<section className='home__popular text-white'>
 			<h2>Popular Movies on CineFlix</h2>
 
-			<ScrollArea className='py-10'>
+			<ScrollArea className='py-10 flex'>
 				<div>
 					{popularMovies.map((movie: Movie) => (
 						<Link to={`/movies/${movie.id}`} key={movie.id}>
