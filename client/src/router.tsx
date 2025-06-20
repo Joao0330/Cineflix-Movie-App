@@ -6,10 +6,10 @@ import { Welcome } from './pages/Welcome';
 import { Auth } from './pages/Auth';
 import { ProtectedRoute } from './pages/ProtectedRoute';
 import { PublicRoute } from './pages/PublicRoute';
+import { MovieInfo } from './pages/MovieInfo';
 
 export const router = createBrowserRouter([
 	{
-		path: '/',
 		element: <PublicRoute />,
 		children: [
 			{
@@ -23,13 +23,13 @@ export const router = createBrowserRouter([
 		],
 	},
 	{
-		path: '/home',
 		element: <ProtectedRoute />,
 		children: [
 			{
 				element: <AppLayout />,
 				children: [
-					{ index: true, element: <Home /> }, // or path: ''
+					{ path: '/home', element: <Home /> }, // or path: ''
+					{ path: '/movies/:movieId', element: <MovieInfo /> }, // Placeholder for MovieInfo component
 				],
 			},
 		],
