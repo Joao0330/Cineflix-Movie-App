@@ -364,10 +364,10 @@
 		}
 	}
 	.movieInfo__details {
-		@apply bg-gray-900 py-20 px-[3rem];
+		@apply bg-gray-900 py-20 px-[3rem] text-white;
 
 		.movieInfo__details__top {
-			@apply container-sm flex flex-col gap-5 text-white;
+			@apply container-sm flex flex-col gap-5;
 
 			h2 {
 				@apply text-4xl font-medium font-bebas-neue mb-5;
@@ -378,7 +378,7 @@
 			}
 
 			.movieInfo__details__top-info {
-				@apply mt-7 border-t border-gray-700 pt-5 flex flex-col gap-7;
+				@apply mt-7 border-y border-gray-700 py-8 flex flex-col gap-7;
 
 				div {
 					@apply flex items-center gap-3;
@@ -392,6 +392,41 @@
 				}
 				> div:nth-child(5) {
 					@apply flex-wrap;
+				}
+			}
+		}
+		.movieInfo__details__credits {
+			@apply container-sm mt-10 pb-30 flex flex-col gap-10;
+
+			h4 {
+				@apply text-xl font-medium;
+			}
+
+			.movieInfo__details__credits-cast {
+				figure {
+					@apply w-[130px] h-[200px] border border-gray-400 rounded-md;
+
+					img {
+						@apply w-full h-full rounded-md;
+					}
+
+					figcaption {
+						@apply flex flex-col gap-2 p-2 text-white text-sm font-medium text-center;
+					}
+				}
+			}
+
+			.movieInfo__details__credits-crew {
+				figure {
+					@apply w-[130px] h-[200px] border border-gray-400 rounded-md;
+
+					img {
+						@apply w-full h-full rounded-md;
+					}
+
+					figcaption {
+						@apply flex flex-col gap-2 p-2 text-white text-sm font-medium text-center;
+					}
 				}
 			}
 		}

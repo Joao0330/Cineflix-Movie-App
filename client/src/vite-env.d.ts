@@ -61,3 +61,25 @@ type MovieGenre = {
 	id: number;
 	name: string;
 };
+
+type MovieCompany = {
+	id: number;
+	logo_path: string | null;
+	name: string;
+	origin_country: string;
+};
+
+type MovieCast = {
+	id: number;
+	name: string;
+	profile_path: string | null;
+	character: string;
+	order: number;
+};
+
+type MovieCrew = {
+	id: number;
+	name: string;
+	profile_path: string | null;
+	job: string;
+};

@@ -1,5 +1,6 @@
 import { Loader } from '@/components/Loader';
 import { MobileToggleButton } from '@/components/sidebar/MobileToggleButton';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useFetchMovieDetails } from '@/hooks/useFetchMovies';
 import { ChevronDown } from 'lucide-react';
 import { Link, useParams } from 'react-router';
@@ -71,12 +72,48 @@ export const MovieInfo = () => {
 						<div>
 							<strong>Production companies:</strong>
 
-							{movie.production_companies.map(company => (
+							{movie.production_companies.map((company: MovieCompany) => (
 								<span key={company.id}>{company.name},</span>
 							))}
 						</div>
 					</div>
 				</div>
+
+				<Accordion type='single' collapsible className='movieInfo__details__credits'>
+					<AccordionItem value='movie-cast' className='movieInfo__details__credits-cast'>
+						<AccordionTrigger>
+							<h4>Movie cast:</h4>
+						</AccordionTrigger>
+						<AccordionContent className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-25'>
+							{movie.credits.cast.map((cast: MovieCast) => (
+								<figure key={cast.id}>
+									<img src={cast.profile_path ? `https://image.tmdb.org/t/p/w200${cast.profile_path}` : 'https://placehold.co/130x200?text=Image not found'} alt={cast.name} />
+									<figcaption>
+										<strong>{cast.name}</strong>
+										<span>{cast.character}</span>
+									</figcaption>
+								</figure>
+							))}
+						</AccordionContent>
+					</AccordionItem>
+
+					<AccordionItem value='movie-crew' className='movieInfo__details__credits-crew'>
+						<AccordionTrigger>
+							<h4>Movie crew:</h4>
+						</AccordionTrigger>
+						<AccordionContent className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-25'>
+							{movie.credits.crew.map((crew: MovieCrew) => (
+								<figure key={crew.id}>
+									<img src={crew.profile_path ? `https://image.tmdb.org/t/p/w200${crew.profile_path}` : 'https://placehold.co/130x200?text=Image not found'} alt={crew.name} />
+									<figcaption>
+										<strong>{crew.name}</strong>
+										<span>{crew.job}</span>
+									</figcaption>
+								</figure>
+							))}
+						</AccordionContent>
+					</AccordionItem>
+				</Accordion>
 			</section>
 		</>
 	);
