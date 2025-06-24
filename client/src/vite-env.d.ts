@@ -35,6 +35,14 @@ type Movie = {
 	adult: boolean;
 	backdrop_path: string;
 	genre_ids: number[];
+	genres?: MovieGenre[]; // Optional for movie details
+	status: string;
+	runtime: number;
+	credits?: {
+		cast: MovieCast[];
+		crew: MovieCrew[];
+	};
+	production_companies: MovieCompany[];
 	id: number;
 	original_language: string;
 	original_title: string;
@@ -71,6 +79,7 @@ type MovieCompany = {
 
 type MovieCast = {
 	id: number;
+	credit_id: string;
 	name: string;
 	profile_path: string | null;
 	character: string;
@@ -79,6 +88,7 @@ type MovieCast = {
 
 type MovieCrew = {
 	id: number;
+	credit_id: string;
 	name: string;
 	profile_path: string | null;
 	job: string;

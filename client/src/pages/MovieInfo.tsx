@@ -1,9 +1,10 @@
 import { Loader } from '@/components/Loader';
+import { MovieCredits } from '@/components/movie/MovieCredits';
+import { MovieInfoTop } from '@/components/movie/MovieInfoTop';
 import { MobileToggleButton } from '@/components/sidebar/MobileToggleButton';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useFetchMovieDetails } from '@/hooks/useFetchMovies';
 import { ChevronDown } from 'lucide-react';
-import { Link, useParams } from 'react-router';
+import { useParams } from 'react-router';
 
 export const MovieInfo = () => {
 	const { movieId } = useParams();
@@ -33,7 +34,14 @@ export const MovieInfo = () => {
 
 					<div>
 						<span>View details bellow</span>
-						<button>
+						<button
+							onClick={() => {
+								scrollTo({
+									top: (document.querySelector('.movieInfo__details') as HTMLElement | null)?.offsetTop || 0,
+									behavior: 'smooth',
+								});
+							}}
+						>
 							<ChevronDown className='w-15 h-15 animate-bounce [animation-duration:1.5s]' />
 						</button>
 					</div>
@@ -41,79 +49,8 @@ export const MovieInfo = () => {
 			</section>
 
 			<section className='movieInfo__details'>
-				<div className='movieInfo__details__top'>
-					<h2>{movie.title}</h2>
-					<p>{movie.overview}</p>
-
-					<div className='movieInfo__details__top-info'>
-						<div>
-							<strong>Release Date:</strong>
-							<span>{new Date(movie.release_date).toLocaleDateString()}</span>
-						</div>
-
-						<div>
-							<strong>Genres:</strong>
-							{movie.genres.map((genre: MovieGenre) => (
-								<span key={genre.id}>
-									<Link to={`/genres/${genre.id}`}>{genre.name}</Link>
-								</span>
-							))}
-						</div>
-						<div>
-							<strong>Status:</strong>
-							<span>{movie.status}</span>
-						</div>
-
-						<div>
-							<strong>Runtime:</strong>
-							<span>{movie.runtime} minutes</span>
-						</div>
-
-						<div>
-							<strong>Production companies:</strong>
-
-							{movie.production_companies.map((company: MovieCompany) => (
-								<span key={company.id}>{company.name},</span>
-							))}
-						</div>
-					</div>
-				</div>
-
-				<Accordion type='single' collapsible className='movieInfo__details__credits'>
-					<AccordionItem value='movie-cast' className='movieInfo__details__credits-cast'>
-						<AccordionTrigger>
-							<h4>Movie cast:</h4>
-						</AccordionTrigger>
-						<AccordionContent className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-25'>
-							{movie.credits.cast.map((cast: MovieCast) => (
-								<figure key={cast.id}>
-									<img src={cast.profile_path ? `https://image.tmdb.org/t/p/w200${cast.profile_path}` : 'https://placehold.co/130x200?text=Image not found'} alt={cast.name} />
-									<figcaption>
-										<strong>{cast.name}</strong>
-										<span>{cast.character}</span>
-									</figcaption>
-								</figure>
-							))}
-						</AccordionContent>
-					</AccordionItem>
-
-					<AccordionItem value='movie-crew' className='movieInfo__details__credits-crew'>
-						<AccordionTrigger>
-							<h4>Movie crew:</h4>
-						</AccordionTrigger>
-						<AccordionContent className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-25'>
-							{movie.credits.crew.map((crew: MovieCrew) => (
-								<figure key={crew.id}>
-									<img src={crew.profile_path ? `https://image.tmdb.org/t/p/w200${crew.profile_path}` : 'https://placehold.co/130x200?text=Image not found'} alt={crew.name} />
-									<figcaption>
-										<strong>{crew.name}</strong>
-										<span>{crew.job}</span>
-									</figcaption>
-								</figure>
-							))}
-						</AccordionContent>
-					</AccordionItem>
-				</Accordion>
+				<MovieInfoTop movie={movie} />
+				<MovieCredits movie={movie} />
 			</section>
 		</>
 	);

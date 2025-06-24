@@ -396,27 +396,14 @@
 			}
 		}
 		.movieInfo__details__credits {
-			@apply container-sm mt-10 pb-30 flex flex-col gap-10;
+			@apply container-sm pb-30  flex flex-col;
 
 			h4 {
 				@apply text-xl font-medium;
 			}
 
-			.movieInfo__details__credits-cast {
-				figure {
-					@apply w-[130px] h-[200px] border border-gray-400 rounded-md;
-
-					img {
-						@apply w-full h-full rounded-md;
-					}
-
-					figcaption {
-						@apply flex flex-col gap-2 p-2 text-white text-sm font-medium text-center;
-					}
-				}
-			}
-
-			.movieInfo__details__credits-crew {
+			.movieInfo__details__credits-content {
+				@apply py-16;
 				figure {
 					@apply w-[130px] h-[200px] border border-gray-400 rounded-md;
 
