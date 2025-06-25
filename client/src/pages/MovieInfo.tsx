@@ -4,7 +4,7 @@ import { MovieInfoTop } from '@/components/movie/MovieInfoTop';
 import { MovieVideos } from '@/components/movie/MovieVideos';
 import { MobileToggleButton } from '@/components/sidebar/MobileToggleButton';
 import { useFetchMovieDetails } from '@/hooks/useFetchMovies';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Heart, List } from 'lucide-react';
 import { useParams } from 'react-router';
 
 export const MovieInfo = () => {
@@ -31,6 +31,18 @@ export const MovieInfo = () => {
 					<div>
 						<MobileToggleButton />
 						<h1>{movie.title}</h1>
+					</div>
+
+					<div>
+						<button>
+							<Heart className='w-7 h-7' />
+							<span>Add to Favorites</span>
+						</button>
+						<button>
+							<List className='w-7 h-7' />
+							<span>Add to List</span>
+						</button>
+						{/* TODO: Fix responsive on the movie credits on smaller screens */}
 					</div>
 
 					<div>
