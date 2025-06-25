@@ -54,6 +54,14 @@ type Movie = {
 	video: boolean;
 	vote_average: number;
 	vote_count: number;
+	videos: {
+		results: {
+			id: string;
+			key: string;
+			name: string;
+			type: string;
+		}[];
+	};
 };
 
 //? Movie response

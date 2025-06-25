@@ -1,6 +1,7 @@
 import { Loader } from '@/components/Loader';
 import { MovieCredits } from '@/components/movie/MovieCredits';
 import { MovieInfoTop } from '@/components/movie/MovieInfoTop';
+import { MovieVideos } from '@/components/movie/MovieVideos';
 import { MobileToggleButton } from '@/components/sidebar/MobileToggleButton';
 import { useFetchMovieDetails } from '@/hooks/useFetchMovies';
 import { ChevronDown } from 'lucide-react';
@@ -51,6 +52,7 @@ export const MovieInfo = () => {
 			<section className='movieInfo__details'>
 				<MovieInfoTop movie={movie} />
 				<MovieCredits movie={movie} />
+				<MovieVideos movie={movie} />
 			</section>
 		</>
 	);
