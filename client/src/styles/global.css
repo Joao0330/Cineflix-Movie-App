@@ -322,7 +322,7 @@
 			}
 
 			div {
-				@apply flex gap-2 w-[400px] lg:w-[650px] xl:w-[900px];
+				@apply flex gap-2 w-[300px] sm:w-[650px] xl:w-[900px];
 
 				figure {
 					@apply relative w-[130px] h-[200px] movieCardOverlay border border-gray-400 rounded-md overflow-hidden;

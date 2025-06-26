@@ -42,7 +42,6 @@ export const MovieInfo = () => {
 							<List className='w-7 h-7' />
 							<span>Add to List</span>
 						</button>
-						{/* TODO: Fix responsive on the movie credits on smaller screens */}
 					</div>
 
 					<div>
@@ -64,7 +63,7 @@ export const MovieInfo = () => {
 			<section className='movieInfo__details'>
 				<MovieInfoTop movie={movie} />
 				<MovieCredits movie={movie} />
-				<MovieVideos movie={movie} />
+				{/* <MovieVideos movie={movie} /> */}
 			</section>
 		</>
 	);

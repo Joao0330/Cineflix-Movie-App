@@ -18,6 +18,16 @@ const fetchMovieDetails = async (movieId: string) => {
 	return data;
 };
 
+const fetchMovieSearch = async (query: string) => {
+	const { data } = await api.get('/movies-search', {
+		params: {
+			query,
+		},
+	});
+
+	return data;
+};
+
 export const useFetchPopularMovies = () => {
 	return useQuery({
 		queryKey: ['movies-popular'],
@@ -43,6 +53,16 @@ export const useFetchMovieDetails = (movieId: string) => {
 		queryKey: ['movies', movieId],
 		queryFn: () => fetchMovieDetails(movieId),
 		staleTime: Infinity,
+		retry: 1,
+		refetchOnWindowFocus: false,
+	});
+};
+
+export const useFetchMovieSearch = (query: string) => {
+	return useQuery({
+		queryKey: ['movies-search', query],
+		queryFn: () => fetchMovieSearch(query),
+		staleTime: 1000 * 60 * 60 * 24,
 		retry: 1,
 		refetchOnWindowFocus: false,
 	});

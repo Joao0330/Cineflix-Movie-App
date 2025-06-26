@@ -8,7 +8,7 @@ export const CreditsSection = ({ title, items, value }: { title: string; items: 
 			<AccordionTrigger className='cursor-pointer'>
 				<h4>{title}:</h4>
 			</AccordionTrigger>
-			<AccordionContent className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-25'>
+			<AccordionContent className='flex flex-wrap gap-25 justify-center items-center'>
 				{items.map(person => (
 					<figure key={person.credit_id}>
 						<img src={person.profile_path ? `https://image.tmdb.org/t/p/w200${person.profile_path}` : 'https://placehold.co/130x200?text=Image not found'} alt={person.name} />
