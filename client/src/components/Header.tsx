@@ -11,7 +11,7 @@ export const Header = () => {
 								<Link to='/home'>Home</Link>
 							</li>
 							<li>
-								<a href='/login'>Browse</a>
+								<Link to='/browse'>Browse</Link>
 							</li>
 							<li>
 								<a href='/register'>FAQ</a>

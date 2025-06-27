@@ -7,6 +7,7 @@ import { Auth } from './pages/Auth';
 import { ProtectedRoute } from './pages/ProtectedRoute';
 import { PublicRoute } from './pages/PublicRoute';
 import { MovieInfo } from './pages/MovieInfo';
+import { Browse } from './pages/Browse';
 
 export const router = createBrowserRouter([
 	{
@@ -30,6 +31,7 @@ export const router = createBrowserRouter([
 				children: [
 					{ path: '/home', element: <Home /> }, // or path: ''
 					{ path: '/movies/:movieId', element: <MovieInfo /> }, // Placeholder for MovieInfo component
+					{ path: '/browse', element: <Browse /> },
 				],
 			},
 		],
