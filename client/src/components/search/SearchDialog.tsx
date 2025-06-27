@@ -24,6 +24,5 @@ export const SearchDialog = () => {
 				<SearchSugestions setIsSearchOpen={() => setIsSearchOpen(false)} />
 			</DialogContent>
 		</Dialog>
-		/* TODO: Style the dialog box, put it a bit higher on the screen, make it responsive on smaller devices */
 	);
 };

@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react';
 import { Input } from '../ui/input';
 import { useFetchMovieSearch } from '@/hooks/useFetchMovies';
 import { Link } from 'react-router';
+import { ScrollArea } from '../ui/scroll-area';
+import { useSidebar } from '../ui/sidebar';
 
 export const SearchSugestions = ({ setIsSearchOpen }: { setIsSearchOpen: () => void }) => {
 	const [query, setQuery] = useState('');
 	const [debouncedQuery, setDebouncedQuery] = useState('');
+	const { setOpenMobile } = useSidebar();
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
@@ -18,27 +21,29 @@ export const SearchSugestions = ({ setIsSearchOpen }: { setIsSearchOpen: () => v
 	const { data: movies, isLoading } = useFetchMovieSearch(debouncedQuery);
 
 	return (
-		<div className='py-4 relative'>
+		<div className='search__sugestions'>
 			<Input type='search' placeholder='Search for movies...' className='w-full' value={query} onChange={e => setQuery(e.target.value)} />
 
 			{isLoading && <div className='mt-2 text-sm'>Loading...</div>}
 
 			{movies?.results?.length > 0 && (
-				<ul className='absolute z-10 bg-white dark:bg-gray-900 w-full mt-2 rounded border shadow-lg max-h-64 overflow-auto'>
-					{movies.results.slice(0, 5).map((movie: Movie) => (
-						<li
-							key={movie.id}
-							className='px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer'
-							onClick={() => {
-								setIsSearchOpen();
-							}}
-						>
-							<Link to={`/movies/${movie.id}`} className='flex items-center justify-between'>
-								<img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} className='w-12 h-18 mr-2 rounded' />
-								<strong>{movie.title}</strong>
-							</Link>
-						</li>
-					))}
+				<ul>
+					<ScrollArea className='border h-76'>
+						{movies.results.slice(0, 5).map((movie: Movie) => (
+							<li
+								key={movie.id}
+								onClick={() => {
+									setIsSearchOpen();
+									setOpenMobile(false);
+								}}
+							>
+								<Link to={`/movies/${movie.id}`}>
+									<img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} className='w-12 h-18 mr-2 rounded' />
+									<strong>{movie.title}</strong>
+								</Link>
+							</li>
+						))}
+					</ScrollArea>
 				</ul>
 			)}
 		</div>

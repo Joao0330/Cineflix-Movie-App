@@ -457,6 +457,23 @@
 		}
 	}
 
+	/* Search styles */
+	.search__sugestions {
+		@apply py-4 relative;
+
+		ul {
+			@apply absolute z-10 bg-white dark:bg-background w-full mt-2 rounded border shadow-lg  overflow-hidden;
+
+			li {
+				@apply px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer;
+
+				a {
+					@apply flex items-center justify-between;
+				}
+			}
+		}
+	}
+
 	/* Welcome page */
 	.welcome {
 		@apply relative min-h-screen bg-[url(/assets/welcome-bg.jpg)] bg-cover bg-center welcome-hero-rounded-effect;
