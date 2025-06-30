@@ -28,6 +28,14 @@ const fetchMovieSearch = async (query: string) => {
 	return data;
 };
 
+const fetchMovieBrowse = async (params: { search?: string; genre?: string; year?: string; sortBy?: 'title' | 'year' | 'rating'; order?: 'asc' | 'desc' }) => {
+	const { data } = await api.get('/movies-browse', {
+		params,
+	});
+
+	return data;
+};
+
 export const useFetchPopularMovies = () => {
 	return useQuery({
 		queryKey: ['movies-popular'],
@@ -62,6 +70,16 @@ export const useFetchMovieSearch = (query: string) => {
 	return useQuery({
 		queryKey: ['movies-search', query],
 		queryFn: () => fetchMovieSearch(query),
+		staleTime: 1000 * 60 * 60 * 24,
+		retry: 1,
+		refetchOnWindowFocus: false,
+	});
+};
+
+export const useFetchMoviesBrowse = (params: { search?: string; genre?: string; year?: string; sortBy?: 'title' | 'year' | 'rating'; order?: 'asc' | 'desc' }) => {
+	return useQuery({
+		queryKey: ['movies-browse', params],
+		queryFn: () => fetchMovieBrowse(params),
 		staleTime: 1000 * 60 * 60 * 24,
 		retry: 1,
 		refetchOnWindowFocus: false,

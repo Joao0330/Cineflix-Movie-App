@@ -1,31 +1,16 @@
-import { movieBrowseSchema } from '@/schemas/movie.schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import type { z } from 'zod';
+import type { useForm } from 'react-hook-form';
 import { Form } from '../ui/form';
 import { SearchBrowseItems } from './SearchBrowseItems';
-import { useFetchMovieGenres } from '@/hooks/useFetchMovies';
+import type { z } from 'zod';
+import type { movieBrowseSchema } from '@/schemas/movie.schema';
 
-export const SearchBrowse = () => {
-	const schema = movieBrowseSchema;
-	const form = useForm<z.infer<typeof schema>>({
-		resolver: zodResolver(schema),
-		defaultValues: {
-			search: '',
-			genre: '',
-			year: '',
-			sortBy: 'title',
-			order: 'asc',
-		},
-	});
+interface SearchBrowseProps {
+	form: ReturnType<typeof useForm<z.infer<typeof movieBrowseSchema>>>;
+	genres: MovieGenre[];
+	onSubmit: (data: z.infer<typeof movieBrowseSchema>) => void;
+}
 
-	const { data: genres } = useFetchMovieGenres();
-
-	const onSubmit = (data: z.infer<typeof schema>) => {
-		console.log('Search data:', data);
-		// Handle search logic here, e.g., API call to fetch movies based on the search criteria
-	};
-
+export const SearchBrowse = ({ form, genres, onSubmit }: SearchBrowseProps) => {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)}>
