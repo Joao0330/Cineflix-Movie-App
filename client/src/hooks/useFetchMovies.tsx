@@ -28,7 +28,7 @@ const fetchMovieSearch = async (query: string) => {
 	return data;
 };
 
-const fetchMovieBrowse = async (params: { search?: string; genre?: string; year?: string; sortBy?: 'title' | 'year' | 'rating'; order?: 'asc' | 'desc' }) => {
+const fetchMovieBrowse = async (params: { search?: string; genre?: string; year?: string; sortBy?: 'popularity' | 'release_date' | 'vote_average' | 'original_title'; order?: 'asc' | 'desc' }) => {
 	const { data } = await api.get('/movies-browse', {
 		params,
 	});
@@ -76,12 +76,19 @@ export const useFetchMovieSearch = (query: string) => {
 	});
 };
 
-export const useFetchMoviesBrowse = (params: { search?: string; genre?: string; year?: string; sortBy?: 'title' | 'year' | 'rating'; order?: 'asc' | 'desc' }) => {
+export const useFetchMoviesBrowse = (params: {
+	search?: string;
+	genre?: string;
+	year?: string;
+	sortBy?: 'popularity' | 'release_date' | 'vote_average' | 'original_title';
+	order?: 'asc' | 'desc';
+}) => {
 	return useQuery({
 		queryKey: ['movies-browse', params],
 		queryFn: () => fetchMovieBrowse(params),
 		staleTime: 1000 * 60 * 60 * 24,
 		retry: 1,
 		refetchOnWindowFocus: false,
+		enabled: !!params.search || !!params.genre || !!params.year || !!params.sortBy || !!params.order,
 	});
 };

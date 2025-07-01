@@ -1,11 +1,11 @@
-import type { useForm } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
 import { Form } from '../ui/form';
 import { SearchBrowseItems } from './SearchBrowseItems';
 import type { z } from 'zod';
 import type { movieBrowseSchema } from '@/schemas/movie.schema';
 
 interface SearchBrowseProps {
-	form: ReturnType<typeof useForm<z.infer<typeof movieBrowseSchema>>>;
+	form: UseFormReturn<z.infer<typeof movieBrowseSchema>>;
 	genres: MovieGenre[];
 	onSubmit: (data: z.infer<typeof movieBrowseSchema>) => void;
 }

@@ -9,17 +9,16 @@ import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
 export const Browse = () => {
-	const [searchParams, setSearchParams] = useState<z.infer<typeof schema> | null>(null);
+	const [searchParams, setSearchParams] = useState<z.infer<typeof movieBrowseSchema> | null>(null);
 
-	const schema = movieBrowseSchema;
-	const form = useForm<z.infer<typeof schema>>({
-		resolver: zodResolver(schema),
+	const form = useForm<z.infer<typeof movieBrowseSchema>>({
+		resolver: zodResolver(movieBrowseSchema),
 		defaultValues: {
 			search: '',
 			genre: '',
 			year: '',
-			sortBy: 'title',
-			order: 'asc',
+			sortBy: 'popularity',
+			order: 'desc',
 		},
 	});
 
@@ -27,19 +26,16 @@ export const Browse = () => {
 		search: searchParams?.search || '',
 		genre: searchParams?.genre || '',
 		year: searchParams?.year || '',
-		sortBy: searchParams?.sortBy || 'title',
-		order: searchParams?.order || 'asc',
+		sortBy: searchParams?.sortBy || 'popularity',
+		order: searchParams?.order || 'desc',
 	});
 
 	const { data: genres } = useFetchMovieGenres();
 
-	const onSubmit = (browseData: z.infer<typeof schema>) => {
+	const onSubmit = (browseData: z.infer<typeof movieBrowseSchema>) => {
 		console.log('Search data:', browseData);
 		setSearchParams(browseData);
 	};
-
-	/* TODO: Move all the movie browse related logic, and maybe all the movie data into a separate context */
-	/* TODO: Refactor the display of the browsed movies, include the possibility to search for an empty movie and display all movies */
 
 	return (
 		<div className='px-[3rem] md:pl-[3rem] md:pr-[5rem] min-h-screen bg-gray-900 text-white py-25'>

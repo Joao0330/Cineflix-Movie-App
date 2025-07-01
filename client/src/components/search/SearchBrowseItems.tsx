@@ -34,22 +34,25 @@ export const SearchBrowseItems = ({ type, form, genres }: SearchBrowseItemsProps
 					<FormField
 						key={item.name}
 						control={form.control}
-						name={item.name as 'genre' | 'year' | 'sortBy' | 'order' | 'search'}
+						name={item.name as 'genre' | 'year' | 'sortBy' | 'order'}
 						render={({ field }) => (
 							<FormItem className='w-[240px]'>
-								<Select onValueChange={field.onChange} defaultValue={field.value}>
+								<Select onValueChange={field.onChange} value={field.value}>
 									<FormControl className='w-full cursor-pointer'>
 										<SelectTrigger>
 											<SelectValue placeholder={item.placeholder} />
 										</SelectTrigger>
 									</FormControl>
 									<SelectContent className='bg-gray-800 text-white'>
-										{item.name === 'genre' &&
-											genres?.map(genre => (
-												<SelectItem key={genre.id} value={genre.name}>
-													{genre.name}
-												</SelectItem>
-											))}
+										{item.name === 'genre' && (
+											<>
+												{genres?.map(genre => (
+													<SelectItem key={genre.id} value={genre.id.toString()}>
+														{genre.name}
+													</SelectItem>
+												))}
+											</>
+										)}
 										{item.options?.map(option => (
 											<SelectItem key={option.value} value={option.value}>
 												{option.label}

@@ -1,5 +1,3 @@
-const years = Array.from({ length: new Date().getFullYear() - 1899 }, (_, i) => (i + 1900).toString()).sort((a, b) => parseInt(b) - parseInt(a));
-
 export const searchBrowseItemsData = [
 	{
 		name: 'genre',
@@ -9,16 +7,20 @@ export const searchBrowseItemsData = [
 	{
 		name: 'year',
 		placeholder: 'Enter a year',
-		options: years.map(year => ({ value: year, label: year })),
+		options: Array.from({ length: new Date().getFullYear() - 1900 + 1 }, (_, i) => ({
+			value: (new Date().getFullYear() - i).toString(),
+			label: (new Date().getFullYear() - i).toString(),
+		})),
 		description: 'Choose a year for your results.',
 	},
 	{
 		name: 'sortBy',
 		placeholder: 'Sort by',
 		options: [
-			{ value: 'title', label: 'Title' },
-			{ value: 'year', label: 'Year' },
-			{ value: 'rating', label: 'Rating' },
+			{ value: 'popularity', label: 'Popularity' },
+			{ value: 'release_date', label: 'Release Date' },
+			{ value: 'vote_average', label: 'Rating' },
+			{ value: 'original_title', label: 'Title' },
 		],
 		description: 'Choose how to sort your results.',
 	},
