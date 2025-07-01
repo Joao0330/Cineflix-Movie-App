@@ -19,7 +19,7 @@ export const searchBrowseItemsData = [
 		options: [
 			{ value: 'popularity', label: 'Popularity' },
 			{ value: 'release_date', label: 'Release Date' },
-			{ value: 'vote_average', label: 'Rating' },
+			{ value: 'vote_average', label: 'TMDB Rating' },
 			{ value: 'original_title', label: 'Title' },
 		],
 		description: 'Choose how to sort your results.',
