@@ -1,6 +1,6 @@
 export const searchBrowseItemsData = [
 	{
-		name: 'genre',
+		name: 'genres',
 		placeholder: 'Select a genre',
 		description: 'Select a genre to filter',
 	},

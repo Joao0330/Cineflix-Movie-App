@@ -16,7 +16,7 @@ export const Browse = () => {
 		resolver: zodResolver(movieBrowseSchema),
 		defaultValues: {
 			search: '',
-			genre: '',
+			genres: [],
 			year: '',
 			sortBy: 'popularity',
 			order: 'desc',
@@ -25,7 +25,7 @@ export const Browse = () => {
 
 	const { data: movies, isLoading } = useFetchMoviesBrowse({
 		search: searchParams?.search || '',
-		genre: searchParams?.genre || '',
+		genres: searchParams?.genres || [],
 		year: searchParams?.year || '',
 		sortBy: searchParams?.sortBy || 'popularity',
 		order: searchParams?.order || 'desc',
@@ -71,7 +71,8 @@ export const Browse = () => {
 					</div>
 				)}
 
-				{/* TODO: Change the genre filter to include multiple filters */}
+				{/* TODO: Style the div that shows the genre badges */}
+				{/* TODO: Add an empty option to the genres to fix a bug that it keeps the genre name on the select after it is disabled */}
 				{/* TODO: Make so when on the movieInfo page of a movie and when clicked on the genre of the movie, it goes to the browse page with the genre selected */}
 			</div>
 		</div>

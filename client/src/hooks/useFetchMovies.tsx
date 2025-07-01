@@ -28,9 +28,12 @@ const fetchMovieSearch = async (query: string) => {
 	return data;
 };
 
-const fetchMovieBrowse = async (params: { search?: string; genre?: string; year?: string; sortBy?: 'popularity' | 'release_date' | 'vote_average' | 'original_title'; order?: 'asc' | 'desc' }) => {
+const fetchMovieBrowse = async (params: { search?: string; genres?: string[]; year?: string; sortBy?: 'popularity' | 'release_date' | 'vote_average' | 'original_title'; order?: 'asc' | 'desc' }) => {
 	const { data } = await api.get('/movies-browse', {
-		params,
+		params: {
+			...params,
+			genres: params.genres?.join(','),
+		},
 	});
 
 	return data;
@@ -78,7 +81,7 @@ export const useFetchMovieSearch = (query: string) => {
 
 export const useFetchMoviesBrowse = (params: {
 	search?: string;
-	genre?: string;
+	genres?: string[];
 	year?: string;
 	sortBy?: 'popularity' | 'release_date' | 'vote_average' | 'original_title';
 	order?: 'asc' | 'desc';
@@ -89,6 +92,6 @@ export const useFetchMoviesBrowse = (params: {
 		staleTime: 1000 * 60 * 60 * 24,
 		retry: 1,
 		refetchOnWindowFocus: false,
-		enabled: !!params.search || !!params.genre || !!params.year || !!params.sortBy || !!params.order,
+		enabled: !!params.search || !!params.genres?.length || !!params.year || !!params.sortBy || !!params.order,
 	});
 };

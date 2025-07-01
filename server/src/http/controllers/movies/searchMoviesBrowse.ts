@@ -3,7 +3,7 @@ import { TmdbApi } from '../../../lib/axios';
 
 interface SearchMoviesBrowseQuery {
 	search?: string;
-	genre?: string;
+	genres?: string;
 	year?: string;
 	sortBy?: 'popularity' | 'release_date' | 'vote_average' | 'original_title';
 	order?: 'asc' | 'desc';
@@ -11,7 +11,7 @@ interface SearchMoviesBrowseQuery {
 
 export async function searchMoviesBrowse(request: FastifyRequest<{ Querystring: SearchMoviesBrowseQuery }>, reply: FastifyReply) {
 	try {
-		const { search, genre, year, sortBy, order } = request.query;
+		const { search, genres, year, sortBy, order } = request.query;
 
 		const validSortBy =
 			{
@@ -29,7 +29,7 @@ export async function searchMoviesBrowse(request: FastifyRequest<{ Querystring: 
 		if (search) {
 			params.query = search;
 		} else {
-			if (genre) params.with_genres = genre;
+			if (genres) params.with_genres = genres;
 			if (year) params.primary_release_year = year;
 			params.sort_by = sortByParam;
 		}
