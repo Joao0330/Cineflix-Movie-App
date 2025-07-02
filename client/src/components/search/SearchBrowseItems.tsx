@@ -1,11 +1,18 @@
 import type { movieBrowseSchema } from '@/schemas/movie.schema';
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
-import { Controller, type useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import type { z } from 'zod';
 import { searchBrowseItemsData } from '@/data/searchBrowseItemsData';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Badge } from '../ui/badge';
+import { Checkbox } from '../ui/checkbox';
+import { Label } from '../ui/label';
+import { ScrollArea } from '../ui/scroll-area';
+
+interface MovieGenre {
+	id: number;
+	name: string;
+}
 
 interface SearchBrowseItemsProps {
 	type: 'search' | 'sort';
@@ -22,7 +29,7 @@ export const SearchBrowseItems = ({ type, form, genres }: SearchBrowseItemsProps
 					name='search'
 					render={({ field }) => (
 						<FormItem className='w-full mb-5'>
-							<FormControl>
+							<FormControl className='relative'>
 								<Input {...field} type='text' name='search' placeholder='Search for a movie or show...' className='w-full p-3 rounded-md bg-gray-800 text-white' />
 							</FormControl>
 							<FormMessage />
@@ -32,7 +39,7 @@ export const SearchBrowseItems = ({ type, form, genres }: SearchBrowseItemsProps
 			)}
 			{type === 'sort' &&
 				searchBrowseItemsData.map(item => (
-					<FormItem key={item.name} className='w-[240px]'>
+					<FormItem key={item.name}>
 						{item.name === 'genres' ? (
 							<>
 								<Controller
@@ -40,71 +47,48 @@ export const SearchBrowseItems = ({ type, form, genres }: SearchBrowseItemsProps
 									name='genres'
 									render={({ field }) => (
 										<>
-											<Select
-												onValueChange={value => {
-													if (!field.value?.includes(value)) {
-														field.onChange([...(field.value || []), value]);
-													}
-												}}
-											>
-												<FormControl className='w-full cursor-pointer'>
-													<SelectTrigger>
-														<SelectValue placeholder={item.placeholder} />
-													</SelectTrigger>
-												</FormControl>
-												<SelectContent className='bg-gray-800 text-white'>
+											<ScrollArea className='h-[200px] w-full rounded-md border border-gray-600 bg-gray-800 p-4 '>
+												<div className='h-[150px] flex flex-wrap gap-5 justify-center'>
 													{genres?.map(genre => (
-														<SelectItem key={genre.id} value={genre.id.toString()} disabled={field.value?.includes(genre.id.toString())}>
-															{genre.name}
-														</SelectItem>
+														<div key={genre.id} className='flex items-center space-x-2'>
+															<Checkbox
+																className='cursor-pointer'
+																id={`genre-${genre.id}`}
+																checked={field.value?.includes(genre.id.toString())}
+																onCheckedChange={checked => {
+																	if (checked) {
+																		field.onChange([...(field.value || []), genre.id.toString()]);
+																	} else {
+																		field.onChange(field.value?.filter(id => id !== genre.id.toString()));
+																	}
+																}}
+															/>
+															<Label htmlFor={`genre-${genre.id}`} className='text-white cursor-pointer'>
+																{genre.name}
+															</Label>
+														</div>
 													))}
-												</SelectContent>
-											</Select>
-											<div className='flex flex-wrap gap-2 mt-2'>
-												{field.value?.map((genreId: string) => {
-													const genre = genres?.find(g => g.id.toString() === genreId);
-													return (
-														<Badge
-															key={genreId}
-															variant='secondary'
-															className='cursor-pointer hover:bg-gray-700'
-															onClick={() => {
-																field.onChange(field.value?.filter(id => id !== genreId));
-															}}
-														>
-															{genre?.name} ✕
-														</Badge>
-													);
-												})}
-											</div>
+												</div>
+											</ScrollArea>
+											<FormDescription className='text-center mt-2'>{item.description}</FormDescription>
+											<FormMessage />
 										</>
 									)}
 								/>
-								<FormDescription className='text-center'>{item.description}</FormDescription>
-								<FormMessage />
 							</>
 						) : (
 							<FormField
 								control={form.control}
 								name={item.name as 'year' | 'sortBy' | 'order'}
 								render={({ field }) => (
-									<FormItem className='w-[240px]'>
+									<>
 										<Select onValueChange={field.onChange} value={field.value}>
-											<FormControl className='w-full cursor-pointer'>
+											<FormControl className='w-[350px] sm:w-[240px] cursor-pointer'>
 												<SelectTrigger>
 													<SelectValue placeholder={item.placeholder} />
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent className='bg-gray-800 text-white'>
-												{item.name === 'genre' && (
-													<>
-														{genres?.map(genre => (
-															<SelectItem key={genre.id} value={genre.id.toString()}>
-																{genre.name}
-															</SelectItem>
-														))}
-													</>
-												)}
 												{item.options?.map(option => (
 													<SelectItem key={option.value} value={option.value}>
 														{option.label}
@@ -114,7 +98,7 @@ export const SearchBrowseItems = ({ type, form, genres }: SearchBrowseItemsProps
 										</Select>
 										<FormDescription className='text-center'>{item.description}</FormDescription>
 										<FormMessage />
-									</FormItem>
+									</>
 								)}
 							/>
 						)}

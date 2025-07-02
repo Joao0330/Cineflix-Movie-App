@@ -56,9 +56,13 @@ export const Browse = () => {
 					<div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'>
 						{movies.results.map((movie: Movie) => (
 							<Link to={`/movies/${movie.id}`} key={movie.id}>
-								<Card className='bg-gray-800 hover:bg-gray-700 transition-colors'>
+								<Card className='bg-gray-800 hover:bg-gray-700 transition-colors h-[400px]'>
 									<CardHeader>
-										<img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} className='w-full h-auto rounded-md' />
+										<img
+											src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://placehold.co/200x290?text=Movie not found'}
+											alt={movie.title}
+											className='w-full h-auto rounded-md'
+										/>
 									</CardHeader>
 									<CardContent>
 										<CardTitle className='text-lg overflow-hidden h-[90px]'>{movie.title}</CardTitle>
@@ -71,8 +75,7 @@ export const Browse = () => {
 					</div>
 				)}
 
-				{/* TODO: Style the div that shows the genre badges */}
-				{/* TODO: Add an empty option to the genres to fix a bug that it keeps the genre name on the select after it is disabled */}
+				{/* TODO: Fix performance issues when loading the browse page and when selecting the years */}
 				{/* TODO: Make so when on the movieInfo page of a movie and when clicked on the genre of the movie, it goes to the browse page with the genre selected */}
 			</div>
 		</div>

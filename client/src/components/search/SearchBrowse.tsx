@@ -18,7 +18,7 @@ export const SearchBrowse = ({ form, genres, onSubmit }: SearchBrowseProps) => {
 					{/* Browse search bar */}
 					<SearchBrowseItems type='search' form={form} />
 
-					<div className='flex flex-col justify-center items-center gap-8 sm:flex-row sm:gap-4'>
+					<div className='flex flex-col justify-center items-center gap-8 sm:flex-row sm:gap-12 sm:flex-wrap'>
 						{/* Browse sort options */}
 						<SearchBrowseItems type='sort' form={form} genres={genres} />
 					</div>
