@@ -85,6 +85,7 @@ export const useFetchMoviesBrowse = (params: {
 	year?: string;
 	sortBy?: 'popularity' | 'release_date' | 'vote_average' | 'original_title';
 	order?: 'asc' | 'desc';
+	enabled?: boolean;
 }) => {
 	return useQuery({
 		queryKey: ['movies-browse', params],
@@ -92,6 +93,6 @@ export const useFetchMoviesBrowse = (params: {
 		staleTime: 1000 * 60 * 60 * 24,
 		retry: 1,
 		refetchOnWindowFocus: false,
-		enabled: !!params.search || !!params.genres?.length || !!params.year || !!params.sortBy || !!params.order,
+		enabled: params.enabled !== false && (!!params.search || !!params.genres?.length || !!params.year || !!params.sortBy || !!params.order),
 	});
 };

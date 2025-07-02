@@ -7,10 +7,6 @@ export const searchBrowseItemsData = [
 	{
 		name: 'year',
 		placeholder: 'Enter a year',
-		options: Array.from({ length: new Date().getFullYear() - 1900 + 1 }, (_, i) => ({
-			value: (new Date().getFullYear() - i).toString(),
-			label: (new Date().getFullYear() - i).toString(),
-		})),
 		description: 'Choose a year for your results.',
 	},
 	{

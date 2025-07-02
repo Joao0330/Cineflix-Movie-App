@@ -76,10 +76,34 @@ export const SearchBrowseItems = ({ type, form, genres }: SearchBrowseItemsProps
 									)}
 								/>
 							</>
+						) : item.name === 'year' ? (
+							<>
+								<FormField
+									control={form.control}
+									name='year'
+									render={({ field }) => (
+										<>
+											<FormControl>
+												<Input
+													{...field}
+													type='number'
+													placeholder={item.placeholder}
+													className='w-[350px] sm:w-[240px] rounded-md bg-gray-800 text-white'
+													min='1900'
+													max={new Date().getFullYear()}
+													onChange={e => field.onChange(e.target.value)}
+												/>
+											</FormControl>
+											<FormDescription className='text-center'>{item.description}</FormDescription>
+											<FormMessage />
+										</>
+									)}
+								/>
+							</>
 						) : (
 							<FormField
 								control={form.control}
-								name={item.name as 'year' | 'sortBy' | 'order'}
+								name={item.name as 'sortBy' | 'order'}
 								render={({ field }) => (
 									<>
 										<Select onValueChange={field.onChange} value={field.value}>

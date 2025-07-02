@@ -1,3 +1,4 @@
+import { Loader } from '@/components/Loader';
 import { SearchBrowse } from '@/components/search/SearchBrowse';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -29,20 +30,25 @@ export const Browse = () => {
 		year: searchParams?.year || '',
 		sortBy: searchParams?.sortBy || 'popularity',
 		order: searchParams?.order || 'desc',
+		enabled: !!searchParams,
 	});
 
-	const { data: genres } = useFetchMovieGenres();
+	const { data: genres, isLoading: genresIsLoading } = useFetchMovieGenres();
 
 	const onSubmit = (browseData: z.infer<typeof movieBrowseSchema>) => {
 		console.log('Search data:', browseData);
 		setSearchParams(browseData);
 	};
 
+	if (genresIsLoading) {
+		return <Loader />;
+	}
+
 	return (
 		<div className='px-[3rem] md:pl-[3rem] md:pr-[5rem] min-h-screen bg-gray-900 text-white py-25'>
 			<div className='container-sm'>
 				<h1 className='text-4xl mb-7'>Browse on Cineflix</h1>
-				<p>Explore our deep colection of shows bellow</p>
+				<p>Explore our deep collection of shows bellow</p>
 
 				<SearchBrowse form={form} genres={genres} onSubmit={onSubmit} />
 			</div>
@@ -62,6 +68,7 @@ export const Browse = () => {
 											src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://placehold.co/200x290?text=Movie not found'}
 											alt={movie.title}
 											className='w-full h-auto rounded-md'
+											loading='lazy'
 										/>
 									</CardHeader>
 									<CardContent>
@@ -75,7 +82,7 @@ export const Browse = () => {
 					</div>
 				)}
 
-				{/* TODO: Fix performance issues when loading the browse page and when selecting the years */}
+				{/* TODO: Remove the arrows from the year input and disable the scroll event that changes the value on the year selector */}
 				{/* TODO: Make so when on the movieInfo page of a movie and when clicked on the genre of the movie, it goes to the browse page with the genre selected */}
 			</div>
 		</div>
