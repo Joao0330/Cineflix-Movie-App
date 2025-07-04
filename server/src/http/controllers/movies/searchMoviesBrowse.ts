@@ -7,11 +7,12 @@ interface SearchMoviesBrowseQuery {
 	year?: string;
 	sortBy?: 'popularity' | 'release_date' | 'vote_average' | 'original_title';
 	order?: 'asc' | 'desc';
+	page?: number;
 }
 
 export async function searchMoviesBrowse(request: FastifyRequest<{ Querystring: SearchMoviesBrowseQuery }>, reply: FastifyReply) {
 	try {
-		const { search, genres, year, sortBy, order } = request.query;
+		const { search, genres, year, sortBy, order, page } = request.query;
 
 		const validSortBy =
 			{
@@ -24,7 +25,7 @@ export async function searchMoviesBrowse(request: FastifyRequest<{ Querystring: 
 		const sortByParam = `${validSortBy}.${sortOrder}`;
 
 		const endpoint = search ? '/search/movie' : '/discover/movie';
-		const params: Record<string, string> = {};
+		const params: Record<string, string> = { page: page?.toString() || '1' };
 
 		if (search) {
 			params.query = search;

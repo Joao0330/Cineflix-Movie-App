@@ -7,7 +7,7 @@ export const searchBrowseItemsData = [
 	{
 		name: 'year',
 		placeholder: 'Enter a year',
-		description: 'Choose a year for your results.',
+		description: 'Select a year (1900 - current year)',
 	},
 	{
 		name: 'sortBy',

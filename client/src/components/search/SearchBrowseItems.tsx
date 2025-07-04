@@ -92,6 +92,7 @@ export const SearchBrowseItems = ({ type, form, genres }: SearchBrowseItemsProps
 													min='1900'
 													max={new Date().getFullYear()}
 													onChange={e => field.onChange(e.target.value)}
+													onWheel={e => e.currentTarget.blur()}
 												/>
 											</FormControl>
 											<FormDescription className='text-center'>{item.description}</FormDescription>

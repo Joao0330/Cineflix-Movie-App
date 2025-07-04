@@ -1,5 +1,6 @@
 import { Loader } from '@/components/Loader';
 import { SearchBrowse } from '@/components/search/SearchBrowse';
+import { SearchBrowsePagination } from '@/components/search/SearchBrowsePagination';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useFetchMovieGenres, useFetchMoviesBrowse } from '@/hooks/useFetchMovies';
@@ -12,6 +13,7 @@ import type { z } from 'zod';
 
 export const Browse = () => {
 	const [searchParams, setSearchParams] = useState<z.infer<typeof movieBrowseSchema> | null>(null);
+	const [page, setPage] = useState(1);
 
 	const form = useForm<z.infer<typeof movieBrowseSchema>>({
 		resolver: zodResolver(movieBrowseSchema),
@@ -30,6 +32,7 @@ export const Browse = () => {
 		year: searchParams?.year || '',
 		sortBy: searchParams?.sortBy || 'popularity',
 		order: searchParams?.order || 'desc',
+		page,
 		enabled: !!searchParams,
 	});
 
@@ -59,30 +62,33 @@ export const Browse = () => {
 				{movies?.results?.length === 0 && !isLoading && <p className='text-center text-gray-400'>No movies found for your search criteria.</p>}
 
 				{movies?.results?.length > 0 && (
-					<div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'>
-						{movies.results.map((movie: Movie) => (
-							<Link to={`/movies/${movie.id}`} key={movie.id}>
-								<Card className='bg-gray-800 hover:bg-gray-700 transition-colors h-[400px]'>
-									<CardHeader>
-										<img
-											src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://placehold.co/200x290?text=Movie not found'}
-											alt={movie.title}
-											className='w-full h-auto rounded-md'
-											loading='lazy'
-										/>
-									</CardHeader>
-									<CardContent>
-										<CardTitle className='text-lg overflow-hidden h-[90px]'>{movie.title}</CardTitle>
-										<p className='text-sm text-gray-400'>{movie.release_date?.split('-')[0]}</p>
-										<p className='text-sm text-yellow-400'>★ {movie.vote_average.toFixed(1)}</p>
-									</CardContent>
-								</Card>
-							</Link>
-						))}
-					</div>
+					<>
+						<div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'>
+							{movies.results.map((movie: Movie) => (
+								<Link to={`/movies/${movie.id}`} key={movie.id}>
+									<Card className='bg-gray-800 hover:bg-gray-700 transition-colors'>
+										<CardHeader>
+											<img
+												src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://placehold.co/200x290?text=Movie not found'}
+												alt={movie.title}
+												className='w-full h-auto rounded-md'
+												loading='lazy'
+											/>
+										</CardHeader>
+										<CardContent>
+											<CardTitle className='text-lg overflow-hidden h-[90px]'>{movie.title}</CardTitle>
+											<p className='text-sm text-gray-400'>{movie.release_date?.split('-')[0]}</p>
+											<p className='text-sm text-yellow-400'>★ {movie.vote_average.toFixed(1)}</p>
+										</CardContent>
+									</Card>
+								</Link>
+							))}
+						</div>
+
+						<SearchBrowsePagination page={page} setPage={setPage} movies={movies} />
+					</>
 				)}
 
-				{/* TODO: Remove the arrows from the year input and disable the scroll event that changes the value on the year selector */}
 				{/* TODO: Make so when on the movieInfo page of a movie and when clicked on the genre of the movie, it goes to the browse page with the genre selected */}
 			</div>
 		</div>

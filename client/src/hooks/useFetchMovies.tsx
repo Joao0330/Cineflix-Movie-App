@@ -28,7 +28,14 @@ const fetchMovieSearch = async (query: string) => {
 	return data;
 };
 
-const fetchMovieBrowse = async (params: { search?: string; genres?: string[]; year?: string; sortBy?: 'popularity' | 'release_date' | 'vote_average' | 'original_title'; order?: 'asc' | 'desc' }) => {
+const fetchMovieBrowse = async (params: {
+	search?: string;
+	genres?: string[];
+	year?: string;
+	sortBy?: 'popularity' | 'release_date' | 'vote_average' | 'original_title';
+	order?: 'asc' | 'desc';
+	page?: number;
+}) => {
 	const { data } = await api.get('/movies-browse', {
 		params: {
 			...params,
@@ -85,6 +92,7 @@ export const useFetchMoviesBrowse = (params: {
 	year?: string;
 	sortBy?: 'popularity' | 'release_date' | 'vote_average' | 'original_title';
 	order?: 'asc' | 'desc';
+	page?: number;
 	enabled?: boolean;
 }) => {
 	return useQuery({

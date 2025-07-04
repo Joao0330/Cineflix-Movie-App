@@ -223,6 +223,16 @@
 	body {
 		@apply bg-background text-foreground font-montserrat;
 	}
+
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		@apply appearance-none;
+		margin: 0;
+	}
+
+	input[type='number'] {
+		@apply appearance-none;
+	}
 }
 
 @utility welcome-hero-rounded-effect {
@@ -472,6 +482,11 @@
 				}
 			}
 		}
+	}
+
+	/* Search browse */
+	.searchBrowse_movies {
+		@apply container-sm;
 	}
 
 	/* Welcome page */
