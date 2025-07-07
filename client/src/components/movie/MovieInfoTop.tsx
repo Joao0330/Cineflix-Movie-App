@@ -16,7 +16,7 @@ export const MovieInfoTop = ({ movie }: { movie: Movie }) => {
 					<strong>Genres:</strong>
 					{movie.genres?.map((genre: MovieGenre) => (
 						<span key={genre.id}>
-							<Link to={`/genres/${genre.id}`}>{genre.name}</Link>
+							<Link to={`/browse/${genre.id}`}>{genre.name}</Link>
 						</span>
 					))}
 				</div>

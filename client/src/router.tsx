@@ -32,6 +32,7 @@ export const router = createBrowserRouter([
 					{ path: '/home', element: <Home /> }, // or path: ''
 					{ path: '/movies/:movieId', element: <MovieInfo /> }, // Placeholder for MovieInfo component
 					{ path: '/browse', element: <Browse /> },
+					{ path: '/browse/:genreId', element: <Browse /> },
 				],
 			},
 		],

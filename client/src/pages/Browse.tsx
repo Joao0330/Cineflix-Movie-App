@@ -6,20 +6,21 @@ import { Separator } from '@/components/ui/separator';
 import { useFetchMovieGenres, useFetchMoviesBrowse } from '@/hooks/useFetchMovies';
 import { movieBrowseSchema } from '@/schemas/movie.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 import type { z } from 'zod';
 
 export const Browse = () => {
 	const [searchParams, setSearchParams] = useState<z.infer<typeof movieBrowseSchema> | null>(null);
 	const [page, setPage] = useState(1);
+	const { genreId } = useParams<{ genreId?: string }>();
 
 	const form = useForm<z.infer<typeof movieBrowseSchema>>({
 		resolver: zodResolver(movieBrowseSchema),
 		defaultValues: {
 			search: '',
-			genres: [],
+			genres: genreId ? [genreId] : [],
 			year: '',
 			sortBy: 'popularity',
 			order: 'desc',
@@ -42,6 +43,16 @@ export const Browse = () => {
 		console.log('Search data:', browseData);
 		setSearchParams(browseData);
 	};
+
+	useEffect(() => {
+		if (genreId && genres && !searchParams) {
+			const isValidGenre = genres.some((genre: MovieGenre) => genre.id.toString() === genreId);
+			if (isValidGenre) {
+				scrollTo(0, 0);
+				form.handleSubmit(onSubmit)();
+			}
+		}
+	}, [genreId, genres, searchParams, form]);
 
 	if (genresIsLoading) {
 		return <Loader />;
@@ -88,8 +99,6 @@ export const Browse = () => {
 						<SearchBrowsePagination page={page} setPage={setPage} movies={movies} />
 					</>
 				)}
-
-				{/* TODO: Make so when on the movieInfo page of a movie and when clicked on the genre of the movie, it goes to the browse page with the genre selected */}
 			</div>
 		</div>
 	);
