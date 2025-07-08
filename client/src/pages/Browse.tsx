@@ -48,7 +48,6 @@ export const Browse = () => {
 		if (genreId && genres && !searchParams) {
 			const isValidGenre = genres.some((genre: MovieGenre) => genre.id.toString() === genreId);
 			if (isValidGenre) {
-				scrollTo(0, 0);
 				form.handleSubmit(onSubmit)();
 			}
 		}
@@ -101,5 +100,8 @@ export const Browse = () => {
 				)}
 			</div>
 		</div>
+		/* TODO: Change the movieInfo page:
+				- Add back the videos but dont use the iframe(?)
+		 */
 	);
 };
