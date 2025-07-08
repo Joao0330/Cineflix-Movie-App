@@ -63,7 +63,7 @@ export const MovieInfo = () => {
 			<section className='movieInfo__details'>
 				<MovieInfoTop movie={movie} />
 				<MovieCredits movie={movie} />
-				{/* <MovieVideos movie={movie} /> */}
+				<MovieVideos movie={movie} />
 			</section>
 		</>
 	);

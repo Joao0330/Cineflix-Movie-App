@@ -1,10 +1,12 @@
 export const MovieVideos = ({ movie }: { movie: Movie }) => {
+	const movieTrailers = movie.videos?.results.filter(video => video.type === 'Trailer');
+
 	return (
 		<section className='movieInfo__details__videos'>
 			<h4>Videos:</h4>
-			{movie.videos?.results.length ? (
+			{movieTrailers.length ? (
 				<div className='movieInfo__details__videos-list'>
-					{movie.videos.results.slice(0, 3).map(video => (
+					{movieTrailers.slice(0, 3).map(video => (
 						<div key={video.id}>
 							<iframe
 								src={`https://www.youtube.com/embed/${video.key}`}

@@ -100,8 +100,5 @@ export const Browse = () => {
 				)}
 			</div>
 		</div>
-		/* TODO: Change the movieInfo page:
-				- Add back the videos but dont use the iframe(?)
-		 */
 	);
 };
