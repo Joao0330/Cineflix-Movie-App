@@ -100,5 +100,6 @@ export const Browse = () => {
 				)}
 			</div>
 		</div>
+		/* TODO: Start working on adding movies to favorites and lists */
 	);
 };

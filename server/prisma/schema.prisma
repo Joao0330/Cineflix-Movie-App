@@ -28,4 +28,13 @@ model User {
   googleId          String?   @unique
   created_at        DateTime  @default(now())
   is_banned         Boolean   @default(false)
+  favorites         Favorites[]
+}
+
+model Favorites {
+  id                Int       @id @default(autoincrement())
+  userId            Int
+  external_id       String    @unique
+  created_at        DateTime  @default(now())
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
