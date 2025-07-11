@@ -58,9 +58,9 @@ export const Browse = () => {
 	}
 
 	return (
-		<div className='px-[3rem] md:pl-[3rem] md:pr-[5rem] min-h-screen bg-gray-900 text-white py-25'>
+		<div className='browse'>
 			<div className='container-sm'>
-				<h1 className='text-4xl mb-7'>Browse on Cineflix</h1>
+				<h1>Browse on Cineflix</h1>
 				<p>Explore our deep collection of shows bellow</p>
 
 				<SearchBrowse form={form} genres={genres} onSubmit={onSubmit} />
@@ -73,33 +73,34 @@ export const Browse = () => {
 
 				{movies?.results?.length > 0 && (
 					<>
-						<div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'>
+						<section className='browse__content'>
 							{movies.results.map((movie: Movie) => (
-								<Link to={`/movies/${movie.id}`} key={movie.id}>
-									<Card className='bg-gray-800 hover:bg-gray-700 transition-colors'>
-										<CardHeader>
-											<img
-												src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://placehold.co/200x290?text=Movie not found'}
-												alt={movie.title}
-												className='w-full h-auto rounded-md'
-												loading='lazy'
-											/>
-										</CardHeader>
-										<CardContent>
-											<CardTitle className='text-lg overflow-hidden h-[90px]'>{movie.title}</CardTitle>
-											<p className='text-sm text-gray-400'>{movie.release_date?.split('-')[0]}</p>
-											<p className='text-sm text-yellow-400'>★ {movie.vote_average.toFixed(1)}</p>
-										</CardContent>
-									</Card>
-								</Link>
+								<article key={movie.id}>
+									<Link to={`/movies/${movie.id}`}>
+										<Card className='bg-gray-800 hover:bg-gray-700 transition-colors'>
+											<CardHeader>
+												<img
+													src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://placehold.co/200x290?text=Movie not found'}
+													alt={movie.title}
+													className='w-full h-auto rounded-md'
+													loading='lazy'
+												/>
+											</CardHeader>
+											<CardContent>
+												<CardTitle className='text-lg overflow-hidden h-[90px]'>{movie.title}</CardTitle>
+												<p className='text-sm text-gray-400'>{movie.release_date?.split('-')[0]}</p>
+												<p className='text-sm text-yellow-400'>★ {movie.vote_average.toFixed(1)}</p>
+											</CardContent>
+										</Card>
+									</Link>
+								</article>
 							))}
-						</div>
+						</section>
 
 						<SearchBrowsePagination page={page} setPage={setPage} movies={movies} />
 					</>
 				)}
 			</div>
 		</div>
-		/* TODO: Start working on adding movies to favorites and lists */
 	);
 };

@@ -16,7 +16,7 @@ export async function getFavorites(request: FastifyRequest, reply: FastifyReply)
 			},
 		});
 
-		reply.status(200).send({ response });
+		reply.status(200).send(response);
 	} catch (error) {
 		console.error('Error fetching favorites:', error);
 		reply.status(500).send({ error: 'Failed to fetch favorites' });

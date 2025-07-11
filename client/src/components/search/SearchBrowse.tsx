@@ -14,18 +14,16 @@ export const SearchBrowse = ({ form, genres, onSubmit }: SearchBrowseProps) => {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)}>
-				<div className='flex flex-col gap-10 mt-5'>
+				<div className='browse__search'>
 					{/* Browse search bar */}
 					<SearchBrowseItems type='search' form={form} />
 
-					<div className='flex flex-col justify-center items-center gap-8 sm:flex-row sm:gap-12 sm:flex-wrap'>
+					<div className='browse__search-sort'>
 						{/* Browse sort options */}
 						<SearchBrowseItems type='sort' form={form} genres={genres} />
 					</div>
 
-					<button type='submit' className='px-4 py-2 bg-blue-light rounded-md hover:bg-blue-600 transition-colors duration-300 cursor-pointer'>
-						Search
-					</button>
+					<button type='submit'>Search</button>
 				</div>
 
 				<p className='mt-4 text-sm text-gray-400 text-center'>You can search by title, genre, and year.</p>

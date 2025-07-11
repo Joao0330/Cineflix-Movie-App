@@ -1,3 +1,4 @@
+import { QueryClient } from '@tanstack/react-query';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -11,3 +12,5 @@ export const createGenreLookup = (genres: MovieGenre[]) => {
 		return lookup;
 	}, {} as Record<number, string>);
 };
+
+export const queryClient = new QueryClient();

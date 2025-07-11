@@ -8,6 +8,7 @@ import { ProtectedRoute } from './pages/ProtectedRoute';
 import { PublicRoute } from './pages/PublicRoute';
 import { MovieInfo } from './pages/MovieInfo';
 import { Browse } from './pages/Browse';
+import { Favorites } from './pages/Favorites';
 
 export const router = createBrowserRouter([
 	{
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
 					{ path: '/movies/:movieId', element: <MovieInfo /> }, // Placeholder for MovieInfo component
 					{ path: '/browse', element: <Browse /> },
 					{ path: '/browse/:genreId', element: <Browse /> },
+					{ path: '/favorites', element: <Favorites /> },
 				],
 			},
 		],

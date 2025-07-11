@@ -101,3 +101,9 @@ type MovieCrew = {
 	profile_path: string | null;
 	job: string;
 };
+
+//? Favorites types
+type Favorite = {
+	external_id: string;
+	created_at: string;
+};

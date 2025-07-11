@@ -3,68 +3,78 @@ import { MovieCredits } from '@/components/movie/MovieCredits';
 import { MovieInfoTop } from '@/components/movie/MovieInfoTop';
 import { MovieVideos } from '@/components/movie/MovieVideos';
 import { MobileToggleButton } from '@/components/sidebar/MobileToggleButton';
-import { useFetchMovieDetails } from '@/hooks/useFetchMovies';
+import { useFavorites } from '@/hooks/useFavorites';
+import { useFetchMovieDetail } from '@/hooks/useFetchMovies';
 import { ChevronDown, Heart, List } from 'lucide-react';
 import { useParams } from 'react-router';
 
 export const MovieInfo = () => {
 	const { movieId } = useParams();
-	const { data: movie, isLoading, error } = useFetchMovieDetails(movieId!);
+	const { data: movie, isLoading, error } = useFetchMovieDetail(movieId || '');
+	const { addFavoriteMutation } = useFavorites();
 
 	scrollTo(0, 0);
+	console.log('Movie data:', movie);
 
 	if (isLoading) return <Loader />;
 	if (error) return <div>Error loading movie details: {error.message}</div>;
 
-	console.log(movie);
-
 	return (
 		<>
-			<section
-				className='movieInfo'
-				style={{
-					backgroundImage: movie.backdrop_path ? `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})` : 'none',
-					backgroundPosition: '',
-				}}
-			>
-				<div className='movieInfo__hero'>
-					<div>
-						<MobileToggleButton />
-						<h1>{movie.title}</h1>
-					</div>
+			{movie ? (
+				<>
+					<section
+						className='movieInfo'
+						style={{
+							backgroundImage: movie.backdrop_path ? `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})` : 'none',
+							backgroundPosition: '',
+						}}
+					>
+						<div className='movieInfo__hero'>
+							<div>
+								<MobileToggleButton />
+								<h1>{movie.title}</h1>
+							</div>
 
-					<div>
-						<button>
-							<Heart className='w-7 h-7' />
-							<span>Add to Favorites</span>
-						</button>
-						<button>
-							<List className='w-7 h-7' />
-							<span>Add to List</span>
-						</button>
-					</div>
+							<div>
+								<button onClick={() => addFavoriteMutation.mutate(movie.id.toString())}>
+									<Heart className='w-7 h-7' />
+									<span>Add to Favorites</span>
+								</button>
+								<button>
+									<List className='w-7 h-7' />
+									<span>Add to List</span>
+								</button>
+							</div>
 
-					<div>
-						<span>View details bellow</span>
-						<button
-							onClick={() => {
-								scrollTo({
-									top: (document.querySelector('.movieInfo__details') as HTMLElement | null)?.offsetTop || 0,
-									behavior: 'smooth',
-								});
-							}}
-						>
-							<ChevronDown className='w-15 h-15 animate-bounce [animation-duration:1.5s]' />
-						</button>
-					</div>
+							<div>
+								<span>View details bellow</span>
+								<button
+									onClick={() => {
+										scrollTo({
+											top: (document.querySelector('.movieInfo__details') as HTMLElement | null)?.offsetTop || 0,
+											behavior: 'smooth',
+										});
+									}}
+								>
+									<ChevronDown className='w-15 h-15 animate-bounce [animation-duration:1.5s]' />
+								</button>
+							</div>
+						</div>
+					</section>
+
+					<section className='movieInfo__details'>
+						<MovieInfoTop movie={movie} />
+						<MovieCredits movie={movie} />
+						<MovieVideos movie={movie} />
+					</section>
+				</>
+			) : (
+				<div className='container-sm'>
+					<h1 className='text-center'>Movie not found</h1>
+					<p className='text-center text-gray-500'>The movie you are looking for does not exist or has been removed.</p>
 				</div>
-			</section>
-
-			<section className='movieInfo__details'>
-				<MovieInfoTop movie={movie} />
-				<MovieCredits movie={movie} />
-				<MovieVideos movie={movie} />
-			</section>
+			)}
 		</>
 	);
 };

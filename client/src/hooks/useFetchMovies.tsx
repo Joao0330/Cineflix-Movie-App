@@ -12,10 +12,26 @@ const fetchMovieGenres = async () => {
 	return data.genres;
 };
 
-const fetchMovieDetails = async (movieId: string) => {
-	const { data } = await api.get(`/movies/${movieId}`);
+const fetchMovieDetail = async (movieId: string): Promise<Movie> => {
+	if (!movieId) throw new Error('No movie ID provided');
+	const { data } = await api.get(`/movies/${movieId}`, { withCredentials: true });
+	return data || {};
+};
 
-	return data;
+const fetchMultipleMovieDetails = async (movieIds: string[] | string): Promise<Movie[]> => {
+	if (!movieIds || (Array.isArray(movieIds) && !movieIds.length)) return [];
+
+	// Handle single ID or array of IDs
+	const ids = Array.isArray(movieIds) ? movieIds : [movieIds];
+
+	// Fetch details for each ID concurrently
+	const moviePromises = ids.map(async id => {
+		const { data } = await api.get(`/movies/${id}`, { withCredentials: true });
+		return data; // Assuming /movies/:id returns a single Movie object
+	});
+
+	const movies = await Promise.all(moviePromises);
+	return movies.filter(Boolean); // Filter out any null/undefined responses
 };
 
 const fetchMovieSearch = async (query: string) => {
@@ -66,13 +82,24 @@ export const useFetchMovieGenres = () => {
 	});
 };
 
-export const useFetchMovieDetails = (movieId: string) => {
+export const useFetchMovieDetail = (movieId: string, options = {}) => {
+	return useQuery<Movie>({
+		queryKey: ['movieDetail', movieId],
+		queryFn: () => fetchMovieDetail(movieId),
+		enabled: !!movieId,
+		...options,
+	});
+};
+
+export const useFetchMultipleMovieDetails = (movieIds: string[] | string, options = {}) => {
 	return useQuery({
-		queryKey: ['movies', movieId],
-		queryFn: () => fetchMovieDetails(movieId),
+		queryKey: ['movies', movieIds],
+		queryFn: () => fetchMultipleMovieDetails(movieIds),
 		staleTime: Infinity,
 		retry: 1,
 		refetchOnWindowFocus: false,
+		enabled: !!movieIds && movieIds.length > 0,
+		...options,
 	});
 };
 

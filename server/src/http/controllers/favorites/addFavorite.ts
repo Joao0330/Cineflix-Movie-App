@@ -18,6 +18,10 @@ export async function addFavorite(request: FastifyRequest, reply: FastifyReply) 
 				userId,
 				external_id: newFavorite.external_id,
 			},
+			select: {
+				external_id: true,
+				created_at: true,
+			},
 		});
 
 		reply.status(201).send({ favorite });
