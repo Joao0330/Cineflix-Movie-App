@@ -2,6 +2,8 @@ import { Loader } from '@/components/Loader';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useFetchMultipleMovieDetails } from '@/hooks/useFetchMovies';
 import { toast } from 'sonner';
+import { format } from 'date-fns';
+import { Link } from 'react-router';
 
 export const Favorites = () => {
 	const { favorites, isLoading, error } = useFavorites() as { favorites: Favorite[]; isLoading: boolean; error: Error | null };
@@ -18,6 +20,14 @@ export const Favorites = () => {
 		return <div>Failed to load favorites</div>;
 	}
 
+	const moviesWithFavorites: FavoriteMovies[] =
+		favorites && Array.isArray(favorites)
+			? favorites.map(fav => ({
+					movie: movieDetails.find(movie => movie.id.toString() === fav.external_id) || null,
+					created_at: fav.created_at,
+			  }))
+			: [];
+
 	return (
 		<section className='favorites'>
 			<div className='container-sm'>
@@ -29,13 +39,19 @@ export const Favorites = () => {
 				<div className='favorites__content'>
 					{isMoviesLoading ? (
 						<div>Loading...</div>
-					) : movieDetails.length > 0 ? (
-						<ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-							{movieDetails.map(movie => (
-								<li key={movie.id} className='border p-4 rounded'>
-									{movie.poster_path && <img src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} alt={movie.title} className='w-full h-48 object-cover mb-2' />}
-									<h3 className='text-lg font-semibold'>{movie.title}</h3>
+					) : moviesWithFavorites.length > 0 ? (
+						<ul>
+							{moviesWithFavorites.map(favMovie => (
+								<li key={favMovie.movie?.id ?? favMovie.created_at}>
+									{favMovie.movie?.poster_path && <img src={`https://image.tmdb.org/t/p/w300${favMovie.movie.poster_path}`} alt={favMovie.movie.title} className=' h-48 object-cover' />}
+									<div>
+										<Link to={`/movies/${favMovie.movie?.id}`} className='text-blue-500 hover:underline'>
+											<h3 className='text-lg font-semibold'>{favMovie.movie?.title ?? 'Unknown Title'}</h3>
+										</Link>
+										<small>Added at {format(new Date(favMovie.created_at), 'MMMM d, yyyy')}</small>
+									</div>
 								</li>
+								/* TODO: make this responsive */
 							))}
 						</ul>
 					) : (

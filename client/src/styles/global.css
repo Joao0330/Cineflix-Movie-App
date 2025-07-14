@@ -522,6 +522,26 @@
 		}
 	}
 
+	.favorites__content {
+		@apply mt-10;
+
+		ul {
+			@apply flex flex-col gap-10;
+
+			li {
+				@apply flex justify-between border p-4 rounded;
+
+				div {
+					@apply flex flex-col justify-between items-end;
+
+					small {
+						@apply text-gray-400;
+					}
+				}
+			}
+		}
+	}
+
 	/* Welcome page */
 	.welcome {
 		@apply relative min-h-screen bg-[url(/assets/welcome-bg.jpg)] bg-cover bg-center welcome-hero-rounded-effect;

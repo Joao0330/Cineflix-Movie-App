@@ -107,3 +107,8 @@ type Favorite = {
 	external_id: string;
 	created_at: string;
 };
+
+type FavoriteMovies = {
+	movie: Movie | null;
+	created_at: string;
+};
