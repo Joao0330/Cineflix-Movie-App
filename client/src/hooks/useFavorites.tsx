@@ -3,7 +3,7 @@ import { queryClient } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useFavorites = () => {
-	const { addFavorite, getFavorites } = useActions();
+	const { addFavorite, getFavorites, deleteFavorite } = useActions();
 
 	const {
 		data: favorites = [],
@@ -22,5 +22,12 @@ export const useFavorites = () => {
 		},
 	});
 
-	return { favorites, isLoading, error, addFavoriteMutation };
+	const deleteFavoriteMutation = useMutation({
+		mutationFn: (externalId: string) => deleteFavorite(externalId),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['favorites'] });
+		},
+	});
+
+	return { favorites, isLoading, error, addFavoriteMutation, deleteFavoriteMutation };
 };

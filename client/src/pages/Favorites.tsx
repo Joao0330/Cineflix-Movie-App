@@ -5,8 +5,17 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { Link } from 'react-router';
 
+interface useFavoritesReturn {
+	favorites: Favorite[];
+	isLoading: boolean;
+	error: Error | null;
+	deleteFavoriteMutation: {
+		mutate: (externalId: string) => void;
+	};
+}
+
 export const Favorites = () => {
-	const { favorites, isLoading, error } = useFavorites() as { favorites: Favorite[]; isLoading: boolean; error: Error | null };
+	const { favorites, isLoading, error, deleteFavoriteMutation } = useFavorites() as useFavoritesReturn;
 
 	const externalIds = favorites ? favorites.map(fav => fav.external_id) : [];
 
@@ -47,12 +56,18 @@ export const Favorites = () => {
 										</Link>
 										<div>
 											<small>Added at {format(new Date(favMovie.created_at), 'MMMM d, yyyy')}</small>
-											<button>Remove from favorites</button>
+											<button
+												onClick={() => {
+													if (favMovie.movie?.id !== undefined) {
+														deleteFavoriteMutation.mutate(favMovie.movie.id.toString());
+													}
+												}}
+											>
+												Remove from favorites
+											</button>
 										</div>
 									</div>
 								</li>
-
-								/* TODO: Add a button to remove favorites */
 							))}
 						</ul>
 					) : (

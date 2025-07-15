@@ -13,6 +13,8 @@ export const app = fastify();
 app.register(fastifyCors, {
 	origin: 'http://localhost:5173', //React app URL
 	credentials: true,
+	allowedHeaders: ['Content-Type', 'Authorization'],
+	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 });
 
 app.register(fastifyCookie);

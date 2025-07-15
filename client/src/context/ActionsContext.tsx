@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 interface ActionsContextData {
 	addFavorite: (externalId: string) => Promise<void>;
 	getFavorites: () => Promise<[]>;
+	deleteFavorite: (externalId: string) => Promise<void>;
 }
 
 interface ActionsProviderProps {
@@ -45,7 +46,25 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
-	return <ActionsContext.Provider value={{ addFavorite, getFavorites }}>{children}</ActionsContext.Provider>;
+	const deleteFavorite = async (externalId: string) => {
+		try {
+			const { data } = await api.delete(`/favorites`, {
+				data: { external_id: externalId },
+				withCredentials: true,
+			});
+
+			if (data) {
+				console.log('Favorite deleted successfully:', data);
+				toast.success('Favorite removed successfully!');
+			}
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error deleting favorite:', error);
+			toast.error('Error removing favorite. Please try again.');
+		}
+	};
+
+	return <ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite }}>{children}</ActionsContext.Provider>;
 }
 
 export function useActions() {
