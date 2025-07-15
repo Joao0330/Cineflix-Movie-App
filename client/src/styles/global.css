@@ -529,15 +529,23 @@
 			@apply flex flex-col gap-10;
 
 			li {
-				@apply flex justify-between border p-4 rounded;
+				@apply flex flex-col gap-5 justify-between border p-4 rounded sm:flex-row;
+			}
+		}
+	}
 
-				div {
-					@apply flex flex-col justify-between items-end;
+	.favorites__content-info {
+		@apply flex flex-col justify-between items-end;
 
-					small {
-						@apply text-gray-400;
-					}
-				}
+		div {
+			@apply flex flex-col items-end mt-3;
+
+			small {
+				@apply text-gray-400;
+			}
+
+			button {
+				@apply mt-1 cursor-pointer text-gray-500 text-sm hover:underline;
 			}
 		}
 	}

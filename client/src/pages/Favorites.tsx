@@ -8,10 +8,10 @@ import { Link } from 'react-router';
 export const Favorites = () => {
 	const { favorites, isLoading, error } = useFavorites() as { favorites: Favorite[]; isLoading: boolean; error: Error | null };
 
-	const externalIds = favorites && Array.isArray(favorites) ? favorites.map(fav => fav.external_id) : [];
+	const externalIds = favorites ? favorites.map(fav => fav.external_id) : [];
 
 	const { data: movieDetails = [], isLoading: isMoviesLoading } = useFetchMultipleMovieDetails(externalIds, {
-		enabled: !!favorites && Array.isArray(favorites) && externalIds.length > 0,
+		enabled: !!favorites && externalIds.length > 0,
 	});
 
 	if (isLoading) return <Loader />;
@@ -20,13 +20,10 @@ export const Favorites = () => {
 		return <div>Failed to load favorites</div>;
 	}
 
-	const moviesWithFavorites: FavoriteMovies[] =
-		favorites && Array.isArray(favorites)
-			? favorites.map(fav => ({
-					movie: movieDetails.find(movie => movie.id.toString() === fav.external_id) || null,
-					created_at: fav.created_at,
-			  }))
-			: [];
+	const moviesWithFavorites: FavoriteMovies[] = favorites.map(fav => ({
+		movie: movieDetails.find(movie => movie.id.toString() === fav.external_id) || null,
+		created_at: fav.created_at,
+	}));
 
 	return (
 		<section className='favorites'>
@@ -43,15 +40,19 @@ export const Favorites = () => {
 						<ul>
 							{moviesWithFavorites.map(favMovie => (
 								<li key={favMovie.movie?.id ?? favMovie.created_at}>
-									{favMovie.movie?.poster_path && <img src={`https://image.tmdb.org/t/p/w300${favMovie.movie.poster_path}`} alt={favMovie.movie.title} className=' h-48 object-cover' />}
-									<div>
+									{favMovie.movie?.poster_path && <img src={`https://image.tmdb.org/t/p/w300${favMovie.movie.poster_path}`} alt={favMovie.movie.title} className='h-48 object-cover' />}
+									<div className='favorites__content-info'>
 										<Link to={`/movies/${favMovie.movie?.id}`} className='text-blue-500 hover:underline'>
 											<h3 className='text-lg font-semibold'>{favMovie.movie?.title ?? 'Unknown Title'}</h3>
 										</Link>
-										<small>Added at {format(new Date(favMovie.created_at), 'MMMM d, yyyy')}</small>
+										<div>
+											<small>Added at {format(new Date(favMovie.created_at), 'MMMM d, yyyy')}</small>
+											<button>Remove from favorites</button>
+										</div>
 									</div>
 								</li>
-								/* TODO: make this responsive */
+
+								/* TODO: Add a button to remove favorites */
 							))}
 						</ul>
 					) : (
