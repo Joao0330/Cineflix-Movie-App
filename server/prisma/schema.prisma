@@ -19,40 +19,22 @@ enum Role {
   ADMIN
 }
 
-enum movieListStatus {
-  WATCHING
-  COMPLETED
-  ON_HOLD
-  DROPPED
-  PLANNED
-}
-
 model User {
-  id                Int                 @id @default(autoincrement())
-  username          String              @unique
-  email             String              @unique
-  password_hash     String              @db.VarChar(60)
-  role              Role                @default(USER)
-  googleId          String?             @unique
-  created_at        DateTime            @default(now())
-  is_banned         Boolean             @default(false)
+  id                Int       @id @default(autoincrement())
+  username          String    @unique
+  email             String    @unique
+  password_hash     String    @db.VarChar(60)
+  role              Role      @default(USER)
+  googleId          String?   @unique
+  created_at        DateTime  @default(now())
+  is_banned         Boolean   @default(false)
   favorites         Favorites[]
-  movieLists        MovieList[]
 }
 
 model Favorites {
-  id                Int                 @id @default(autoincrement())
+  id                Int       @id @default(autoincrement())
   userId            Int
-  external_id       String              @unique
-  created_at        DateTime            @default(now())
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model MovieList {
-  id                Int                 @id @default(autoincrement())
-  userId            Int
-  external_id       String              @unique
-  status            movieListStatus     @default(WATCHING)
-  created_at        DateTime            @default(now())
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  external_id       String    @unique
+  created_at        DateTime  @default(now())
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
