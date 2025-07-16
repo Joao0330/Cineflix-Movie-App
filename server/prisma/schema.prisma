@@ -19,6 +19,14 @@ enum Role {
   ADMIN
 }
 
+enum movieListStatus {
+  WATCHING
+  COMPLETED
+  ON_HOLD
+  DROPPED
+  PLANNING
+}
+
 model User {
   id                Int       @id @default(autoincrement())
   username          String    @unique
@@ -29,12 +37,31 @@ model User {
   created_at        DateTime  @default(now())
   is_banned         Boolean   @default(false)
   favorites         Favorites[]
+  movieLists        MovieList[]
 }
 
 model Favorites {
   id                Int       @id @default(autoincrement())
   userId            Int
-  external_id       String    @unique
+  external_id       String    
   created_at        DateTime  @default(now())
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([userId, external_id])
+}
+
+model MovieList {
+  id                Int                 @id @default(autoincrement())
+  userId            Int
+  title             String              
+  status            movieListStatus     @default(WATCHING)
+  created_at        DateTime            @default(now())
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movies            Movie[]
+}
+
+model Movie {
+  id                Int                 @id @default(autoincrement())
+  external_id       String
+  movieListId       Int
+  movieList         MovieList           @relation(fields: [movieListId], references: [id], onDelete: Cascade)
 }

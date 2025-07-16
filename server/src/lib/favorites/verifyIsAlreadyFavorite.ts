@@ -1,11 +1,14 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { prisma } from '../prisma';
 
-export async function verifyIsAlreadyFavorite(external_id: string) {
+export async function verifyIsAlreadyFavorite(external_id: string, userId: number): Promise<boolean> {
 	try {
 		const existingFavorite = await prisma.favorites.findUnique({
 			where: {
-				external_id,
+				userId_external_id: {
+					userId,
+					external_id,
+				},
 			},
 		});
 

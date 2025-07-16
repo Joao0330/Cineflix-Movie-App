@@ -8,8 +8,10 @@ export async function deleteFavorite(request: FastifyRequest, reply: FastifyRepl
 	try {
 		const deletedFavorite = await prisma.favorites.delete({
 			where: {
-				userId,
-				external_id,
+				userId_external_id: {
+					userId,
+					external_id,
+				},
 			},
 		});
 

@@ -9,7 +9,7 @@ export async function addFavorite(request: FastifyRequest, reply: FastifyReply) 
 	const { id: userId } = request.user;
 
 	try {
-		if (await verifyIsAlreadyFavorite(newFavorite.external_id)) {
+		if (await verifyIsAlreadyFavorite(newFavorite.external_id, userId)) {
 			return reply.status(409).send({ error: 'This item is already in your favorites' });
 		}
 
