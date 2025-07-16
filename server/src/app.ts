@@ -6,7 +6,7 @@ import { ZodError } from 'zod';
 import { authRoutes } from './http/controllers/auth/routes';
 import fastifyCookie from '@fastify/cookie';
 import { movieRoutes } from './http/controllers/movies/routes';
-import { favoriteRoutes } from './http/controllers/favorites/routes';
+import { favoriteRoutes } from './http/controllers/actions/routes';
 
 export const app = fastify();
 
