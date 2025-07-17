@@ -7,6 +7,7 @@ import { authRoutes } from './http/controllers/auth/routes';
 import fastifyCookie from '@fastify/cookie';
 import { movieRoutes } from './http/controllers/movies/routes';
 import { favoriteRoutes } from './http/controllers/favorites/routes';
+import { listRoutes } from './http/controllers/lists/routes';
 
 export const app = fastify();
 
@@ -31,6 +32,7 @@ app.register(fastifyJwt, {
 app.register(authRoutes);
 app.register(movieRoutes);
 app.register(favoriteRoutes);
+app.register(listRoutes);
 
 app.setErrorHandler((error, request, reply) => {
 	if (error instanceof ZodError) {

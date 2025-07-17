@@ -57,6 +57,7 @@ model MovieList {
   created_at        DateTime            @default(now())
   user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   movies            Movie[]
+  @@unique([userId, title])
 }
 
 model Movie {

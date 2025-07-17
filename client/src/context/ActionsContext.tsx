@@ -7,6 +7,8 @@ interface ActionsContextData {
 	addFavorite: (externalId: string) => Promise<void>;
 	getFavorites: () => Promise<[]>;
 	deleteFavorite: (externalId: string) => Promise<void>;
+	addList: (title: string) => Promise<void>;
+	addMovieToList: (listId: string, externalId: string) => Promise<void>;
 }
 
 interface ActionsProviderProps {
@@ -16,6 +18,8 @@ interface ActionsProviderProps {
 const ActionsContext = createContext({} as ActionsContextData);
 
 export function ActionsProvider({ children }: ActionsProviderProps) {
+	//! ********* Favorites *********
+
 	const addFavorite = async (externalId: string) => {
 		try {
 			const { data } = await api.post('/favorites', { external_id: externalId }, { withCredentials: true });
@@ -64,7 +68,39 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
-	return <ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite }}>{children}</ActionsContext.Provider>;
+	//! ********* Lists *********
+
+	const addList = async (title: string) => {
+		try {
+			const { data } = await api.post('/lists', { title }, { withCredentials: true });
+
+			if (data) {
+				console.log('List created successfully:', data);
+				toast.success('List created successfully!');
+			}
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error creating list:', error);
+			toast.error(error.response?.data?.error);
+		}
+	};
+
+	const addMovieToList = async (listId: string, externalId: string) => {
+		try {
+			const { data } = await api.post('/lists/movies', { listId, external_id: externalId }, { withCredentials: true });
+
+			if (data) {
+				console.log('Movie added to list successfully:', data);
+				toast.success('Movie added to list successfully!');
+			}
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error adding movie to list:', error);
+			toast.error(error.response?.data?.error);
+		}
+	};
+
+	return <ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList }}>{children}</ActionsContext.Provider>;
 }
 
 export function useActions() {
