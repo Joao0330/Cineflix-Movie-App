@@ -8,7 +8,8 @@ interface ActionsContextData {
 	getFavorites: () => Promise<[]>;
 	deleteFavorite: (externalId: string) => Promise<void>;
 	addList: (title: string) => Promise<void>;
-	addMovieToList: (listId: string, externalId: string) => Promise<void>;
+	addMovieToList: (listId: number, externalId: number) => Promise<void>;
+	getLists: () => Promise<[]>;
 }
 
 interface ActionsProviderProps {
@@ -85,7 +86,7 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
-	const addMovieToList = async (listId: string, externalId: string) => {
+	const addMovieToList = async (listId: number, externalId: number) => {
 		try {
 			const { data } = await api.post('/lists/movies', { listId, external_id: externalId }, { withCredentials: true });
 
@@ -100,7 +101,22 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
-	return <ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList }}>{children}</ActionsContext.Provider>;
+	const getLists = async () => {
+		try {
+			const { data } = await api.get('/lists', { withCredentials: true });
+
+			if (data) {
+				console.log('Lists fetched successfully:', data);
+				return data;
+			}
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error fetching lists:', error);
+			toast.error(error.response?.data?.error);
+		}
+	};
+
+	return <ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList, getLists }}>{children}</ActionsContext.Provider>;
 }
 
 export function useActions() {

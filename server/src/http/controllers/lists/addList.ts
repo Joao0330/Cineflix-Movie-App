@@ -20,7 +20,6 @@ export async function addList(request: FastifyRequest, reply: FastifyReply) {
 			select: {
 				id: true,
 				title: true,
-				status: true,
 				created_at: true,
 			},
 		});

@@ -1,9 +1,19 @@
 import { useActions } from '@/context/ActionsContext';
 import { queryClient } from '@/lib/utils';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useLists = () => {
-	const { addList, addMovieToList } = useActions();
+	const { addList, addMovieToList, getLists } = useActions();
+
+	const {
+		data: lists = [],
+		isLoading,
+		error,
+	} = useQuery({
+		queryKey: ['lists'],
+		queryFn: getLists,
+		refetchOnWindowFocus: false,
+	});
 
 	const addListMutation = useMutation({
 		mutationFn: (title: string) => addList(title),
@@ -13,11 +23,11 @@ export const useLists = () => {
 	});
 
 	const addMovieToListMutation = useMutation({
-		mutationFn: ({ listId, externalId }: { listId: string; externalId: string }) => addMovieToList(listId, externalId),
+		mutationFn: ({ listId, externalId }: { listId: number; externalId: number }) => addMovieToList(listId, externalId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['lists'] });
 		},
 	});
 
-	return { addListMutation, addMovieToListMutation };
+	return { lists, isLoading, error, addListMutation, addMovieToListMutation };
 };

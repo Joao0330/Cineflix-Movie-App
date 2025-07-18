@@ -112,3 +112,12 @@ type FavoriteMovies = {
 	movie: Movie | null;
 	created_at: string;
 };
+
+//? Lists types
+
+type MovieList = {
+	id: number;
+	title: string;
+	created_at: string;
+	movies: Movie[];
+};

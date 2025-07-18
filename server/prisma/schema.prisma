@@ -62,7 +62,8 @@ model MovieList {
 model Movie {
   id                Int                 @id @default(autoincrement())
   external_id       String
-  movieListId       Int
+  movieListId       Int?
   status            movieListStatus     @default(WATCHING)
-  movieList         MovieList           @relation(fields: [movieListId], references: [id], onDelete: Cascade)
+  movieList         MovieList?           @relation(fields: [movieListId], references: [id], onDelete: Cascade)
+  @@unique([movieListId, external_id])
 }

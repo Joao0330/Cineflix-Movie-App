@@ -18,13 +18,27 @@ export async function addMovieToList(request: FastifyRequest, reply: FastifyRepl
 			return reply.status(404).send({ error: 'List not found' });
 		}
 
-		/* Check in the frontend if external_id is valid */
+		const existingMovie = await prisma.movie.findFirst({
+			where: {
+				movieListId: listId,
+				external_id: String(external_id),
+			},
+		});
+
+		if (existingMovie) {
+			return reply.status(409).send({ error: 'This movie is already in the list' });
+		}
+
+		/*TODO: Check in the frontend if external_id is valid */
+		/* TODO: Put the existingMovie function above on a separate file in the lib */
 
 		await prisma.movieList.update({
 			where: { id: listId },
 			data: {
 				movies: {
-					connect: { id: external_id },
+					create: {
+						external_id: String(external_id),
+					},
 				},
 			},
 		});
