@@ -53,7 +53,6 @@ model MovieList {
   id                Int                 @id @default(autoincrement())
   userId            Int
   title             String              
-  status            movieListStatus     @default(WATCHING)
   created_at        DateTime            @default(now())
   user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   movies            Movie[]
@@ -64,5 +63,6 @@ model Movie {
   id                Int                 @id @default(autoincrement())
   external_id       String
   movieListId       Int
+  status            movieListStatus     @default(WATCHING)
   movieList         MovieList           @relation(fields: [movieListId], references: [id], onDelete: Cascade)
 }

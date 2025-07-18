@@ -1,3 +1,4 @@
+import { ListsDialog } from '@/components/lists/ListsDialog';
 import { Loader } from '@/components/Loader';
 import { MovieCredits } from '@/components/movie/MovieCredits';
 import { MovieInfoTop } from '@/components/movie/MovieInfoTop';
@@ -5,15 +6,13 @@ import { MovieVideos } from '@/components/movie/MovieVideos';
 import { MobileToggleButton } from '@/components/sidebar/MobileToggleButton';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useFetchMovieDetail } from '@/hooks/useFetchMovies';
-import { useLists } from '@/hooks/useLists';
-import { ChevronDown, Heart, List } from 'lucide-react';
+import { ChevronDown, Heart } from 'lucide-react';
 import { useParams } from 'react-router';
 
 export const MovieInfo = () => {
 	const { movieId } = useParams();
 	const { data: movie, isLoading, error } = useFetchMovieDetail(movieId || '');
 	const { addFavoriteMutation } = useFavorites();
-	const { addListMutation } = useLists();
 
 	scrollTo(0, 0);
 	console.log('Movie data:', movie);
@@ -43,10 +42,7 @@ export const MovieInfo = () => {
 									<Heart className='w-7 h-7' />
 									<span>Add to Favorites</span>
 								</button>
-								<button>
-									<List className='w-7 h-7' />
-									<span>Add to List</span>
-								</button>
+								<ListsDialog />
 							</div>
 
 							<div>
