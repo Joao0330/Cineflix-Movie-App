@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { prisma } from '../../../lib/prisma';
 import { addMovieToListSchema } from '../../../schemas/list.schema';
+import { verifyMovieExists } from '../../../lib/lists/verifyMovieExists';
 
 export async function addMovieToList(request: FastifyRequest, reply: FastifyReply) {
 	const { listId, external_id } = addMovieToListSchema.parse(request.body);
@@ -18,19 +19,9 @@ export async function addMovieToList(request: FastifyRequest, reply: FastifyRepl
 			return reply.status(404).send({ error: 'List not found' });
 		}
 
-		const existingMovie = await prisma.movie.findFirst({
-			where: {
-				movieListId: listId,
-				external_id: String(external_id),
-			},
-		});
-
-		if (existingMovie) {
+		if (await verifyMovieExists(listId, external_id)) {
 			return reply.status(409).send({ error: 'This movie is already in the list' });
 		}
-
-		/*TODO: Check in the frontend if external_id is valid */
-		/* TODO: Put the existingMovie function above on a separate file in the lib */
 
 		await prisma.movieList.update({
 			where: { id: listId },

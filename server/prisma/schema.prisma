@@ -43,7 +43,7 @@ model User {
 model Favorites {
   id                Int       @id @default(autoincrement())
   userId            Int
-  external_id       String    
+  external_id       Int    
   created_at        DateTime  @default(now())
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@unique([userId, external_id])
@@ -61,7 +61,7 @@ model MovieList {
 
 model Movie {
   id                Int                 @id @default(autoincrement())
-  external_id       String
+  external_id       Int
   movieListId       Int?
   status            movieListStatus     @default(WATCHING)
   movieList         MovieList?           @relation(fields: [movieListId], references: [id], onDelete: Cascade)

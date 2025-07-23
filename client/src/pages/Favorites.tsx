@@ -10,7 +10,7 @@ interface useFavoritesReturn {
 	isLoading: boolean;
 	error: Error | null;
 	deleteFavoriteMutation: {
-		mutate: (externalId: string) => void;
+		mutate: (externalId: number) => void;
 	};
 }
 
@@ -30,7 +30,7 @@ export const Favorites = () => {
 	}
 
 	const moviesWithFavorites: FavoriteMovies[] = favorites.map(fav => ({
-		movie: movieDetails.find(movie => movie.id.toString() === fav.external_id) || null,
+		movie: movieDetails.find(movie => movie.id === fav.external_id) || null,
 		created_at: fav.created_at,
 	}));
 
@@ -38,7 +38,7 @@ export const Favorites = () => {
 		<section className='favorites'>
 			<div className='container-sm'>
 				<div className='favorites__top'>
-					<h1>Favorites</h1>
+					<h2>Favorites</h2>
 					<p className='text-gray-400'>Browse through all your favorite shows on CineFlix.</p>
 				</div>
 
@@ -59,7 +59,7 @@ export const Favorites = () => {
 											<button
 												onClick={() => {
 													if (favMovie.movie?.id !== undefined) {
-														deleteFavoriteMutation.mutate(favMovie.movie.id.toString());
+														deleteFavoriteMutation.mutate(favMovie.movie.id);
 													}
 												}}
 											>

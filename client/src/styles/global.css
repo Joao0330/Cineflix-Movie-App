@@ -517,7 +517,7 @@
 	.favorites__top {
 		@apply pb-10 border-b;
 
-		h1 {
+		h2 {
 			@apply text-4xl mb-5;
 		}
 	}
@@ -548,6 +548,23 @@
 				@apply mt-1 cursor-pointer text-gray-500 text-sm hover:underline;
 			}
 		}
+	}
+
+	/* Lists */
+	.lists {
+		@apply px-[3rem] min-h-screen bg-gray-900 text-white py-25;
+	}
+
+	.lists__top {
+		@apply pb-10 border-b;
+
+		h2 {
+			@apply text-4xl mb-5;
+		}
+	}
+
+	.lists__content {
+		@apply mt-10;
 	}
 
 	/* Welcome page */

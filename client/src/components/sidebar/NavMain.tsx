@@ -1,4 +1,4 @@
-import { Heart, HomeIcon } from 'lucide-react';
+import { Heart, HomeIcon, List } from 'lucide-react';
 import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { useNavigate } from 'react-router';
 import { SearchDialog } from '../search/SearchDialog';
@@ -39,6 +39,19 @@ export function NavMain() {
 					>
 						<Heart className='size-4' />
 						<span>Favorites</span>
+					</SidebarMenuButton>
+				</SidebarMenuItem>
+				<SidebarMenuItem>
+					<SidebarMenuButton
+						tooltip='Lists'
+						className='cursor-pointer'
+						onClick={() => {
+							navigate('/lists');
+							scrollTo(0, 0);
+						}}
+					>
+						<List className='size-4' />
+						<span>Lists</span>
 					</SidebarMenuButton>
 				</SidebarMenuItem>
 			</SidebarGroup>

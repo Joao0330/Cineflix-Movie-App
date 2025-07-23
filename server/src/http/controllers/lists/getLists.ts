@@ -14,7 +14,10 @@ export async function getLists(request: FastifyRequest, reply: FastifyReply) {
 				created_at: true,
 				movies: {
 					select: {
+						id: true,
 						external_id: true,
+						movieListId: true,
+						status: true,
 					},
 				},
 			},

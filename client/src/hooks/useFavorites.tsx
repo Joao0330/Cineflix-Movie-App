@@ -16,14 +16,14 @@ export const useFavorites = () => {
 	});
 
 	const addFavoriteMutation = useMutation({
-		mutationFn: (externalId: string) => addFavorite(externalId),
+		mutationFn: (externalId: number) => addFavorite(externalId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['favorites'] });
 		},
 	});
 
 	const deleteFavoriteMutation = useMutation({
-		mutationFn: (externalId: string) => deleteFavorite(externalId),
+		mutationFn: (externalId: number) => deleteFavorite(externalId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['favorites'] });
 		},

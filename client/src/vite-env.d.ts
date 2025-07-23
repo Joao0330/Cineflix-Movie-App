@@ -104,7 +104,7 @@ type MovieCrew = {
 
 //? Favorites types
 type Favorite = {
-	external_id: string;
+	external_id: number;
 	created_at: string;
 };
 
@@ -115,9 +115,22 @@ type FavoriteMovies = {
 
 //? Lists types
 
+type MovieInList = {
+	id: number;
+	external_id: number;
+	movieListId: number | null;
+	status: 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING';
+};
+
 type MovieList = {
 	id: number;
+	userId: number;
 	title: string;
 	created_at: string;
-	movies: Movie[];
+	movies: MovieInList[];
+};
+
+type MovieWithList = {
+	list: MovieList;
+	movies: (Movie | null)[];
 };

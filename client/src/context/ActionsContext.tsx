@@ -4,9 +4,9 @@ import { createContext, useContext, type ReactNode } from 'react';
 import { toast } from 'sonner';
 
 interface ActionsContextData {
-	addFavorite: (externalId: string) => Promise<void>;
+	addFavorite: (externalId: number) => Promise<void>;
 	getFavorites: () => Promise<[]>;
-	deleteFavorite: (externalId: string) => Promise<void>;
+	deleteFavorite: (externalId: number) => Promise<void>;
 	addList: (title: string) => Promise<void>;
 	addMovieToList: (listId: number, externalId: number) => Promise<void>;
 	getLists: () => Promise<[]>;
@@ -21,7 +21,7 @@ const ActionsContext = createContext({} as ActionsContextData);
 export function ActionsProvider({ children }: ActionsProviderProps) {
 	//! ********* Favorites *********
 
-	const addFavorite = async (externalId: string) => {
+	const addFavorite = async (externalId: number) => {
 		try {
 			const { data } = await api.post('/favorites', { external_id: externalId }, { withCredentials: true });
 
@@ -51,7 +51,7 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
-	const deleteFavorite = async (externalId: string) => {
+	const deleteFavorite = async (externalId: number) => {
 		try {
 			const { data } = await api.delete(`/favorites`, {
 				data: { external_id: externalId },

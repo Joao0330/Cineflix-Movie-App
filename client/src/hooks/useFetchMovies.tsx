@@ -18,7 +18,7 @@ const fetchMovieDetail = async (movieId: string): Promise<Movie> => {
 	return data || {};
 };
 
-const fetchMultipleMovieDetails = async (movieIds: string[] | string): Promise<Movie[]> => {
+const fetchMultipleMovieDetails = async (movieIds: number[]): Promise<Movie[]> => {
 	if (!movieIds || (Array.isArray(movieIds) && !movieIds.length)) return [];
 
 	// Handle single ID or array of IDs
@@ -91,7 +91,7 @@ export const useFetchMovieDetail = (movieId: string, options = {}) => {
 	});
 };
 
-export const useFetchMultipleMovieDetails = (movieIds: string[] | string, options = {}) => {
+export const useFetchMultipleMovieDetails = (movieIds: number[], options = {}) => {
 	return useQuery({
 		queryKey: ['movies', movieIds],
 		queryFn: () => fetchMultipleMovieDetails(movieIds),
