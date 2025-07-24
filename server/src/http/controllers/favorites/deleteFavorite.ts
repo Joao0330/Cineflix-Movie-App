@@ -3,7 +3,7 @@ import { prisma } from '../../../lib/prisma';
 
 export async function deleteFavorite(request: FastifyRequest, reply: FastifyReply) {
 	const { id: userId } = request.user;
-	const { external_id } = request.body as { external_id: string };
+	const { external_id } = request.body as { external_id: number };
 
 	try {
 		const deletedFavorite = await prisma.favorites.delete({

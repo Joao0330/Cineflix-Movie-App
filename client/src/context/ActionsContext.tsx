@@ -10,6 +10,7 @@ interface ActionsContextData {
 	addList: (title: string) => Promise<void>;
 	addMovieToList: (listId: number, externalId: number) => Promise<void>;
 	getLists: () => Promise<[]>;
+	deleteList: (listId: number) => Promise<void>;
 }
 
 interface ActionsProviderProps {
@@ -53,15 +54,13 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 
 	const deleteFavorite = async (externalId: number) => {
 		try {
-			const { data } = await api.delete(`/favorites`, {
+			await api.delete(`/favorites`, {
 				data: { external_id: externalId },
 				withCredentials: true,
 			});
 
-			if (data) {
-				console.log('Favorite deleted successfully:', data);
-				toast.success('Favorite removed successfully!');
-			}
+			console.log('Favorite deleted successfully:');
+			toast.success('Favorite removed successfully!');
 		} catch (err: unknown) {
 			const error = err as axiosErrorResponse;
 			console.error('Error deleting favorite:', error);
@@ -116,7 +115,23 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
-	return <ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList, getLists }}>{children}</ActionsContext.Provider>;
+	const deleteList = async (listId: number) => {
+		try {
+			await api.delete(`/lists`, {
+				data: { listId: listId },
+				withCredentials: true,
+			});
+
+			console.log('List deleted successfully:');
+			toast.success('List removed successfully!');
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error deleting list:', error);
+			toast.error('Error removing list. Please try again.');
+		}
+	};
+
+	return <ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList, getLists, deleteList }}>{children}</ActionsContext.Provider>;
 }
 
 export function useActions() {

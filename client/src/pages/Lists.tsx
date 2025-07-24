@@ -11,10 +11,13 @@ interface useListsReturn {
 	lists: MovieList[];
 	isLoading: boolean;
 	error: Error | null;
+	deleteListMutation: {
+		mutate: (listId: number) => void;
+	};
 }
 
 export const Lists = () => {
-	const { lists, isLoading, error } = useLists() as useListsReturn;
+	const { lists, isLoading, error, deleteListMutation } = useLists() as useListsReturn;
 
 	const externalIds = lists ? lists.flatMap(list => list.movies.map(movie => movie.external_id)) : [];
 
@@ -41,8 +44,6 @@ export const Lists = () => {
 		movies: list.movies.map(movie => movieDetails.find(item => item.id === movie.external_id) || null),
 	}));
 
-	console.log(movieDetails);
-
 	return (
 		<section className='lists'>
 			<div className='container-sm'>
@@ -64,7 +65,7 @@ export const Lists = () => {
 									</AccordionTrigger>
 									<button
 										className='ml-auto flex items-center cursor-pointer gap-2 py-2 px-5 rounded-full transition-colors hover:bg-red-500 hover:text-white'
-										onClick={() => toast.error('Delete functionality not implemented yet')}
+										onClick={() => deleteListMutation.mutate(list.id)}
 									>
 										<Trash />
 										<span className='text-red-200 text-sm'>Delete List</span>
@@ -107,6 +108,8 @@ export const Lists = () => {
 					) : (
 						<div>No lists found. Create your first list!</div>
 					)}
+					{/* TODO: Refactor this component */}
+					{/* TODO: Add a way to create a new list on this page */}
 				</div>
 			</div>
 		</section>

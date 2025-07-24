@@ -3,7 +3,7 @@ import { queryClient } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useLists = () => {
-	const { addList, addMovieToList, getLists } = useActions();
+	const { addList, addMovieToList, getLists, deleteList } = useActions();
 
 	const {
 		data: lists = [],
@@ -22,6 +22,13 @@ export const useLists = () => {
 		},
 	});
 
+	const deleteListMutation = useMutation({
+		mutationFn: (listId: number) => deleteList(listId),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['lists'] });
+		},
+	});
+
 	const addMovieToListMutation = useMutation({
 		mutationFn: ({ listId, externalId }: { listId: number; externalId: number }) => addMovieToList(listId, externalId),
 		onSuccess: () => {
@@ -29,5 +36,5 @@ export const useLists = () => {
 		},
 	});
 
-	return { lists, isLoading, error, addListMutation, addMovieToListMutation };
+	return { lists, isLoading, error, addListMutation, addMovieToListMutation, deleteListMutation };
 };
