@@ -4,7 +4,7 @@ export async function verifyMovieExists(listId: number, external_id: number) {
 	const existingMovie = await prisma.movie.findFirst({
 		where: {
 			movieListId: listId,
-			external_id: String(external_id),
+			external_id: external_id,
 		},
 	});
 

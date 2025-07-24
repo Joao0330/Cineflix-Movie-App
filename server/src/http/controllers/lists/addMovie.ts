@@ -28,7 +28,7 @@ export async function addMovieToList(request: FastifyRequest, reply: FastifyRepl
 			data: {
 				movies: {
 					create: {
-						external_id: String(external_id),
+						external_id,
 					},
 				},
 			},

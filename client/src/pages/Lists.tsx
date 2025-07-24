@@ -3,6 +3,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { useFetchMultipleMovieDetails } from '@/hooks/useFetchMovies';
 import { useLists } from '@/hooks/useLists';
 import { format } from 'date-fns';
+import { Trash } from 'lucide-react';
+import { Link } from 'react-router';
 import { toast } from 'sonner';
 
 interface useListsReturn {
@@ -51,24 +53,33 @@ export const Lists = () => {
 
 				<div className='lists__content'>
 					{moviesWithLists.length > 0 ? (
-						<Accordion type='single' collapsible>
+						<Accordion type='single' collapsible className='flex flex-col gap-10'>
 							{moviesWithLists.map(({ list, movies }) => (
-								<AccordionItem className='overflow-hidden' key={list.id} value={`list-${list.id}`}>
-									<AccordionTrigger className='cursor-pointer flex justify-between'>
-										<h3 className='text-lg font-semibold'>{list.title}</h3>
-										<small>Created at {format(new Date(list.created_at), 'MMMM d, yyyy')}</small>
+								<AccordionItem className='overflow-hidden border-1 p-5 rounded-2xl' key={list.id} value={`list-${list.id}`}>
+									<AccordionTrigger className='cursor-pointer flex justify-between items-center'>
+										<div>
+											<h3 className='text-lg font-semibold'>{list.title}</h3>
+											<small>Created at {format(new Date(list.created_at), 'MMMM d, yyyy')}</small>
+										</div>
 									</AccordionTrigger>
+									<button
+										className='ml-auto flex items-center cursor-pointer gap-2 py-2 px-5 rounded-full transition-colors hover:bg-red-500 hover:text-white'
+										onClick={() => toast.error('Delete functionality not implemented yet')}
+									>
+										<Trash />
+										<span className='text-red-200 text-sm'>Delete List</span>
+									</button>
 									<AccordionContent>
 										{isMoviesLoading ? (
 											<div>Loading movies...</div>
 										) : movies.length > 0 ? (
-											<ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+											<ul className='mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
 												{movies.map((movie, index) => {
 													const movieStatus = list.movies[index]?.status || 'Unknown';
 													return (
-														<li key={`${movie?.id || index}-${list.id}`} className='flex items-center gap-4 py-2'>
+														<li key={`${movie?.id || index}-${list.id}`} className='flex items-center gap-4 py-2 hover:bg-gray-transparent p-2 rounded'>
 															{movie ? (
-																<div className='flex items-center gap-2'>
+																<Link to={`/movies/${movie.id}`} className='flex gap-5'>
 																	<img
 																		src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://placehold.co/130x200?text=Image+not+found'}
 																		alt={movie.title}
@@ -78,7 +89,7 @@ export const Lists = () => {
 																		<span className='font-semibold'>{movie.title}</span>
 																		<p className='text-sm text-gray-500'>Status: {movieStatus}</p>
 																	</div>
-																</div>
+																</Link>
 															) : (
 																<span>Unknown Movie</span>
 															)}
@@ -87,8 +98,7 @@ export const Lists = () => {
 												})}
 											</ul>
 										) : (
-											<p>No movies found in this list.</p>
-											/* TODO: Remake the layout of the lists */
+											<p>No titles found in this list.</p>
 										)}
 									</AccordionContent>
 								</AccordionItem>

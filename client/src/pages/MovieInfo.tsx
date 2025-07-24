@@ -38,7 +38,7 @@ export const MovieInfo = () => {
 							</div>
 
 							<div>
-								<button onClick={() => addFavoriteMutation.mutate(movie.id.toString())}>
+								<button onClick={() => addFavoriteMutation.mutate(movie.id)}>
 									<Heart className='w-7 h-7' />
 									<span>Add to Favorites</span>
 								</button>
