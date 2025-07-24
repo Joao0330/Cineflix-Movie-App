@@ -47,7 +47,7 @@ export const SearchBrowseItems = ({ type, form, genres }: SearchBrowseItemsProps
 									name='genres'
 									render={({ field }) => (
 										<>
-											<ScrollArea className='h-[200px] w-full rounded-md border border-gray-600 bg-gray-800 p-4 '>
+											<ScrollArea className='h-[200px] w-full rounded-md border border-border bg-primary-foreground p-4 '>
 												<div className='h-[150px] flex flex-wrap gap-5 justify-center'>
 													{genres?.map(genre => (
 														<div key={genre.id} className='flex items-center space-x-2'>

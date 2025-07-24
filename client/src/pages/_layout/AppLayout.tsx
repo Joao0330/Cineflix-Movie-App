@@ -8,8 +8,8 @@ export const AppLayout = () => {
 	return (
 		<>
 			<Header />
-			<main>
-				<SidebarProvider className='dark'>
+			<main className='dark'>
+				<SidebarProvider>
 					<AppSidebar />
 					<div className='flex flex-col w-full'>
 						<Outlet />

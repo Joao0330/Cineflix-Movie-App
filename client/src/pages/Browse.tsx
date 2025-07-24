@@ -77,7 +77,7 @@ export const Browse = () => {
 							{movies.results.map((movie: Movie) => (
 								<article key={movie.id}>
 									<Link to={`/movies/${movie.id}`}>
-										<Card className='bg-gray-800 hover:bg-gray-700 transition-colors'>
+										<Card className='bg-card hover:bg-secondary transition-colors'>
 											<CardHeader>
 												<img
 													src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://placehold.co/200x290?text=Movie not found'}

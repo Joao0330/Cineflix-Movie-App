@@ -22,7 +22,7 @@ function App() {
 				<AuthProvider>
 					<ActionsProvider>
 						<RouterProvider router={router} />
-						<Toaster />
+						<Toaster theme='dark' />
 					</ActionsProvider>
 				</AuthProvider>
 			</GoogleOAuthProvider>

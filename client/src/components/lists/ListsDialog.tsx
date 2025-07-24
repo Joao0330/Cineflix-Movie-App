@@ -13,7 +13,12 @@ import { toast } from 'sonner';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { ScrollArea } from '../ui/scroll-area';
 
-export const ListsDialog = ({ movieId }: { movieId: number }) => {
+interface ListsDialogProps {
+	action?: 'createList' | 'addMovieToList';
+	movieId?: number;
+}
+
+export const ListsDialog = ({ movieId, action }: ListsDialogProps) => {
 	const [createListOpen, setCreateListOpen] = useState(false);
 	const { addListMutation, addMovieToListMutation, lists, isLoading, error } = useLists();
 
@@ -43,9 +48,13 @@ export const ListsDialog = ({ movieId }: { movieId: number }) => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<button>
+				<button
+					className={
+						action === 'createList' ? 'flex items-center justify-center gap-3 py-3 px-5 border rounded-full cursor-pointer transition-colors duration-300 hover:bg-secondary sm:justify-normal' : ''
+					}
+				>
 					<List className='w-7 h-7' />
-					<span>Add to List</span>
+					{action === 'addMovieToList' ? <span>Add to List</span> : <span>Create List</span>}
 				</button>
 			</DialogTrigger>
 
@@ -66,21 +75,29 @@ export const ListsDialog = ({ movieId }: { movieId: number }) => {
 									<li key={list.id} className='flex items-center justify-between py-2'>
 										<div className='flex gap-2'>
 											<strong>{list.title}</strong>
-											<span className='text-gray-500'>{list.movies.length} movies</span>
+											<span className='text-gray-500'>{list.movies.length} titles</span>
 										</div>
-										<Tooltip>
-											<TooltipTrigger asChild>
-												<button
-													className='border p-2 rounded-full cursor-pointer transition hover:bg-gray-dark'
-													onClick={() => addMovieToListMutation.mutate({ listId: list.id, externalId: movieId })}
-												>
-													<Plus className='w-5 h-5' />
-												</button>
-											</TooltipTrigger>
-											<TooltipContent>
-												<p>Add movie to this list</p>
-											</TooltipContent>
-										</Tooltip>
+										{action === 'addMovieToList' && (
+											<Tooltip>
+												<TooltipTrigger asChild>
+													<button
+														className='border p-2 rounded-full cursor-pointer transition hover:bg-gray-dark'
+														onClick={() => {
+															if (typeof movieId === 'number') {
+																addMovieToListMutation.mutate({ listId: list.id, externalId: movieId });
+															} else {
+																toast.error('No movie selected to add.');
+															}
+														}}
+													>
+														<Plus className='w-5 h-5' />
+													</button>
+												</TooltipTrigger>
+												<TooltipContent>
+													<p>Add movie to this list</p>
+												</TooltipContent>
+											</Tooltip>
+										)}
 									</li>
 								))}
 							</ul>

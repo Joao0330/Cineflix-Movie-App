@@ -1,3 +1,4 @@
+import { ListsDialog } from '@/components/lists/ListsDialog';
 import { Loader } from '@/components/Loader';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useFetchMultipleMovieDetails } from '@/hooks/useFetchMovies';
@@ -52,7 +53,19 @@ export const Lists = () => {
 					<p className='text-gray-400'>Manage your custom lists of movies and shows.</p>
 				</div>
 
-				<div className='lists__content'>
+				<div className='mt-10 flex flex-col gap-5 justify-between sm:flex-row sm:items-center'>
+					{lists.length > 0 ? (
+						<p>
+							You currently have {lists.length} {lists.length === 1 ? 'list' : 'lists'}.
+						</p>
+					) : (
+						<p>You have no lists yet. Create your first list!</p>
+					)}
+
+					<ListsDialog action='createList' />
+				</div>
+
+				<div className='mt-10'>
 					{moviesWithLists.length > 0 ? (
 						<Accordion type='single' collapsible className='flex flex-col gap-10'>
 							{moviesWithLists.map(({ list, movies }) => (
@@ -60,7 +73,7 @@ export const Lists = () => {
 									<AccordionTrigger className='cursor-pointer flex justify-between items-center'>
 										<div>
 											<h3 className='text-lg font-semibold'>{list.title}</h3>
-											<small>Created at {format(new Date(list.created_at), 'MMMM d, yyyy')}</small>
+											<small className='text-gray-400 font-normal '>Created at {format(new Date(list.created_at), 'MMMM d, yyyy')}</small>
 										</div>
 									</AccordionTrigger>
 									<button
@@ -68,7 +81,7 @@ export const Lists = () => {
 										onClick={() => deleteListMutation.mutate(list.id)}
 									>
 										<Trash />
-										<span className='text-red-200 text-sm'>Delete List</span>
+										<span className=' text-sm'>Delete List</span>
 									</button>
 									<AccordionContent>
 										{isMoviesLoading ? (

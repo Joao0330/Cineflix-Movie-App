@@ -42,7 +42,7 @@ export const MovieInfo = () => {
 									<Heart className='w-7 h-7' />
 									<span>Add to Favorites</span>
 								</button>
-								<ListsDialog movieId={movie.id} />
+								<ListsDialog movieId={movie.id} action='addMovieToList' />
 							</div>
 
 							<div>
