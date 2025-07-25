@@ -12,7 +12,7 @@ interface MovieListDialogProps {
 	listId: number;
 	onClose: () => void;
 	deleteMovieFromListMutation: {
-		mutate: (params: { listId: number; externalId: number }) => void;
+		mutate: (params: { listId: number; externalId: number }, options?: { onSuccess?: () => void }) => void;
 	};
 	updateMovieFromListMutation: {
 		mutate: (params: { listId: number; externalId: number; status: 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING' }, options?: { onSuccess?: () => void }) => void;
@@ -69,8 +69,12 @@ export const MovieListDialog = ({ movie, movieStatus, listId, onClose, deleteMov
 							variant='destructive'
 							className='mt-4 cursor-pointer'
 							onClick={() => {
-								deleteMovieFromListMutation.mutate({ listId, externalId: movie.id });
-								onClose();
+								deleteMovieFromListMutation.mutate(
+									{ listId, externalId: movie.id },
+									{
+										onSuccess: onClose,
+									},
+								);
 							}}
 						>
 							<Trash2 className='w-5 h-5 mr-2' /> Remove from List

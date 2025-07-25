@@ -150,9 +150,6 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 	const updateMovieFromList = async (listId: number, externalId: number, status: 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING') => {
 		try {
 			await api.put('/lists/movies', { listId, external_id: externalId, status }, { withCredentials: true });
-
-			console.log('Movie status updated successfully:');
-			toast.success('Movie status updated successfully!');
 		} catch (err: unknown) {
 			const error = err as axiosErrorResponse;
 			console.error('Error updating movie status:', error);
