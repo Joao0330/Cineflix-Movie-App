@@ -16,15 +16,30 @@ interface useListsReturn {
 	deleteListMutation: {
 		mutate: (listId: number) => void;
 	};
+	deleteMovieFromListMutation: {
+		mutate: (params: { listId: number; externalId: number }) => void;
+	};
+	updateMovieFromListMutation: {
+		mutate: (params: { listId: number; externalId: number; status: 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING' }, options?: { onSuccess?: () => void }) => void;
+	};
 }
 
 export const Lists = () => {
-	const { lists, isLoading, error, deleteListMutation } = useLists() as useListsReturn;
+	const { lists, isLoading, error, deleteListMutation, deleteMovieFromListMutation, updateMovieFromListMutation } = useLists() as useListsReturn;
 	const [selectedMovie, setSelectedMovie] = useState<{
 		movie: Movie | null;
 		movieStatus: string;
 		listId: number;
 	} | null>(null);
+
+	const updateSelectedMovieStatus = (newStatus: string) => {
+		if (selectedMovie) {
+			setSelectedMovie({
+				...selectedMovie,
+				movieStatus: newStatus,
+			});
+		}
+	};
 
 	const externalIds = lists ? lists.flatMap(list => list.movies.map(movie => movie.external_id)) : [];
 
@@ -134,7 +149,17 @@ export const Lists = () => {
 									</AccordionItem>
 								))}
 							</Accordion>
-							{selectedMovie && <MovieListDialog movie={selectedMovie.movie} movieStatus={selectedMovie.movieStatus} listId={selectedMovie.listId} onClose={() => setSelectedMovie(null)} />}
+							{selectedMovie && (
+								<MovieListDialog
+									movie={selectedMovie.movie}
+									movieStatus={selectedMovie.movieStatus}
+									listId={selectedMovie.listId}
+									onClose={() => setSelectedMovie(null)}
+									deleteMovieFromListMutation={deleteMovieFromListMutation}
+									updateMovieFromListMutation={updateMovieFromListMutation}
+									updateSelectedMovieStatus={updateSelectedMovieStatus}
+								/>
+							)}
 						</>
 					) : (
 						<div>No lists found. Create your first list!</div>

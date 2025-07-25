@@ -4,17 +4,23 @@ import { Dialog, DialogContent, DialogTitle } from '../ui/dialog';
 import { DialogHeader } from '../ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Separator } from '../ui/separator';
-import { useLists } from '@/hooks/useLists';
+import { Textarea } from '../ui/textarea';
 
 interface MovieListDialogProps {
 	movie: Movie | null;
 	movieStatus: string;
 	listId: number;
 	onClose: () => void;
+	deleteMovieFromListMutation: {
+		mutate: (params: { listId: number; externalId: number }) => void;
+	};
+	updateMovieFromListMutation: {
+		mutate: (params: { listId: number; externalId: number; status: 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING' }, options?: { onSuccess?: () => void }) => void;
+	};
+	updateSelectedMovieStatus: (newStatus: string) => void;
 }
 
-export const MovieListDialog = ({ movie, movieStatus, listId, onClose }: MovieListDialogProps) => {
-	const { deleteMovieFromListMutation, updateMovieFromListMutation } = useLists();
+export const MovieListDialog = ({ movie, movieStatus, listId, onClose, deleteMovieFromListMutation, updateMovieFromListMutation, updateSelectedMovieStatus }: MovieListDialogProps) => {
 	if (!movie) return null;
 
 	return (
@@ -34,11 +40,18 @@ export const MovieListDialog = ({ movie, movieStatus, listId, onClose }: MovieLi
 						<Select
 							defaultValue={movieStatus}
 							onValueChange={value =>
-								updateMovieFromListMutation.mutate({
-									listId,
-									externalId: movie.id,
-									status: value as 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING',
-								})
+								updateMovieFromListMutation.mutate(
+									{
+										listId,
+										externalId: movie.id,
+										status: value as 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING',
+									},
+									{
+										onSuccess: () => {
+											updateSelectedMovieStatus(value);
+										},
+									},
+								)
 							}
 						>
 							<SelectTrigger className='mt-2 w-[180px]'>
@@ -65,6 +78,12 @@ export const MovieListDialog = ({ movie, movieStatus, listId, onClose }: MovieLi
 					</div>
 				</div>
 				<Separator className='my-5' />
+				{movieStatus === 'COMPLETED' || movieStatus === 'DROPPED' ? (
+					<div>
+						<h3 className='mb-5'>Leave a review for this show</h3>
+						<Textarea placeholder='Write your review here...' />
+					</div>
+				) : null}
 			</DialogContent>
 		</Dialog>
 	);
