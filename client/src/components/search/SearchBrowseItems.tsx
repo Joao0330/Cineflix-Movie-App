@@ -30,7 +30,7 @@ export const SearchBrowseItems = ({ type, form, genres }: SearchBrowseItemsProps
 					render={({ field }) => (
 						<FormItem className='w-full mb-5'>
 							<FormControl className='relative'>
-								<Input {...field} type='text' name='search' placeholder='Search for a movie or show...' className='w-full p-3 rounded-md bg-gray-800 text-white' />
+								<Input {...field} type='text' name='search' placeholder='Search for a movie or show...' className='w-full p-3 rounded-md  text-white' />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -88,7 +88,7 @@ export const SearchBrowseItems = ({ type, form, genres }: SearchBrowseItemsProps
 													{...field}
 													type='number'
 													placeholder={item.placeholder}
-													className='w-[350px] sm:w-[240px] rounded-md bg-gray-800 text-white'
+													className='w-[350px] sm:w-[240px] rounded-md text-white'
 													min='1900'
 													max={new Date().getFullYear()}
 													onChange={e => field.onChange(e.target.value)}
@@ -113,7 +113,7 @@ export const SearchBrowseItems = ({ type, form, genres }: SearchBrowseItemsProps
 													<SelectValue placeholder={item.placeholder} />
 												</SelectTrigger>
 											</FormControl>
-											<SelectContent className='bg-gray-800 text-white'>
+											<SelectContent className='dark bg-primary-foreground text-white'>
 												{item.options?.map(option => (
 													<SelectItem key={option.value} value={option.value}>
 														{option.label}

@@ -80,7 +80,7 @@ export const Browse = () => {
 										<Card className='bg-card hover:bg-secondary transition-colors'>
 											<CardHeader>
 												<img
-													src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://placehold.co/200x290?text=Movie not found'}
+													src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://placehold.co/200x290?text=Title+not+found'}
 													alt={movie.title}
 													className='w-full h-auto rounded-md'
 													loading='lazy'

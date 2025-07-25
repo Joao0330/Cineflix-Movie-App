@@ -1,3 +1,4 @@
+import { MovieListDialog } from '@/components/lists/MovieListDialog';
 import { ListsDialog } from '@/components/lists/ListsDialog';
 import { Loader } from '@/components/Loader';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -5,8 +6,8 @@ import { useFetchMultipleMovieDetails } from '@/hooks/useFetchMovies';
 import { useLists } from '@/hooks/useLists';
 import { format } from 'date-fns';
 import { Trash } from 'lucide-react';
-import { Link } from 'react-router';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 interface useListsReturn {
 	lists: MovieList[];
@@ -19,6 +20,11 @@ interface useListsReturn {
 
 export const Lists = () => {
 	const { lists, isLoading, error, deleteListMutation } = useLists() as useListsReturn;
+	const [selectedMovie, setSelectedMovie] = useState<{
+		movie: Movie | null;
+		movieStatus: string;
+		listId: number;
+	} | null>(null);
 
 	const externalIds = lists ? lists.flatMap(list => list.movies.map(movie => movie.external_id)) : [];
 
@@ -67,62 +73,72 @@ export const Lists = () => {
 
 				<div className='mt-10'>
 					{moviesWithLists.length > 0 ? (
-						<Accordion type='single' collapsible className='flex flex-col gap-10'>
-							{moviesWithLists.map(({ list, movies }) => (
-								<AccordionItem className='overflow-hidden border-1 p-5 rounded-2xl' key={list.id} value={`list-${list.id}`}>
-									<AccordionTrigger className='cursor-pointer flex justify-between items-center'>
-										<div>
-											<h3 className='text-lg font-semibold'>{list.title}</h3>
-											<small className='text-gray-400 font-normal '>Created at {format(new Date(list.created_at), 'MMMM d, yyyy')}</small>
-										</div>
-									</AccordionTrigger>
-									<button
-										className='ml-auto flex items-center cursor-pointer gap-2 py-2 px-5 rounded-full transition-colors hover:bg-red-500 hover:text-white'
-										onClick={() => deleteListMutation.mutate(list.id)}
-									>
-										<Trash />
-										<span className=' text-sm'>Delete List</span>
-									</button>
-									<AccordionContent>
-										{isMoviesLoading ? (
-											<div>Loading movies...</div>
-										) : movies.length > 0 ? (
-											<ul className='mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-												{movies.map((movie, index) => {
-													const movieStatus = list.movies[index]?.status || 'Unknown';
-													return (
-														<li key={`${movie?.id || index}-${list.id}`} className='flex items-center gap-4 py-2 hover:bg-gray-transparent p-2 rounded'>
-															{movie ? (
-																<Link to={`/movies/${movie.id}`} className='flex gap-5'>
-																	<img
-																		src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://placehold.co/130x200?text=Image+not+found'}
-																		alt={movie.title}
-																		className='w-16 h-24 object-cover'
-																	/>
-																	<div>
-																		<span className='font-semibold'>{movie.title}</span>
-																		<p className='text-sm text-gray-500'>Status: {movieStatus}</p>
-																	</div>
-																</Link>
-															) : (
-																<span>Unknown Movie</span>
-															)}
-														</li>
-													);
-												})}
-											</ul>
-										) : (
-											<p>No titles found in this list.</p>
-										)}
-									</AccordionContent>
-								</AccordionItem>
-							))}
-						</Accordion>
+						<>
+							<Accordion type='single' collapsible className='flex flex-col gap-10'>
+								{moviesWithLists.map(({ list, movies }) => (
+									<AccordionItem className='overflow-hidden border-1 p-5 rounded-2xl' key={list.id} value={`list-${list.id}`}>
+										<AccordionTrigger className='cursor-pointer flex justify-between items-center'>
+											<div>
+												<h3 className='text-lg font-semibold'>{list.title}</h3>
+												<small className='text-gray-400 font-normal '>Created at {format(new Date(list.created_at), 'MMMM d, yyyy')}</small>
+											</div>
+										</AccordionTrigger>
+										<button
+											className='ml-auto flex items-center cursor-pointer gap-2 py-2 px-5 rounded-full transition-colors hover:bg-red-500 hover:text-white'
+											onClick={() => deleteListMutation.mutate(list.id)}
+										>
+											<Trash />
+											<span className=' text-sm'>Delete List</span>
+										</button>
+										<AccordionContent>
+											{isMoviesLoading ? (
+												<div>Loading movies...</div>
+											) : movies.length > 0 ? (
+												<ul className='mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+													{movies.map((movie, index) => {
+														const movieStatus = list.movies[index]?.status || 'Unknown';
+														return (
+															<li key={`${movie?.id || index}-${list.id}`} className='flex items-center gap-4 hover:bg-gray-transparent rounded'>
+																{movie ? (
+																	<button
+																		className='flex gap-5 p-2 w-full cursor-pointer'
+																		onClick={() =>
+																			setSelectedMovie({
+																				movie,
+																				movieStatus,
+																				listId: list.id,
+																			})
+																		}
+																	>
+																		<img
+																			src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://placehold.co/130x200?text=Image+not+found'}
+																			alt={movie.title}
+																			className='w-16 h-24 object-cover'
+																		/>
+																		<div className='text-left'>
+																			<span className='font-semibold'>{movie.title}</span>
+																			<p className='text-sm text-gray-500'>Status: {movieStatus}</p>
+																		</div>
+																	</button>
+																) : (
+																	<span>Unknown Movie</span>
+																)}
+															</li>
+														);
+													})}
+												</ul>
+											) : (
+												<p>No titles found in this list.</p>
+											)}
+										</AccordionContent>
+									</AccordionItem>
+								))}
+							</Accordion>
+							{selectedMovie && <MovieListDialog movie={selectedMovie.movie} movieStatus={selectedMovie.movieStatus} listId={selectedMovie.listId} onClose={() => setSelectedMovie(null)} />}
+						</>
 					) : (
 						<div>No lists found. Create your first list!</div>
 					)}
-					{/* TODO: Refactor this component */}
-					{/* TODO: Add a way to create a new list on this page */}
 				</div>
 			</div>
 		</section>

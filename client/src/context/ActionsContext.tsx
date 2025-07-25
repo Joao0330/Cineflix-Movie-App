@@ -11,6 +11,7 @@ interface ActionsContextData {
 	addMovieToList: (listId: number, externalId: number) => Promise<void>;
 	getLists: () => Promise<[]>;
 	deleteList: (listId: number) => Promise<void>;
+	deleteMovieFromList: (listId: number, externalId: number) => Promise<void>;
 }
 
 interface ActionsProviderProps {
@@ -87,12 +88,10 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 
 	const addMovieToList = async (listId: number, externalId: number) => {
 		try {
-			const { data } = await api.post('/lists/movies', { listId, external_id: externalId }, { withCredentials: true });
+			await api.post('/lists/movies', { listId, external_id: externalId }, { withCredentials: true });
 
-			if (data) {
-				console.log('Movie added to list successfully:', data);
-				toast.success('Movie added to list successfully!');
-			}
+			console.log('Movie added to list successfully:');
+			toast.success('Movie added to list successfully!');
 		} catch (err: unknown) {
 			const error = err as axiosErrorResponse;
 			console.error('Error adding movie to list:', error);
@@ -131,7 +130,23 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
-	return <ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList, getLists, deleteList }}>{children}</ActionsContext.Provider>;
+	const deleteMovieFromList = async (listId: number, externalId: number) => {
+		try {
+			await api.delete(`/lists/movies`, {
+				data: { listId, external_id: externalId },
+				withCredentials: true,
+			});
+
+			console.log('Movie removed from list successfully:');
+			toast.success('Movie removed from list successfully!');
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error removing movie from list:', error);
+			toast.error('Error removing movie from list. Please try again.');
+		}
+	};
+
+	return <ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList, getLists, deleteList, deleteMovieFromList }}>{children}</ActionsContext.Provider>;
 }
 
 export function useActions() {

@@ -12,3 +12,5 @@ export const addMovieToListSchema = z.object({
 export const deleteListSchema = z.object({
 	listId: z.number().int().positive('List ID must be a positive integer'),
 });
+
+export const deleteMovieFromListSchema = addMovieToListSchema;
