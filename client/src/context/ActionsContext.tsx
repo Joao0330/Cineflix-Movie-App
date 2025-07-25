@@ -12,6 +12,7 @@ interface ActionsContextData {
 	getLists: () => Promise<[]>;
 	deleteList: (listId: number) => Promise<void>;
 	deleteMovieFromList: (listId: number, externalId: number) => Promise<void>;
+	updateMovieFromList: (listId: number, externalId: number, status: 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING') => Promise<void>;
 }
 
 interface ActionsProviderProps {
@@ -146,7 +147,24 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
-	return <ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList, getLists, deleteList, deleteMovieFromList }}>{children}</ActionsContext.Provider>;
+	const updateMovieFromList = async (listId: number, externalId: number, status: 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING') => {
+		try {
+			await api.put('/lists/movies', { listId, external_id: externalId, status }, { withCredentials: true });
+
+			console.log('Movie status updated successfully:');
+			toast.success('Movie status updated successfully!');
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error updating movie status:', error);
+			toast.error(error.response?.data?.error);
+		}
+	};
+
+	return (
+		<ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList, getLists, deleteList, deleteMovieFromList, updateMovieFromList }}>
+			{children}
+		</ActionsContext.Provider>
+	);
 }
 
 export function useActions() {

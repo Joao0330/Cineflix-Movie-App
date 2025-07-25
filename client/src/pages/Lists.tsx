@@ -117,7 +117,7 @@ export const Lists = () => {
 																		/>
 																		<div className='text-left'>
 																			<span className='font-semibold'>{movie.title}</span>
-																			<p className='text-sm text-gray-500'>Status: {movieStatus}</p>
+																			<p className='text-sm text-gray-500'>Status: {movieStatus.replace('_', ' ')}</p>
 																		</div>
 																	</button>
 																) : (

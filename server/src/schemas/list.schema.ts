@@ -14,3 +14,7 @@ export const deleteListSchema = z.object({
 });
 
 export const deleteMovieFromListSchema = addMovieToListSchema;
+
+export const updateMovieFromListSchema = addMovieToListSchema.extend({
+	status: z.enum(['WATCHING', 'COMPLETED', 'ON_HOLD', 'DROPPED', 'PLANNING'], { message: 'Invalid status' }),
+});

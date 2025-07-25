@@ -14,7 +14,7 @@ interface MovieListDialogProps {
 }
 
 export const MovieListDialog = ({ movie, movieStatus, listId, onClose }: MovieListDialogProps) => {
-	const { deleteMovieFromListMutation } = useLists();
+	const { deleteMovieFromListMutation, updateMovieFromListMutation } = useLists();
 	if (!movie) return null;
 
 	return (
@@ -33,14 +33,13 @@ export const MovieListDialog = ({ movie, movieStatus, listId, onClose }: MovieLi
 						<p className='text-gray-500'>Edit the status of this title in your list.</p>
 						<Select
 							defaultValue={movieStatus}
-							/* onValueChange={value =>
-								updateMovieStatusMutation.mutate({
+							onValueChange={value =>
+								updateMovieFromListMutation.mutate({
 									listId,
 									externalId: movie.id,
-									status: value as 'WATCHING' | 'COMPLETED' | 'PLAN_TO_WATCH',
+									status: value as 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING',
 								})
-							} */
-							/* disabled={updateMovieStatusMutation.isLoading} */
+							}
 						>
 							<SelectTrigger className='mt-2 w-[180px]'>
 								<SelectValue placeholder='Select status' />
@@ -48,7 +47,9 @@ export const MovieListDialog = ({ movie, movieStatus, listId, onClose }: MovieLi
 							<SelectContent className='dark bg-primary-foreground'>
 								<SelectItem value='WATCHING'>Watching</SelectItem>
 								<SelectItem value='COMPLETED'>Completed</SelectItem>
-								<SelectItem value='PLAN_TO_WATCH'>Plan to Watch</SelectItem>
+								<SelectItem value='ON_HOLD'>On Hold</SelectItem>
+								<SelectItem value='DROPPED'>Dropped</SelectItem>
+								<SelectItem value='PLANNING'>Plan to watch</SelectItem>
 							</SelectContent>
 						</Select>
 						<Button
