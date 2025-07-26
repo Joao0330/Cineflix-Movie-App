@@ -2,30 +2,27 @@ import { Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogTitle } from '../ui/dialog';
 import { DialogHeader } from '../ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Separator } from '../ui/separator';
-import { Textarea } from '../ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { useLists } from '@/hooks/useLists';
+import { MovieReviewForm } from './MovieReviewForm';
 
 interface MovieListDialogProps {
 	movie: Movie | null;
 	movieStatus: string;
 	listId: number;
 	onClose: () => void;
-	deleteMovieFromListMutation: {
-		mutate: (params: { listId: number; externalId: number }, options?: { onSuccess?: () => void }) => void;
-	};
-	updateMovieFromListMutation: {
-		mutate: (params: { listId: number; externalId: number; status: 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING' }, options?: { onSuccess?: () => void }) => void;
-	};
 	updateSelectedMovieStatus: (newStatus: string) => void;
 }
 
-export const MovieListDialog = ({ movie, movieStatus, listId, onClose, deleteMovieFromListMutation, updateMovieFromListMutation, updateSelectedMovieStatus }: MovieListDialogProps) => {
+export const MovieListDialog = ({ movie, movieStatus, listId, onClose, updateSelectedMovieStatus }: MovieListDialogProps) => {
+	const { updateMovieFromListMutation, deleteMovieFromListMutation } = useLists();
+
 	if (!movie) return null;
 
 	return (
 		<Dialog open={!!movie} onOpenChange={onClose}>
-			<DialogContent className='dark '>
+			<DialogContent className='dark mt-30'>
 				<DialogHeader>
 					<DialogTitle className='text-lg font-semibold'>{movie.title}</DialogTitle>
 				</DialogHeader>
@@ -82,12 +79,7 @@ export const MovieListDialog = ({ movie, movieStatus, listId, onClose, deleteMov
 					</div>
 				</div>
 				<Separator className='my-5' />
-				{movieStatus === 'COMPLETED' || movieStatus === 'DROPPED' ? (
-					<div>
-						<h3 className='mb-5'>Leave a review for this show</h3>
-						<Textarea placeholder='Write your review here...' />
-					</div>
-				) : null}
+				{movieStatus === 'COMPLETED' || movieStatus === 'DROPPED' ? <MovieReviewForm movie={movie} /> : null}
 			</DialogContent>
 		</Dialog>
 	);

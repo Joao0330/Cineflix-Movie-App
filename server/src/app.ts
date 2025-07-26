@@ -8,6 +8,7 @@ import fastifyCookie from '@fastify/cookie';
 import { movieRoutes } from './http/controllers/movies/routes';
 import { favoriteRoutes } from './http/controllers/favorites/routes';
 import { listRoutes } from './http/controllers/lists/routes';
+import { reviewRoutes } from './http/controllers/reviews/routes';
 
 export const app = fastify();
 
@@ -33,6 +34,7 @@ app.register(authRoutes);
 app.register(movieRoutes);
 app.register(favoriteRoutes);
 app.register(listRoutes);
+app.register(reviewRoutes);
 
 app.setErrorHandler((error, request, reply) => {
 	if (error instanceof ZodError) {

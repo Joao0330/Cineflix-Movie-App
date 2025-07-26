@@ -13,6 +13,7 @@ interface ActionsContextData {
 	deleteList: (listId: number) => Promise<void>;
 	deleteMovieFromList: (listId: number, externalId: number) => Promise<void>;
 	updateMovieFromList: (listId: number, externalId: number, status: 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING') => Promise<void>;
+	addReview: (movieId: number, content: string, rating: number) => Promise<void>;
 }
 
 interface ActionsProviderProps {
@@ -157,8 +158,23 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
+	//! ********* Reviews *********
+
+	const addReview = async (movieId: number, content: string, rating: number) => {
+		try {
+			await api.post('/reviews', { movieId, content, rating }, { withCredentials: true });
+
+			console.log('Review added successfully:');
+			toast.success('Review added successfully!');
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error adding review:', error);
+			toast.error(error.response?.data?.error);
+		}
+	};
+
 	return (
-		<ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList, getLists, deleteList, deleteMovieFromList, updateMovieFromList }}>
+		<ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList, getLists, deleteList, deleteMovieFromList, updateMovieFromList, addReview }}>
 			{children}
 		</ActionsContext.Provider>
 	);

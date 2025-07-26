@@ -16,16 +16,10 @@ interface useListsReturn {
 	deleteListMutation: {
 		mutate: (listId: number) => void;
 	};
-	deleteMovieFromListMutation: {
-		mutate: (params: { listId: number; externalId: number }) => void;
-	};
-	updateMovieFromListMutation: {
-		mutate: (params: { listId: number; externalId: number; status: 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING' }, options?: { onSuccess?: () => void }) => void;
-	};
 }
 
 export const Lists = () => {
-	const { lists, isLoading, error, deleteListMutation, deleteMovieFromListMutation, updateMovieFromListMutation } = useLists() as useListsReturn;
+	const { lists, isLoading, error, deleteListMutation } = useLists() as useListsReturn;
 	const [selectedMovie, setSelectedMovie] = useState<{
 		movie: Movie | null;
 		movieStatus: string;
@@ -155,8 +149,6 @@ export const Lists = () => {
 									movieStatus={selectedMovie.movieStatus}
 									listId={selectedMovie.listId}
 									onClose={() => setSelectedMovie(null)}
-									deleteMovieFromListMutation={deleteMovieFromListMutation}
-									updateMovieFromListMutation={updateMovieFromListMutation}
 									updateSelectedMovieStatus={updateSelectedMovieStatus}
 								/>
 							)}
