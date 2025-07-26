@@ -8,7 +8,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Button } from '../ui/button';
 import { useForm } from 'react-hook-form';
 
-export const MovieReviewForm = ({ movie }: { movie: Movie | null }) => {
+interface MovieReviewFormProps {
+	movie: Movie | null;
+	onClose: () => void;
+}
+
+export const MovieReviewForm = ({ movie, onClose }: MovieReviewFormProps) => {
 	const { addReviewMutation } = useReviews();
 
 	const form = useForm<z.infer<typeof reviewSchema>>({
@@ -22,12 +27,19 @@ export const MovieReviewForm = ({ movie }: { movie: Movie | null }) => {
 	if (!movie) return null;
 
 	const onSubmit = (review: z.infer<typeof reviewSchema>) => {
-		console.log(review.content);
-		addReviewMutation.mutate({
-			movieId: movie.id,
-			content: review.content,
-			rating: review.rating,
-		});
+		addReviewMutation.mutate(
+			{
+				movieId: movie.id,
+				content: review.content,
+				rating: review.rating,
+			},
+			{
+				onSuccess: () => {
+					onClose();
+					form.reset();
+				},
+			},
+		);
 	};
 
 	return (
@@ -62,6 +74,8 @@ export const MovieReviewForm = ({ movie }: { movie: Movie | null }) => {
 											{value}
 										</SelectItem>
 									))}
+									{/* TODO: Refactor this above */}
+									{/* TODO: Add reviews to the bottom of movie pages */}
 								</SelectContent>
 							</Select>
 						)}

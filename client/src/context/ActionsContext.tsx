@@ -170,6 +170,7 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 			const error = err as axiosErrorResponse;
 			console.error('Error adding review:', error);
 			toast.error(error.response?.data?.error);
+			throw error;
 		}
 	};
 
