@@ -8,35 +8,45 @@ export async function addMovieToList(request: FastifyRequest, reply: FastifyRepl
 	const { id: userId } = request.user;
 
 	try {
-		const list = await prisma.movieList.findUnique({
-			where: {
-				id: listId,
-				userId,
-			},
-		});
+		await prisma.$transaction(async tx => {
+			const list = await tx.movieList.findUnique({
+				where: { id: listId, userId },
+			});
 
-		if (!list) {
-			return reply.status(404).send({ error: 'List not found' });
-		}
+			if (!list) {
+				throw new Error('List not found');
+			}
 
-		if (await verifyMovieExists(listId, external_id)) {
-			return reply.status(409).send({ error: 'This movie is already in the list' });
-		}
+			const existingMovie = await tx.movie.findFirst({
+				where: { movieListId: listId, external_id },
+			});
 
-		await prisma.movieList.update({
-			where: { id: listId },
-			data: {
-				movies: {
-					create: {
-						external_id,
+			if (existingMovie) {
+				throw new Error('Movie already in list');
+			}
+
+			await tx.movieList.update({
+				where: { id: listId },
+				data: {
+					movies: {
+						create: { external_id },
 					},
 				},
-			},
+			});
 		});
 
-		reply.status(200).send({ message: 'Movie added to list successfully' });
+		return reply.status(200).send({ message: 'Movie added to list successfully' });
 	} catch (error) {
+		if (error instanceof Error) {
+			if (error.message === 'List not found') {
+				return reply.status(404).send({ error: error.message });
+			}
+			if (error.message === 'Movie already in list') {
+				return reply.status(409).send({ error: error.message });
+			}
+		}
+
 		console.error(error);
-		reply.status(500).send({ error: 'Failed to add movie to list' });
+		return reply.status(500).send({ error: 'Failed to add movie to list' });
 	}
 }
