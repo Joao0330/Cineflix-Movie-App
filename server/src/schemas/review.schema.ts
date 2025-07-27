@@ -5,3 +5,7 @@ export const addReviewSchema = z.object({
 	content: z.string().min(1, { message: 'Content is required' }),
 	rating: z.number().int().min(1).max(10, { message: 'Rating must be between 1 and 10' }),
 });
+
+export const getMovieReviewsSchema = z.object({
+	movieId: z.string().transform(Number),
+});

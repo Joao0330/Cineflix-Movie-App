@@ -134,3 +134,13 @@ type MovieWithList = {
 	list: MovieList;
 	movies: (Movie | null)[];
 };
+
+//? Reviews types
+type Review = {
+	id: number;
+	movieId: number;
+	content: string;
+	rating: number;
+	created_at: string;
+	user: User;
+};

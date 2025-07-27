@@ -87,6 +87,7 @@ export const useFetchMovieDetail = (movieId: string, options = {}) => {
 		queryKey: ['movieDetail', movieId],
 		queryFn: () => fetchMovieDetail(movieId),
 		enabled: !!movieId,
+		refetchOnWindowFocus: false,
 		...options,
 	});
 };

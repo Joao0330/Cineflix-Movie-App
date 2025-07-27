@@ -2,6 +2,7 @@ import { ListsDialog } from '@/components/lists/ListsDialog';
 import { Loader } from '@/components/Loader';
 import { MovieCredits } from '@/components/movie/MovieCredits';
 import { MovieInfoTop } from '@/components/movie/MovieInfoTop';
+import { MovieReviews } from '@/components/movie/MovieReviews';
 import { MovieVideos } from '@/components/movie/MovieVideos';
 import { MobileToggleButton } from '@/components/sidebar/MobileToggleButton';
 import { useFavorites } from '@/hooks/useFavorites';
@@ -65,6 +66,7 @@ export const MovieInfo = () => {
 						<MovieInfoTop movie={movie} />
 						<MovieCredits movie={movie} />
 						<MovieVideos movie={movie} />
+						<MovieReviews movie={movie} />
 					</section>
 				</>
 			) : (

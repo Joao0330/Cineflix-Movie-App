@@ -13,6 +13,8 @@ interface MovieReviewFormProps {
 	onClose: () => void;
 }
 
+const RATING_OPTIONS = Array.from({ length: 10 }, (_, i) => i + 1);
+
 export const MovieReviewForm = ({ movie, onClose }: MovieReviewFormProps) => {
 	const { addReviewMutation } = useReviews();
 
@@ -69,12 +71,11 @@ export const MovieReviewForm = ({ movie, onClose }: MovieReviewFormProps) => {
 									</SelectTrigger>
 								</FormControl>
 								<SelectContent className='dark bg-primary-foreground'>
-									{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(value => (
+									{RATING_OPTIONS.map(value => (
 										<SelectItem key={value} value={String(value)}>
 											{value}
 										</SelectItem>
 									))}
-									{/* TODO: Refactor this above */}
 									{/* TODO: Add reviews to the bottom of movie pages */}
 								</SelectContent>
 							</Select>

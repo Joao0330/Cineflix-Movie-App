@@ -465,6 +465,45 @@
 				}
 			}
 		}
+
+		.movieInfo__details__reviews {
+			@apply container-sm flex flex-col gap-10;
+		}
+		.movieInfo__details__reviews-top {
+			@apply flex flex-col gap-4 pb-4 border-b-1;
+
+			h4 {
+				@apply text-xl font-medium;
+			}
+		}
+
+		.movieInfo__details__reviews-list {
+			ul {
+				@apply flex flex-col gap-5;
+
+				li {
+					@apply border border-gray-600 rounded-md p-5;
+
+					> div:first-child {
+						@apply flex justify-between mb-2;
+
+						span {
+							@apply text-sm text-gray-500;
+						}
+					}
+
+					div:nth-child(2) {
+						span {
+							@apply text-gray-400 text-sm;
+						}
+					}
+
+					p {
+						@apply p-5;
+					}
+				}
+			}
+		}
 	}
 
 	/* Search styles */
