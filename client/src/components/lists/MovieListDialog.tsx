@@ -26,8 +26,11 @@ export const MovieListDialog = ({ movie, movieStatus, listId, onClose, updateSel
 		<Dialog open={!!movie} onOpenChange={onClose}>
 			<DialogContent className='dark mt-30 w-[400px] sm:w-[100%]'>
 				<ScrollArea className='max-h-[400px]'>
-					<DialogHeader>
+					<DialogHeader className='flex items-center sm:flex-row sm:gap-5'>
 						<DialogTitle className='text-lg font-semibold'>{movie.title}</DialogTitle>
+						<Link to={`/movies/${movie.id}`} className='text-xs text-gray-500 hover:underline'>
+							View movie page
+						</Link>
 					</DialogHeader>
 					<div className='mt-5 flex gap-5'>
 						<img

@@ -21,7 +21,10 @@ export const MovieReviews = ({ movie }: { movie: Movie }) => {
 							{movieReviews.map((review: Review) => (
 								<li key={review.id}>
 									<div>
-										<strong>{review.user.username}</strong>
+										<div>
+											<img src='https://placehold.co/40x40?text=Image not found' alt={review.user.username} />
+											<strong>{review.user.username}</strong>
+										</div>
 										<span>Published at {format(new Date(review.created_at), 'MMMM d, yyyy')}</span>
 									</div>
 									<div>

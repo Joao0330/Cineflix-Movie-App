@@ -15,7 +15,7 @@ export async function getMovieReviews(request: FastifyRequest, reply: FastifyRep
 		});
 
 		if (!movie) {
-			return reply.status(404).send({ error: 'Movie not found' });
+			throw new Error('Movie not found');
 		}
 
 		const reviews = await prisma.review.findMany({
@@ -35,9 +35,14 @@ export async function getMovieReviews(request: FastifyRequest, reply: FastifyRep
 			},
 		});
 
-		return reply.status(200).send(reviews ?? []);
+		reply.status(200).send(reviews);
 	} catch (error) {
+		if (error instanceof Error) {
+			if (error.message === 'Movie not found') {
+				return reply.status(404).send({ error: error.message });
+			}
+		}
 		console.error('Error fetching movie reviews:', error);
-		return reply.status(500).send({ error: 'Failed to fetch reviews.' });
+		reply.status(500).send({ error: 'Failed to fetch reviews.' });
 	}
 }
