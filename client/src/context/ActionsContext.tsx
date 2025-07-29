@@ -15,6 +15,7 @@ interface ActionsContextData {
 	updateMovieFromList: (listId: number, externalId: number, status: 'WATCHING' | 'COMPLETED' | 'ON_HOLD' | 'DROPPED' | 'PLANNING') => Promise<void>;
 	addReview: (movieId: number, content: string, rating: number) => Promise<void>;
 	getMovieReviews: (movieId: number) => Promise<Review[]>;
+	getUserReviews: () => Promise<Review[]>;
 }
 
 interface ActionsProviderProps {
@@ -186,8 +187,21 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
+	const getUserReviews = async () => {
+		try {
+			const { data } = await api.get('/reviews', { withCredentials: true });
+			return data;
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error fetching user reviews:', error);
+			throw error;
+		}
+	};
+
 	return (
-		<ActionsContext.Provider value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList, getLists, deleteList, deleteMovieFromList, updateMovieFromList, addReview, getMovieReviews }}>
+		<ActionsContext.Provider
+			value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList, getLists, deleteList, deleteMovieFromList, updateMovieFromList, addReview, getMovieReviews, getUserReviews }}
+		>
 			{children}
 		</ActionsContext.Provider>
 	);

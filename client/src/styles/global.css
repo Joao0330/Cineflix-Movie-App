@@ -470,7 +470,7 @@
 			@apply container-sm flex flex-col gap-10;
 		}
 		.movieInfo__details__reviews-top {
-			@apply flex flex-col gap-4 pb-4 border-b-1;
+			@apply flex flex-col gap-4 pb-4 border-b-1 border-gray-700;
 
 			h4 {
 				@apply text-xl font-medium;
@@ -607,6 +607,125 @@
 
 		h2 {
 			@apply text-4xl mb-5;
+		}
+	}
+
+	/* Profile */
+	.profile {
+		@apply px-[3rem] min-h-screen bg-background text-white py-25;
+	}
+
+	.profile__top {
+		@apply pb-10 border-b flex flex-col gap-15 sm:gap-10 md:flex-row;
+
+		> div:nth-child(1) {
+			@apply w-full md:w-[30%] flex flex-col gap-4;
+
+			img {
+				@apply w-[40%] md:w-full rounded-full;
+			}
+		}
+
+		> div:nth-child(2) {
+			@apply w-full md:w-[70%] border rounded-xl p-4;
+
+			h2 {
+				@apply text-2xl md:text-4xl font-medium mb-5;
+			}
+			p {
+				@apply text-lg;
+			}
+		}
+	}
+
+	.profile__top-info {
+		@apply flex flex-col gap-4;
+
+		div {
+			@apply flex items-center gap-3;
+		}
+
+		h1 {
+			@apply text-3xl font-medium;
+		}
+		span {
+			@apply bg-blue-light py-1 px-3 rounded-full text-xs;
+		}
+
+		button {
+			@apply transition-colors duration-300 hover:text-gray-500 cursor-pointer;
+		}
+
+		small {
+			@apply text-gray-400;
+		}
+	}
+
+	.profile__bottom {
+		@apply mt-10 flex flex-col gap-10;
+
+		> div:nth-child(1) {
+			@apply flex flex-col gap-4;
+
+			h3 {
+				@apply text-2xl font-medium;
+			}
+
+			p {
+				@apply text-lg;
+			}
+		}
+
+		> div:nth-child(2) {
+			ul {
+				@apply flex flex-col gap-8;
+			}
+
+			article {
+				@apply flex flex-col sm:flex-row items-center gap-5 border p-5;
+
+				img {
+					@apply w-full sm:w-20 h-34 object-cover;
+				}
+				> div {
+					@apply flex flex-col gap-5 w-full;
+
+					div:nth-child(1) {
+						@apply flex flex-col sm:flex-row justify-between;
+
+						time {
+							@apply text-sm text-gray-500;
+						}
+					}
+
+					div:nth-child(2) {
+						@apply flex flex-col gap-4;
+
+						span {
+							@apply text-gray-400;
+						}
+
+						p {
+							@apply leading-7;
+						}
+					}
+					div:nth-child(3) {
+						@apply flex gap-5;
+
+						button {
+							@apply flex gap-3 cursor-pointer transition-colors duration-300;
+						}
+
+						button:first-child {
+							@apply hover:text-blue-light;
+						}
+
+						button:last-child {
+							@apply hover:text-red-500;
+						}
+					}
+				}
+			}
 		}
 	}
 

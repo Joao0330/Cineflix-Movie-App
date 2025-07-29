@@ -1,13 +1,15 @@
-import { BadgeCheck, ChevronsUpDown, LogOut } from 'lucide-react';
+import { ChevronsUpDown, LogOut, User } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { useAuth } from '@/context/AuthContext';
+import { useNavigate } from 'react-router';
 
 export function NavUser({ user }: { user: User }) {
 	const { isMobile } = useSidebar();
 	const { logout } = useAuth();
+	const navigate = useNavigate();
 
 	return (
 		<SidebarMenu>
@@ -20,7 +22,7 @@ export function NavUser({ user }: { user: User }) {
 			<SidebarMenuItem>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
-						<SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
+						<SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer'>
 							<Avatar className='h-8 w-8 rounded-lg'>
 								<AvatarImage src='/avatars/shadcn.jpg' alt={user.username} />
 								<AvatarFallback className='rounded-lg'>CN</AvatarFallback>
@@ -48,15 +50,21 @@ export function NavUser({ user }: { user: User }) {
 							</div>
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>
-							<BadgeCheck />
-							Account
+						<DropdownMenuItem
+							className='cursor-pointer'
+							onClick={() => {
+								navigate('/profile');
+							}}
+						>
+							<User />
+							Profile
 						</DropdownMenuItem>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem
 							onClick={async () => {
 								await logout();
 							}}
+							className='cursor-pointer'
 						>
 							<LogOut />
 							Log out

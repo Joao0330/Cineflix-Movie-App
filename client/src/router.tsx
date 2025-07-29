@@ -10,6 +10,7 @@ import { MovieInfo } from './pages/MovieInfo';
 import { Browse } from './pages/Browse';
 import { Favorites } from './pages/Favorites';
 import { Lists } from './pages/Lists';
+import { Profile } from './pages/Profile';
 
 export const router = createBrowserRouter([
 	{
@@ -37,6 +38,7 @@ export const router = createBrowserRouter([
 					{ path: '/browse/:genreId', element: <Browse /> },
 					{ path: '/favorites', element: <Favorites /> },
 					{ path: '/lists', element: <Lists /> },
+					{ path: '/profile', element: <Profile /> },
 				],
 			},
 		],

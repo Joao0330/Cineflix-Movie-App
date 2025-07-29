@@ -16,6 +16,7 @@ export async function getCurrentUser(request: FastifyRequest, reply: FastifyRepl
 				email: true,
 				username: true,
 				role: true,
+				created_at: true,
 			},
 		});
 

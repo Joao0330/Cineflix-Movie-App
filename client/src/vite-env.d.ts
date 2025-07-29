@@ -19,6 +19,7 @@ type User = {
 	email: string;
 	username: string;
 	role: 'USER' | 'MODERATOR' | 'ADMIN';
+	created_at: string;
 };
 
 type axiosErrorResponse = {
@@ -136,6 +137,12 @@ type MovieWithList = {
 };
 
 //? Reviews types
+
+type ReviewMovieRef = {
+	id: number;
+	external_id: number;
+};
+
 type Review = {
 	id: number;
 	movieId: number;
@@ -143,4 +150,5 @@ type Review = {
 	rating: number;
 	created_at: string;
 	user: User;
+	movie: ReviewMovieRef | null;
 };

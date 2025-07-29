@@ -34,6 +34,8 @@ export const Favorites = () => {
 		created_at: fav.created_at,
 	}));
 
+	console.log(moviesWithFavorites);
+
 	return (
 		<section className='favorites'>
 			<div className='container-sm'>
