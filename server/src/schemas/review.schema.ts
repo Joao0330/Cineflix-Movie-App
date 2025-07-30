@@ -9,3 +9,7 @@ export const addReviewSchema = z.object({
 export const getMovieReviewsSchema = z.object({
 	movieId: z.string().transform(Number),
 });
+
+export const deleteReviewSchema = z.object({
+	reviewId: z.number().int().positive({ message: 'Review ID must be a positive integer' }),
+});

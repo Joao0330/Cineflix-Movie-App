@@ -1,9 +1,10 @@
 import { Loader } from '@/components/Loader';
+import { DeleteReviewDialog } from '@/components/reviews/deleteReviewDialog';
 import { useAuth } from '@/context/AuthContext';
 import { useFetchMultipleMovieDetails } from '@/hooks/useFetchMovies';
 import { useReviews } from '@/hooks/useReviews';
 import { format } from 'date-fns';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit } from 'lucide-react';
 import { toast } from 'sonner';
 
 export const Profile = () => {
@@ -86,10 +87,7 @@ export const Profile = () => {
 															<Edit />
 															<span>Edit</span>
 														</button>
-														<button>
-															<Trash2 />
-															<span>Delete</span>
-														</button>
+														<DeleteReviewDialog reviewId={review.id} />
 													</div>
 												</div>
 											</article>

@@ -16,6 +16,7 @@ interface ActionsContextData {
 	addReview: (movieId: number, content: string, rating: number) => Promise<void>;
 	getMovieReviews: (movieId: number) => Promise<Review[]>;
 	getUserReviews: () => Promise<Review[]>;
+	deleteReview: (reviewId: number) => Promise<void>;
 }
 
 interface ActionsProviderProps {
@@ -198,9 +199,39 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
+	const deleteReview = async (reviewId: number) => {
+		try {
+			await api.delete('/reviews', {
+				data: { reviewId },
+				withCredentials: true,
+			});
+
+			console.log('Review deleted successfully:');
+			toast.success('Review removed successfully!');
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error deleting review:', error);
+			toast.error('Error removing review. Please try again.');
+		}
+	};
+
 	return (
 		<ActionsContext.Provider
-			value={{ addFavorite, getFavorites, deleteFavorite, addList, addMovieToList, getLists, deleteList, deleteMovieFromList, updateMovieFromList, addReview, getMovieReviews, getUserReviews }}
+			value={{
+				addFavorite,
+				getFavorites,
+				deleteFavorite,
+				addList,
+				addMovieToList,
+				getLists,
+				deleteList,
+				deleteMovieFromList,
+				updateMovieFromList,
+				addReview,
+				getMovieReviews,
+				getUserReviews,
+				deleteReview,
+			}}
 		>
 			{children}
 		</ActionsContext.Provider>
