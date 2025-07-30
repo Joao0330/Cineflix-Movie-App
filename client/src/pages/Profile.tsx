@@ -1,10 +1,10 @@
 import { Loader } from '@/components/Loader';
 import { DeleteReviewDialog } from '@/components/reviews/deleteReviewDialog';
+import { UpdateReviewDialog } from '@/components/reviews/UpdateReviewDialog';
 import { useAuth } from '@/context/AuthContext';
 import { useFetchMultipleMovieDetails } from '@/hooks/useFetchMovies';
 import { useReviews } from '@/hooks/useReviews';
 import { format } from 'date-fns';
-import { Edit } from 'lucide-react';
 import { toast } from 'sonner';
 
 export const Profile = () => {
@@ -66,7 +66,7 @@ export const Profile = () => {
 								<p>You haven't submitted any reviews yet.</p>
 							) : (
 								<ul>
-									{moviesWithReviews.map(review => (
+									{moviesWithReviews.map((review, idx) => (
 										<li key={review.id}>
 											<article>
 												<img
@@ -83,10 +83,7 @@ export const Profile = () => {
 														<p>{review.content}</p>
 													</div>
 													<div>
-														<button>
-															<Edit />
-															<span>Edit</span>
-														</button>
+														<UpdateReviewDialog review={userReviews[idx]} />
 														<DeleteReviewDialog reviewId={review.id} />
 													</div>
 												</div>

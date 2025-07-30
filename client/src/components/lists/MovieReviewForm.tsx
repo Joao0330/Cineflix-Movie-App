@@ -9,39 +9,60 @@ import { Button } from '../ui/button';
 import { useForm } from 'react-hook-form';
 
 interface MovieReviewFormProps {
-	movie: Movie | null;
+	movie?: Movie | null;
 	onClose: () => void;
+	type: 'edit' | 'add';
+	review?: Review | null;
 }
 
 const RATING_OPTIONS = Array.from({ length: 10 }, (_, i) => i + 1);
 
-export const MovieReviewForm = ({ movie, onClose }: MovieReviewFormProps) => {
-	const { addReviewMutation } = useReviews();
+export const MovieReviewForm = ({ movie, onClose, type, review }: MovieReviewFormProps) => {
+	const { addReviewMutation, updateReviewMutation } = useReviews();
 
-	const form = useForm<z.infer<typeof reviewSchema>>({
+	const form = useForm<z.infer<typeof reviewSchema> & { id?: number }>({
 		resolver: zodResolver(reviewSchema),
 		defaultValues: {
-			content: '',
-			rating: 0,
+			id: type === 'edit' && review ? review.id : undefined,
+			content: type === 'edit' && review ? review.content : '',
+			rating: type === 'edit' && review ? review.rating : 0,
 		},
 	});
 
-	if (!movie) return null;
+	console.log(review);
 
-	const onSubmit = (review: z.infer<typeof reviewSchema>) => {
-		addReviewMutation.mutate(
-			{
-				movieId: movie.id,
-				content: review.content,
-				rating: review.rating,
-			},
-			{
-				onSuccess: () => {
-					onClose();
-					form.reset();
+	if (type === 'add' && !movie) return null;
+
+	const onSubmit = ({ id, content, rating }: z.infer<typeof reviewSchema> & { id?: number }) => {
+		if (type === 'edit' && id) {
+			console.log('logged');
+			updateReviewMutation.mutate(
+				{
+					reviewId: id,
+					content,
+					rating,
 				},
-			},
-		);
+				{
+					onSuccess: () => {
+						onClose();
+					},
+				},
+			);
+		} else if (type === 'add' && movie) {
+			addReviewMutation.mutate(
+				{
+					movieId: movie?.id ?? null,
+					content,
+					rating,
+				},
+				{
+					onSuccess: () => {
+						onClose();
+						form.reset();
+					},
+				},
+			);
+		}
 	};
 
 	return (
@@ -76,7 +97,6 @@ export const MovieReviewForm = ({ movie, onClose }: MovieReviewFormProps) => {
 											{value}
 										</SelectItem>
 									))}
-									{/* TODO: Add reviews to the bottom of movie pages */}
 								</SelectContent>
 							</Select>
 						)}

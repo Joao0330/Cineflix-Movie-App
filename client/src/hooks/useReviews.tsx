@@ -3,7 +3,7 @@ import { queryClient } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useReviews = () => {
-	const { addReview, getMovieReviews, getUserReviews, deleteReview } = useActions();
+	const { addReview, getMovieReviews, getUserReviews, deleteReview, updateReview } = useActions();
 
 	const useMovieReviewsQuery = (movieId: number) =>
 		useQuery<Review[]>({
@@ -38,5 +38,12 @@ export const useReviews = () => {
 		},
 	});
 
-	return { addReviewMutation, useMovieReviewsQuery, useUserReviewsQuery, deleteReviewMutation };
+	const updateReviewMutation = useMutation({
+		mutationFn: ({ reviewId, content, rating }: { reviewId: number; content: string; rating: number }) => updateReview(reviewId, content, rating),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['userReviews'] });
+		},
+	});
+
+	return { addReviewMutation, useMovieReviewsQuery, useUserReviewsQuery, deleteReviewMutation, updateReviewMutation };
 };

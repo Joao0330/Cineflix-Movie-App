@@ -17,6 +17,7 @@ interface ActionsContextData {
 	getMovieReviews: (movieId: number) => Promise<Review[]>;
 	getUserReviews: () => Promise<Review[]>;
 	deleteReview: (reviewId: number) => Promise<void>;
+	updateReview: (reviewId: number, content: string, rating: number) => Promise<void>;
 }
 
 interface ActionsProviderProps {
@@ -215,6 +216,20 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
+	const updateReview = async (reviewId: number, content: string, rating: number) => {
+		try {
+			await api.put(`/reviews/${reviewId}`, { content, rating }, { withCredentials: true });
+
+			console.log('Review updated successfully:');
+			toast.success('Review updated successfully!');
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error updating review:', error);
+			toast.error('Error updating review. Please try again.');
+			throw error;
+		}
+	};
+
 	return (
 		<ActionsContext.Provider
 			value={{
@@ -231,6 +246,7 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 				getMovieReviews,
 				getUserReviews,
 				deleteReview,
+				updateReview,
 			}}
 		>
 			{children}

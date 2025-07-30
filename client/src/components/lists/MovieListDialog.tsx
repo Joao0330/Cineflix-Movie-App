@@ -87,9 +87,9 @@ export const MovieListDialog = ({ movie, movieStatus, listId, onClose, updateSel
 					{movieStatus === 'COMPLETED' || movieStatus === 'DROPPED' ? (
 						<>
 							<Separator className='my-5' />
-							<MovieReviewForm movie={movie} onClose={onClose} />
+							<MovieReviewForm type='add' movie={movie} onClose={onClose} />
 							<Separator className='my-5' />
-							<Link to='/profile/reviews' className='hover:underline text-gray-500'>
+							<Link to='/profile' className='hover:underline text-gray-500'>
 								View and edit your reviews by clicking here.
 							</Link>
 						</>
