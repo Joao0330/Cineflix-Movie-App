@@ -635,6 +635,14 @@
 			p {
 				@apply text-lg;
 			}
+
+			> div {
+				@apply mt-6 border-t pt-5;
+
+				form {
+					@apply flex items-end gap-10;
+				}
+			}
 		}
 	}
 

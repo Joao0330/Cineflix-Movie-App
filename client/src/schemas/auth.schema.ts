@@ -14,3 +14,11 @@ export const registerSchema = loginSchema
 		message: "Passwords don't match",
 		path: ['confirmPassword'],
 	});
+
+export const updateUsernameSchema = z
+	.object({
+		username: z.string().min(3, { message: 'Username must be at least 3 characters' }),
+	})
+	.refine(data => data.username.length <= 20, {
+		message: 'Username must be at most 20 characters',
+	});

@@ -1,16 +1,30 @@
 import { Loader } from '@/components/Loader';
-import { DeleteReviewDialog } from '@/components/reviews/deleteReviewDialog';
+import { DeleteReviewDialog } from '@/components/reviews/DeleteReviewDialog';
 import { UpdateReviewDialog } from '@/components/reviews/UpdateReviewDialog';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { useAuth } from '@/context/AuthContext';
 import { useFetchMultipleMovieDetails } from '@/hooks/useFetchMovies';
 import { useReviews } from '@/hooks/useReviews';
+import { updateUsernameSchema } from '@/schemas/auth.schema';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import type { z } from 'zod';
 
 export const Profile = () => {
-	const { user } = useAuth();
+	const { user, updateUsername } = useAuth();
 	const { useUserReviewsQuery } = useReviews();
 	const { data: userReviews = [], isLoading, error } = useUserReviewsQuery();
+
+	const form = useForm<z.infer<typeof updateUsernameSchema>>({
+		resolver: zodResolver(updateUsernameSchema),
+		defaultValues: {
+			username: user?.username || '',
+		},
+	});
 
 	const externalIds = userReviews ? userReviews.map(review => review.movie?.external_id).filter((id): id is number => typeof id === 'number') : [];
 
@@ -27,6 +41,10 @@ export const Profile = () => {
 		...review,
 		movie: movieDetails.find(movie => movie.id === review.movie?.external_id) || null,
 	}));
+
+	const onChangeUsername = async (data: z.infer<typeof updateUsernameSchema>) => {
+		updateUsername(data.username);
+	};
 
 	return (
 		<section className='profile'>
@@ -51,6 +69,31 @@ export const Profile = () => {
 					<div>
 						<h2>My Profile</h2>
 						<p>Manage your account settings below:</p>
+
+						<div>
+							<Form {...form}>
+								<form onSubmit={form.handleSubmit(onChangeUsername)}>
+									<div>
+										<FormLabel className='mb-4'>Change Username</FormLabel>
+										<FormField
+											control={form.control}
+											name='username'
+											render={({ field }) => (
+												<FormItem>
+													<FormControl>
+														<Input {...field} name='username' placeholder='Update your username' />
+													</FormControl>
+												</FormItem>
+											)}
+										/>
+									</div>
+
+									<Button type='submit' className='mt-5 cursor-pointer'>
+										Change Username
+									</Button>
+								</form>
+							</Form>
+						</div>
 					</div>
 				</div>
 				<div className='profile__bottom'>

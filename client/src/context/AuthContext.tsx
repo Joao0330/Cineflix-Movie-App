@@ -15,6 +15,7 @@ interface AuthContextData {
 	logout: () => Promise<{ success: boolean }>;
 	accessToken: string | null;
 	checkAuth: () => Promise<void>;
+	updateUsername: (username: string) => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -83,6 +84,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		}
 	};
 
+	const updateUsername = async (username: string) => {
+		try {
+			const { data } = await api.put('/update-username', { username }, { withCredentials: true });
+			if (data) {
+				toast.success('Username updated successfully!');
+			}
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error(error);
+			toast.error(error.response?.data?.error);
+		}
+	};
+
 	const checkAuth = async () => {
 		try {
 			const response = await api.get('/profile', { withCredentials: true });
@@ -102,7 +116,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		checkAuth();
 	}, []);
 
-	return <AuthContext.Provider value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle }}>{isLoading ? <Loader /> : children}</AuthContext.Provider>;
+	return (
+		<AuthContext.Provider value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle, updateUsername }}>
+			{isLoading ? <Loader /> : children}
+		</AuthContext.Provider>
+	);
 }
 
 export function useAuth() {

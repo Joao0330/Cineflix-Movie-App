@@ -6,6 +6,7 @@ import { verifyJwt } from '../../middlewares/verify-jwt';
 import { getCurrentUser } from './profile';
 import { googleAuth } from './googleAuth';
 import { googleConfig } from './googleConfig';
+import { updateUsername } from './updateUsername';
 
 export async function authRoutes(app: FastifyInstance) {
 	app.post('/register', registerUser);
@@ -14,4 +15,5 @@ export async function authRoutes(app: FastifyInstance) {
 	app.post('/logout', logoutUser);
 	app.get('/profile', { onRequest: [verifyJwt] }, getCurrentUser);
 	app.get('/auth/google/config', googleConfig);
+	app.put('/update-username', { onRequest: [verifyJwt] }, updateUsername);
 }
