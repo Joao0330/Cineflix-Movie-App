@@ -20,6 +20,7 @@ type User = {
 	username: string;
 	role: 'USER' | 'MODERATOR' | 'ADMIN';
 	created_at: string;
+	profile_picture_url?: string | undefined;
 };
 
 type axiosErrorResponse = {

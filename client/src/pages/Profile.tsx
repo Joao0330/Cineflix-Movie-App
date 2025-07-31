@@ -1,30 +1,20 @@
 import { Loader } from '@/components/Loader';
+import { ChangeProfilePicForm } from '@/components/profile/ChangeProfilePicForm';
+import { ChangeUsernameForm } from '@/components/profile/ChangeUsernameForm';
 import { DeleteReviewDialog } from '@/components/reviews/DeleteReviewDialog';
 import { UpdateReviewDialog } from '@/components/reviews/UpdateReviewDialog';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { useAuth } from '@/context/AuthContext';
 import { useFetchMultipleMovieDetails } from '@/hooks/useFetchMovies';
 import { useReviews } from '@/hooks/useReviews';
-import { updateUsernameSchema } from '@/schemas/auth.schema';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import type { z } from 'zod';
 
 export const Profile = () => {
-	const { user, updateUsername } = useAuth();
+	const { user } = useAuth();
 	const { useUserReviewsQuery } = useReviews();
 	const { data: userReviews = [], isLoading, error } = useUserReviewsQuery();
 
-	const form = useForm<z.infer<typeof updateUsernameSchema>>({
-		resolver: zodResolver(updateUsernameSchema),
-		defaultValues: {
-			username: user?.username || '',
-		},
-	});
+	scrollTo(0, 0);
 
 	const externalIds = userReviews ? userReviews.map(review => review.movie?.external_id).filter((id): id is number => typeof id === 'number') : [];
 
@@ -42,16 +32,12 @@ export const Profile = () => {
 		movie: movieDetails.find(movie => movie.id === review.movie?.external_id) || null,
 	}));
 
-	const onChangeUsername = async (data: z.infer<typeof updateUsernameSchema>) => {
-		updateUsername(data.username);
-	};
-
 	return (
 		<section className='profile'>
 			<div className='container-sm'>
 				<div className='profile__top'>
 					<div>
-						<img src='https://placehold.co/256x256?text=Image not found' alt={user?.username} />
+						<img src={user?.profile_picture_url || '/assets/userFallback.png'} alt={user?.username} />
 						<div className='profile__top-info'>
 							<div>
 								<h1>{user?.username}</h1>
@@ -71,28 +57,10 @@ export const Profile = () => {
 						<p>Manage your account settings below:</p>
 
 						<div>
-							<Form {...form}>
-								<form onSubmit={form.handleSubmit(onChangeUsername)}>
-									<div>
-										<FormLabel className='mb-4'>Change Username</FormLabel>
-										<FormField
-											control={form.control}
-											name='username'
-											render={({ field }) => (
-												<FormItem>
-													<FormControl>
-														<Input {...field} name='username' placeholder='Update your username' />
-													</FormControl>
-												</FormItem>
-											)}
-										/>
-									</div>
-
-									<Button type='submit' className='mt-5 cursor-pointer'>
-										Change Username
-									</Button>
-								</form>
-							</Form>
+							<ChangeUsernameForm user={user} />
+							<div className='grid w-full max-w-sm items-center gap-3'>
+								<ChangeProfilePicForm />
+							</div>
 						</div>
 					</div>
 				</div>

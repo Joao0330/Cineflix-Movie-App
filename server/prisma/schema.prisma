@@ -28,14 +28,15 @@ enum movieListStatus {
 }
 
 model User {
-  id                Int       @id @default(autoincrement())
-  username          String    @unique
-  email             String    @unique
-  password_hash     String    @db.VarChar(60)
-  role              Role      @default(USER)
-  googleId          String?   @unique
-  created_at        DateTime  @default(now())
-  is_banned         Boolean   @default(false)
+  id                  Int       @id @default(autoincrement())
+  username            String    @unique
+  email               String    @unique
+  password_hash       String    @db.VarChar(60)
+  role                Role      @default(USER)
+  googleId            String?   @unique
+  created_at          DateTime  @default(now())
+  is_banned           Boolean   @default(false)
+  profile_picture_url String?
   favorites         Favorites[]
   movieLists        MovieList[]
   Review            Review[]

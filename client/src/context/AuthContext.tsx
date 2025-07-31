@@ -16,6 +16,7 @@ interface AuthContextData {
 	accessToken: string | null;
 	checkAuth: () => Promise<void>;
 	updateUsername: (username: string) => Promise<void>;
+	uploadProfilePicture: (file: File) => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -88,7 +89,30 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		try {
 			const { data } = await api.put('/update-username', { username }, { withCredentials: true });
 			if (data) {
+				await checkAuth();
 				toast.success('Username updated successfully!');
+			}
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error(error);
+			toast.error(error.response?.data?.error);
+		}
+	};
+
+	const uploadProfilePicture = async (file: File) => {
+		try {
+			const formData = new FormData();
+			formData.append('profile_picture', file);
+
+			const { data } = await api.post('/profile/picture', formData, {
+				withCredentials: true,
+			});
+
+			console.log(data);
+
+			if (data) {
+				await checkAuth();
+				toast.success('Profile picture updated!');
 			}
 		} catch (err: unknown) {
 			const error = err as axiosErrorResponse;
@@ -117,7 +141,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle, updateUsername }}>
+		<AuthContext.Provider value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle, updateUsername, uploadProfilePicture }}>
 			{isLoading ? <Loader /> : children}
 		</AuthContext.Provider>
 	);

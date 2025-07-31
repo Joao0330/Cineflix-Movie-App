@@ -24,10 +24,8 @@ export function NavUser({ user }: { user: User }) {
 					<DropdownMenuTrigger asChild>
 						<SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer'>
 							<Avatar className='h-8 w-8 rounded-lg'>
-								<AvatarImage src='/avatars/shadcn.jpg' alt={user.username} />
+								<AvatarImage src={user.profile_picture_url} alt={user.username} className='object-cover' />
 								<AvatarFallback className='rounded-lg'>CN</AvatarFallback>
-
-								{/* TODO: Add the option to get avatars, change the users table on the database to have a field for the user avatar */}
 							</Avatar>
 							<div className='grid flex-1 text-left text-sm leading-tight'>
 								<span className='truncate font-medium'>{user.username}</span>
@@ -40,7 +38,7 @@ export function NavUser({ user }: { user: User }) {
 						<DropdownMenuLabel className='p-0 font-normal'>
 							<div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
 								<Avatar className='h-8 w-8 rounded-lg'>
-									<AvatarImage src='/avatars/shadcn.jpg' alt={user.username} />
+									<AvatarImage src={user.profile_picture_url} alt={user.username} className='object-cover' />
 									<AvatarFallback className='rounded-lg'>CN</AvatarFallback>
 								</Avatar>
 								<div className='grid flex-1 text-left text-sm leading-tight'>

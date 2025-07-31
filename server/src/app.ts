@@ -9,6 +9,8 @@ import { movieRoutes } from './http/controllers/movies/routes';
 import { favoriteRoutes } from './http/controllers/favorites/routes';
 import { listRoutes } from './http/controllers/lists/routes';
 import { reviewRoutes } from './http/controllers/reviews/routes';
+import fastifyMultipart from '@fastify/multipart';
+import { v2 as cloudinary } from 'cloudinary';
 
 export const app = fastify();
 
@@ -27,6 +29,15 @@ app.register(fastifyJwt, {
 		cookieName: 'accessToken',
 		signed: false,
 	},
+});
+
+app.register(fastifyMultipart);
+
+cloudinary.config({
+	cloud_name: env.CLOUDINARY_CLOUD_NAME,
+	api_key: env.CLOUDINARY_API_KEY,
+	api_secret: env.CLOUDINARY_API_SECRET,
+	secure: true,
 });
 
 // Register routes
