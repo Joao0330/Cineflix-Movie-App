@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useFetchMultipleMovieDetails } from '@/hooks/useFetchMovies';
 import { useReviews } from '@/hooks/useReviews';
 import { format } from 'date-fns';
+import { Link } from 'react-router';
 import { toast } from 'sonner';
 
 export const Profile = () => {
@@ -86,7 +87,9 @@ export const Profile = () => {
 												/>
 												<div>
 													<div>
-														<strong>{review.movie?.title}</strong>
+														<Link to={`/movies/${review.movie?.id}`}>
+															<strong>{review.movie?.title}</strong>
+														</Link>
 														<time>{format(new Date(review.created_at), 'MMMM d, yyyy')}</time>
 													</div>
 													<div>

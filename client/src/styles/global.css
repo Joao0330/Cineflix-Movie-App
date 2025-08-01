@@ -701,6 +701,10 @@
 					div:nth-child(1) {
 						@apply flex flex-col sm:flex-row justify-between;
 
+						a {
+							@apply hover:underline;
+						}
+
 						time {
 							@apply text-sm text-gray-500;
 						}
