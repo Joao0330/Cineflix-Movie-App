@@ -35,3 +35,7 @@ export const changeUserRoleParamsSchema = z.object({
 			message: 'UserID must be a positive integer',
 		}),
 });
+
+export const banUserSchema = z.object({
+	is_banned: z.boolean(),
+});

@@ -1,8 +1,9 @@
 import { EditUserDialog } from '@/components/adminPanel/EditUserDialog';
+import { Button } from '@/components/ui/button';
 import { useProfiles } from '@/hooks/useProfiles';
 
 export const AdminPanel = () => {
-	const { useProfileGetUsersQuery } = useProfiles();
+	const { useProfileGetUsersQuery, banUserMutation } = useProfiles();
 	const { data: users = [], isLoading } = useProfileGetUsersQuery();
 
 	return (
@@ -37,7 +38,18 @@ export const AdminPanel = () => {
 												</div>
 												<div>Status: {user.is_banned ? <span className='banned'>Banned</span> : <span className='active'>Active</span>}</div>
 											</article>
-											<EditUserDialog user={user} />
+											<div>
+												<EditUserDialog user={user} />
+												{user.is_banned ? (
+													<Button variant='secondary' className='cursor-pointer' onClick={() => banUserMutation.mutate({ userId: user.id, is_banned: false })}>
+														Unban User
+													</Button>
+												) : (
+													<Button disabled={user.role === 'ADMIN'} variant='destructive' className='cursor-pointer' onClick={() => banUserMutation.mutate({ userId: user.id, is_banned: true })}>
+														Ban User
+													</Button>
+												)}
+											</div>
 										</li>
 									))}
 								</ul>

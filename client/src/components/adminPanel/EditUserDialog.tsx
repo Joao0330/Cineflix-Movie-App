@@ -13,7 +13,7 @@ export const EditUserDialog = ({ user }: EditUserDialogProps) => {
 
 	return (
 		<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-			<DialogTrigger asChild>
+			<DialogTrigger asChild disabled={user?.role === 'ADMIN'}>
 				<Button className='cursor-pointer'>
 					<Edit />
 					<span>Edit user</span>

@@ -3,7 +3,7 @@ import { queryClient } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useProfiles = () => {
-	const { updateUsername, uploadProfilePicture, getAllUsers, changeUserRole } = useAuth();
+	const { updateUsername, uploadProfilePicture, getAllUsers, changeUserRole, banUser } = useAuth();
 
 	const useProfileGetUsersQuery = () =>
 		useQuery<User[]>({
@@ -34,10 +34,18 @@ export const useProfiles = () => {
 		},
 	});
 
+	const banUserMutation = useMutation({
+		mutationFn: ({ userId, is_banned }: { userId: number; is_banned: boolean }) => banUser(userId, is_banned),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['profileUsers'] });
+		},
+	});
+
 	return {
 		useProfileGetUsersQuery,
 		updateUsernameMutation,
 		uploadProfilePictureMutation,
 		changeUserRoleMutation,
+		banUserMutation,
 	};
 };

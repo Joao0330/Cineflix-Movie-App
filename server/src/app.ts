@@ -18,7 +18,7 @@ app.register(fastifyCors, {
 	origin: 'http://localhost:5173', //React app URL
 	credentials: true,
 	allowedHeaders: ['Content-Type', 'Authorization'],
-	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
 });
 
 app.register(fastifyCookie);

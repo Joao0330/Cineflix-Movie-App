@@ -19,6 +19,7 @@ interface AuthContextData {
 	uploadProfilePicture: (file: File) => Promise<void>;
 	getAllUsers: () => Promise<User[]>;
 	changeUserRole: (userId: number, newRole: 'USER' | 'MODERATOR' | 'ADMIN') => Promise<void>;
+	banUser: (userId: number, is_banned: boolean) => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -150,6 +151,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		}
 	};
 
+	const banUser = async (userId: number, is_banned: boolean) => {
+		try {
+			const { data } = await api.patch(`/users/${userId}/ban`, { is_banned }, { withCredentials: true });
+			if (data) {
+				await checkAuth();
+				toast.success(`User has been ${is_banned ? 'banned' : 'unbanned'} successfully!`);
+			}
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error(error);
+			toast.error(error.response?.data?.error);
+			throw error;
+		}
+	};
+
 	const checkAuth = async () => {
 		try {
 			const response = await api.get('/profile', { withCredentials: true });
@@ -170,7 +186,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle, updateUsername, uploadProfilePicture, getAllUsers, changeUserRole }}>
+		<AuthContext.Provider
+			value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle, updateUsername, uploadProfilePicture, getAllUsers, changeUserRole, banUser }}
+		>
 			{isLoading ? <Loader /> : children}
 		</AuthContext.Provider>
 	);

@@ -43,7 +43,7 @@ export const EditUserForm = ({ user, onClose }: EditUserDialogProps) => {
 							<FormLabel>Change Role:</FormLabel>
 							<Select onValueChange={field.onChange} value={field.value} disabled={user?.role === 'ADMIN'}>
 								<FormControl>
-									<SelectTrigger className='cursor-pointer'>
+									<SelectTrigger className='cursor-pointer w-full'>
 										<SelectValue placeholder='Select role' />
 									</SelectTrigger>
 								</FormControl>
