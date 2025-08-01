@@ -3,7 +3,6 @@ import { createGenreLookup } from '@/lib/utils';
 import { Loader } from '../Loader';
 import { Link } from 'react-router';
 import { Info } from 'lucide-react';
-import { MobileToggleButton } from '../sidebar/MobileToggleButton';
 
 export const HomeMovieInfo = ({ mainMovie }: { mainMovie: Movie }) => {
 	const { data: genres, isLoading, error } = useFetchMovieGenres();
@@ -16,7 +15,6 @@ export const HomeMovieInfo = ({ mainMovie }: { mainMovie: Movie }) => {
 	return (
 		<>
 			<div className='home__movieInfo'>
-				<MobileToggleButton />
 				<h1>{mainMovie.title}</h1>
 				<div>
 					<span>{new Date(mainMovie.release_date).getFullYear()}</span>

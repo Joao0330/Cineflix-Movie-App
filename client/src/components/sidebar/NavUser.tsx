@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router';
 
 export function NavUser({ user }: { user: User }) {
-	const { isMobile } = useSidebar();
+	const { isMobile, setOpenMobile } = useSidebar();
 	const { logout } = useAuth();
 	const navigate = useNavigate();
 
@@ -51,6 +51,7 @@ export function NavUser({ user }: { user: User }) {
 						<DropdownMenuItem
 							className='cursor-pointer'
 							onClick={() => {
+								setOpenMobile(false);
 								navigate('/profile');
 							}}
 						>

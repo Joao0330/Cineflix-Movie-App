@@ -4,7 +4,6 @@ import { MovieCredits } from '@/components/movie/MovieCredits';
 import { MovieInfoTop } from '@/components/movie/MovieInfoTop';
 import { MovieReviews } from '@/components/movie/MovieReviews';
 import { MovieVideos } from '@/components/movie/MovieVideos';
-import { MobileToggleButton } from '@/components/sidebar/MobileToggleButton';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useFetchMovieDetail } from '@/hooks/useFetchMovies';
 import { ChevronDown, Heart } from 'lucide-react';
@@ -34,7 +33,6 @@ export const MovieInfo = () => {
 					>
 						<div className='movieInfo__hero'>
 							<div>
-								<MobileToggleButton />
 								<h1>{movie.title}</h1>
 							</div>
 

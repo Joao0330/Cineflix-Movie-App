@@ -277,10 +277,10 @@
 @layer components {
 	/* Header */
 	.header {
-		@apply p-5 absolute left-0 right-0 top-0 z-10 flex px-[3rem] sm:px-0 sm:justify-center;
+		@apply p-5 absolute left-0 right-0 top-0 z-10 flex justify-start px-[3rem] md:px-0 md:justify-center;
 
 		nav {
-			@apply text-gray-300 text-lg;
+			@apply hidden md:block text-gray-300 text-lg;
 
 			ul {
 				@apply flex items-center gap-20;

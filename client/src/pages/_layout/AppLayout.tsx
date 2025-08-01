@@ -7,16 +7,16 @@ import { Outlet } from 'react-router';
 export const AppLayout = () => {
 	return (
 		<>
-			<Header />
-			<main className='dark'>
-				<SidebarProvider>
+			<SidebarProvider>
+				<Header />
+				<main className='dark flex'>
 					<AppSidebar />
 					<div className='flex flex-col w-full'>
 						<Outlet />
 					</div>
-				</SidebarProvider>
-			</main>
-			<Footer />
+				</main>
+				<Footer />
+			</SidebarProvider>
 		</>
 	);
 };

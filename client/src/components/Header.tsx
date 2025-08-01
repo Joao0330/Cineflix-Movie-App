@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { MobileToggleButton } from './sidebar/MobileToggleButton';
 
 export const Header = () => {
 	return (
@@ -18,6 +19,7 @@ export const Header = () => {
 							</li>
 						</ul>
 					</nav>
+					<MobileToggleButton />
 				</div>
 			</div>
 		</header>
