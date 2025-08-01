@@ -763,10 +763,10 @@
 			@apply flex flex-col gap-5;
 
 			li {
-				@apply p-4 border rounded-xl;
+				@apply flex flex-col md:flex-row items-center justify-between gap-10 p-4 border rounded-xl;
 
 				article {
-					@apply flex items-center justify-between;
+					@apply flex flex-col md:flex-row gap-3 items-center md:justify-between w-full;
 
 					> div:first-child {
 						@apply flex flex-col items-center gap-3;

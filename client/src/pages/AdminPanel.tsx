@@ -1,3 +1,4 @@
+import { EditUserDialog } from '@/components/adminPanel/EditUserDialog';
 import { useProfiles } from '@/hooks/useProfiles';
 
 export const AdminPanel = () => {
@@ -36,6 +37,7 @@ export const AdminPanel = () => {
 												</div>
 												<div>Status: {user.is_banned ? <span className='banned'>Banned</span> : <span className='active'>Active</span>}</div>
 											</article>
+											<EditUserDialog user={user} />
 										</li>
 									))}
 								</ul>

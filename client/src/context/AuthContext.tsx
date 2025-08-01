@@ -18,6 +18,7 @@ interface AuthContextData {
 	updateUsername: (username: string) => Promise<void>;
 	uploadProfilePicture: (file: File) => Promise<void>;
 	getAllUsers: () => Promise<User[]>;
+	changeUserRole: (userId: number, newRole: 'USER' | 'MODERATOR' | 'ADMIN') => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -134,6 +135,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		}
 	};
 
+	const changeUserRole = async (userId: number, newRole: 'USER' | 'MODERATOR' | 'ADMIN') => {
+		try {
+			const { data } = await api.put(`/users/${userId}/role`, { newRole }, { withCredentials: true });
+			if (data) {
+				await checkAuth();
+				toast.success('User role updated successfully!');
+			}
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error(error);
+			toast.error(error.response?.data?.error);
+			throw error;
+		}
+	};
+
 	const checkAuth = async () => {
 		try {
 			const response = await api.get('/profile', { withCredentials: true });
@@ -154,7 +170,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle, updateUsername, uploadProfilePicture, getAllUsers }}>
+		<AuthContext.Provider value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle, updateUsername, uploadProfilePicture, getAllUsers, changeUserRole }}>
 			{isLoading ? <Loader /> : children}
 		</AuthContext.Provider>
 	);

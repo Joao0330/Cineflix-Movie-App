@@ -10,6 +10,7 @@ import { updateUsername } from './updateUsername';
 import { uploadProfilePic } from './uploadProfilePic';
 import { verifyUserRole } from '../../middlewares/verify-user-role';
 import { getAllUsers } from './getAllUsers';
+import { changeUserRole } from './changeUserRole';
 
 export async function authRoutes(app: FastifyInstance) {
 	app.post('/register', registerUser);
@@ -21,4 +22,5 @@ export async function authRoutes(app: FastifyInstance) {
 	app.put('/update-username', { onRequest: [verifyJwt] }, updateUsername);
 	app.post('/profile/picture', { onRequest: [verifyJwt] }, uploadProfilePic);
 	app.get('/users', { onRequest: [verifyJwt, verifyUserRole('ADMIN')] }, getAllUsers);
+	app.put('/users/:userId/role', { onRequest: [verifyJwt, verifyUserRole('ADMIN')] }, changeUserRole);
 }

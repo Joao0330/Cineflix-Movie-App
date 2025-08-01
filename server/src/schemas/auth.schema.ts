@@ -22,3 +22,16 @@ export const updateUsernameSchema = z
 	.refine(data => data.username.length <= 20, {
 		message: 'Username must be at most 20 characters',
 	});
+
+export const changeUserRoleSchema = z.object({
+	newRole: z.enum(['USER', 'MODERATOR', 'ADMIN'], { message: 'Invalid role' }),
+});
+
+export const changeUserRoleParamsSchema = z.object({
+	userId: z
+		.string()
+		.transform(Number)
+		.refine(val => Number.isInteger(val) && val > 0, {
+			message: 'UserID must be a positive integer',
+		}),
+});
