@@ -657,7 +657,7 @@
 			@apply text-3xl font-medium;
 		}
 		span {
-			@apply bg-blue-light py-1 px-3 rounded-full text-xs;
+			@apply py-1 px-3 rounded-full text-xs;
 		}
 
 		button {
@@ -734,6 +734,45 @@
 
 						button:last-child {
 							@apply hover:text-red-500;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/* Admin Panel */
+	.adminPanel {
+		@apply px-[3rem] min-h-screen bg-background text-white py-25;
+
+		h1 {
+			@apply text-4xl mb-10;
+		}
+	}
+
+	.adminPanel__users {
+		@apply flex flex-col gap-15;
+
+		h2 {
+			@apply border-b pb-5;
+		}
+	}
+
+	.adminPanel__users-list {
+		ul {
+			@apply flex flex-col gap-5;
+
+			li {
+				@apply p-4 border rounded-xl;
+
+				article {
+					@apply flex items-center justify-between;
+
+					> div:first-child {
+						@apply flex flex-col items-center gap-3;
+
+						img {
+							@apply w-14 h-14 rounded-full object-cover;
 						}
 					}
 				}

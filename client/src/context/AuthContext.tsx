@@ -17,6 +17,7 @@ interface AuthContextData {
 	checkAuth: () => Promise<void>;
 	updateUsername: (username: string) => Promise<void>;
 	uploadProfilePicture: (file: File) => Promise<void>;
+	getAllUsers: () => Promise<User[]>;
 }
 
 interface AuthProviderProps {
@@ -121,6 +122,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		}
 	};
 
+	const getAllUsers = async () => {
+		try {
+			const { data } = await api.get('/users', { withCredentials: true });
+			return data;
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error fetching users:', error);
+			toast.error(error.response?.data?.error);
+			throw error;
+		}
+	};
+
 	const checkAuth = async () => {
 		try {
 			const response = await api.get('/profile', { withCredentials: true });
@@ -141,7 +154,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle, updateUsername, uploadProfilePicture }}>
+		<AuthContext.Provider value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle, updateUsername, uploadProfilePicture, getAllUsers }}>
 			{isLoading ? <Loader /> : children}
 		</AuthContext.Provider>
 	);

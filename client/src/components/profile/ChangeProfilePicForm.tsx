@@ -5,10 +5,10 @@ import { Input } from '../ui/input';
 import { z } from 'zod';
 import { uploadProfilePicSchema } from '@/schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useProfileUser } from '@/hooks/useProfileUser';
+import { useProfiles } from '@/hooks/useProfiles';
 
 export const ChangeProfilePicForm = () => {
-	const { uploadProfilePictureMutation } = useProfileUser();
+	const { uploadProfilePictureMutation } = useProfiles();
 
 	const form = useForm<z.infer<typeof uploadProfilePicSchema>>({
 		resolver: zodResolver(uploadProfilePicSchema),

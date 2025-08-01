@@ -2,17 +2,16 @@ import { useAuth } from '@/context/AuthContext';
 import { queryClient } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-export const useProfileUser = () => {
-	const { checkAuth, updateUsername, uploadProfilePicture } = useAuth();
+export const useProfiles = () => {
+	const { updateUsername, uploadProfilePicture, getAllUsers } = useAuth();
 
-	const useProfileUserQuery = () => {
-		useQuery({
-			queryKey: ['profileUser'],
-			queryFn: checkAuth,
+	const useProfileGetUsersQuery = () =>
+		useQuery<User[]>({
+			queryKey: ['profileUsers'],
+			queryFn: getAllUsers,
 			refetchOnWindowFocus: false,
 			retry: false,
 		});
-	};
 
 	const updateUsernameMutation = useMutation({
 		mutationFn: (username: string) => updateUsername(username),
@@ -29,7 +28,7 @@ export const useProfileUser = () => {
 	});
 
 	return {
-		useProfileUserQuery,
+		useProfileGetUsersQuery,
 		updateUsernameMutation,
 		uploadProfilePictureMutation,
 	};

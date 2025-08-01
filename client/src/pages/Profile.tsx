@@ -33,6 +33,21 @@ export const Profile = () => {
 		movie: movieDetails.find(movie => movie.id === review.movie?.external_id) || null,
 	}));
 
+	// Get user badge color
+	let badgeColor;
+
+	switch (user?.role) {
+		case 'ADMIN':
+			badgeColor = 'bg-red-600';
+			break;
+		case 'MODERATOR':
+			badgeColor = 'bg-green-600';
+			break;
+		default:
+			badgeColor = 'bg-blue-light';
+			break;
+	}
+
 	return (
 		<section className='profile'>
 			<div className='container-sm'>
@@ -42,7 +57,7 @@ export const Profile = () => {
 						<div className='profile__top-info'>
 							<div>
 								<h1>{user?.username}</h1>
-								<span>{user?.role}</span>
+								<span className={badgeColor}>{user?.role}</span>
 							</div>
 							<div>
 								<button>0 Followers</button>

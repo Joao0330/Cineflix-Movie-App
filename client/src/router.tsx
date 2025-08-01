@@ -11,6 +11,8 @@ import { Browse } from './pages/Browse';
 import { Favorites } from './pages/Favorites';
 import { Lists } from './pages/Lists';
 import { Profile } from './pages/Profile';
+import { AdminRoute } from './pages/AdminRoute';
+import { AdminPanel } from './pages/AdminPanel';
 
 export const router = createBrowserRouter([
 	{
@@ -32,14 +34,23 @@ export const router = createBrowserRouter([
 			{
 				element: <AppLayout />,
 				children: [
-					{ path: '/home', element: <Home /> }, // or path: ''
-					{ path: '/movies/:movieId', element: <MovieInfo /> }, // Placeholder for MovieInfo component
+					{ path: '/home', element: <Home /> },
+					{ path: '/movies/:movieId', element: <MovieInfo /> },
 					{ path: '/browse', element: <Browse /> },
 					{ path: '/browse/:genreId', element: <Browse /> },
 					{ path: '/favorites', element: <Favorites /> },
 					{ path: '/lists', element: <Lists /> },
 					{ path: '/profile', element: <Profile /> },
 				],
+			},
+		],
+	},
+	{
+		element: <AdminRoute />,
+		children: [
+			{
+				element: <AppLayout />,
+				children: [{ path: '/admin', element: <AdminPanel /> }],
 			},
 		],
 	},

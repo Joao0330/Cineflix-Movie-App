@@ -6,6 +6,9 @@
 		"dev": "tsx watch src/server.ts",
 		"start": "node dist/server.js"
 	},
+	"prisma": {
+		"seed": "ts-node prisma/seed.ts"
+	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
@@ -28,6 +31,7 @@
 	"devDependencies": {
 		"@types/bcrypt": "^5.0.2",
 		"@types/node": "^22.15.21",
+		"ts-node": "^10.9.2",
 		"tsx": "^4.19.4",
 		"typescript": "^5.8.3"
 	}

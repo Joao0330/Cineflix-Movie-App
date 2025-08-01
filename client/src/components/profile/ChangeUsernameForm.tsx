@@ -5,10 +5,10 @@ import type { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { useProfileUser } from '@/hooks/useProfileUser';
+import { useProfiles } from '@/hooks/useProfiles';
 
 export const ChangeUsernameForm = ({ user }: { user: User | null }) => {
-	const { updateUsernameMutation } = useProfileUser();
+	const { updateUsernameMutation } = useProfiles();
 
 	const form = useForm<z.infer<typeof updateUsernameSchema>>({
 		resolver: zodResolver(updateUsernameSchema),

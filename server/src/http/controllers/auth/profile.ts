@@ -18,6 +18,7 @@ export async function getCurrentUser(request: FastifyRequest, reply: FastifyRepl
 				role: true,
 				created_at: true,
 				profile_picture_url: true,
+				is_banned: true,
 			},
 		});
 
