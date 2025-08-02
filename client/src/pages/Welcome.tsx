@@ -11,7 +11,7 @@ export const Welcome = () => {
 				<div className='welcome__content'>
 					<div>
 						<h1>CineFlix</h1>
-						<p>Welcome to CineFlix! Create an account below and start browsing through your favorite movies and series!</p>
+						<p>Welcome to CineFlix! Create an account below and start browsing through your favorite movies!</p>
 						<Button className='px-10 py-6 bg-blue-700 hover:bg-blue-800 cursor-pointer' asChild>
 							<Link to={user ? '/home' : '/login'}>Get Started</Link>
 						</Button>
