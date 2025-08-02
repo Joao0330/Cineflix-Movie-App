@@ -15,6 +15,7 @@ export async function searchUser(request: FastifyRequest, reply: FastifyReply) {
 				profile_picture_url: true,
 				role: true,
 				created_at: true,
+				is_banned: true,
 			},
 		});
 

@@ -27,6 +27,7 @@ export async function getMovieReviews(request: FastifyRequest, reply: FastifyRep
 					select: {
 						id: true,
 						username: true,
+						profile_picture_url: true,
 					},
 				},
 			},

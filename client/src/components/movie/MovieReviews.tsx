@@ -1,9 +1,12 @@
 import { useReviews } from '@/hooks/useReviews';
 import { format } from 'date-fns';
+import { Link } from 'react-router';
 
 export const MovieReviews = ({ movie }: { movie: Movie }) => {
 	const { useMovieReviewsQuery } = useReviews();
 	const { data: movieReviews = [], isLoading } = useMovieReviewsQuery(movie.id);
+
+	console.log('Movie reviews:', movieReviews);
 
 	return (
 		<section className='movieInfo__details__reviews'>
@@ -22,8 +25,10 @@ export const MovieReviews = ({ movie }: { movie: Movie }) => {
 								<li key={review.id}>
 									<div>
 										<div>
-											<img src='https://placehold.co/40x40?text=Image not found' alt={review.user.username} />
-											<strong>{review.user.username}</strong>
+											<img src={review.user.profile_picture_url ? review.user.profile_picture_url : '/assets/userFallback.png'} alt={review.user.username} />
+											<Link to={`/user/${review.user.id}`}>
+												<strong>{review.user.username}</strong>
+											</Link>
 										</div>
 										<span>Published at {format(new Date(review.created_at), 'MMMM d, yyyy')}</span>
 									</div>

@@ -9,12 +9,13 @@ import { useReviews } from '@/hooks/useReviews';
 import { useProfiles } from '@/hooks/useProfiles';
 import { format } from 'date-fns';
 import { Link, useParams } from 'react-router';
+import { Button } from '@/components/ui/button';
 
 export const Profile = ({ type }: { type: 'ownProfile' | 'publicProfile' }) => {
 	const { userId } = useParams();
 	const { user: ownUser } = useAuth();
 	const { useUserReviewsQuery, useUserReviewsByIdQuery } = useReviews();
-	const { useSearchUserQuery } = useProfiles();
+	const { useSearchUserQuery, banUserMutation } = useProfiles();
 
 	const isOwnProfile = type === 'ownProfile';
 
@@ -59,6 +60,8 @@ export const Profile = ({ type }: { type: 'ownProfile' | 'publicProfile' }) => {
 
 	scrollTo(0, 0);
 
+	console.log(user);
+
 	return (
 		<section className='profile'>
 			<div className='container-sm'>
@@ -73,6 +76,24 @@ export const Profile = ({ type }: { type: 'ownProfile' | 'publicProfile' }) => {
 							<div>
 								<small>Joined on {user?.created_at ? format(new Date(user.created_at), 'MMMM d, yyyy') : 'Unknown'}</small>
 							</div>
+							{!isOwnProfile && (ownUser?.role === 'ADMIN' || ownUser?.role === 'MODERATOR') && (
+								<div>
+									{user?.is_banned ? (
+										<Button variant='secondary' className='cursor-pointer' onClick={() => banUserMutation.mutate({ userId: user.id, is_banned: false })}>
+											Unban User
+										</Button>
+									) : (
+										<Button
+											disabled={user?.role === 'ADMIN' || !user}
+											variant='destructive'
+											className='cursor-pointer'
+											onClick={() => user && banUserMutation.mutate({ userId: user.id, is_banned: true })}
+										>
+											Ban User
+										</Button>
+									)}
+								</div>
+							)}
 						</div>
 					</div>
 					{isOwnProfile && (

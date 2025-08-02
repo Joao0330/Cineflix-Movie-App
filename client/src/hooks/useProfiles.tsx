@@ -15,7 +15,7 @@ export const useProfiles = () => {
 
 	const useSearchUserQuery = (userId: number, options?: object) =>
 		useQuery<User | null>({
-			queryKey: ['profileUser', userId],
+			queryKey: ['profileUsers', userId],
 			queryFn: () => searchUser(Number(userId)),
 			refetchOnWindowFocus: false,
 			retry: false,

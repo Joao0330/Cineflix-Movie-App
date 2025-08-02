@@ -491,7 +491,11 @@
 							@apply flex items-center gap-3;
 
 							img {
-								@apply rounded-full;
+								@apply w-[40px] h-[40px] rounded-full;
+							}
+
+							a {
+								@apply hover:underline;
 							}
 						}
 
