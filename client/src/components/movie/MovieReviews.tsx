@@ -1,9 +1,13 @@
+import { useAuth } from '@/context/AuthContext';
 import { useReviews } from '@/hooks/useReviews';
 import { format } from 'date-fns';
 import { Link } from 'react-router';
+import { Button } from '../ui/button';
+import { Trash } from 'lucide-react';
 
 export const MovieReviews = ({ movie }: { movie: Movie }) => {
-	const { useMovieReviewsQuery } = useReviews();
+	const { user } = useAuth();
+	const { useMovieReviewsQuery, deleteReviewMutation } = useReviews();
 	const { data: movieReviews = [], isLoading } = useMovieReviewsQuery(movie.id);
 
 	console.log('Movie reviews:', movieReviews);
@@ -36,6 +40,13 @@ export const MovieReviews = ({ movie }: { movie: Movie }) => {
 										<span>Rated this show {review.rating}/10</span>
 									</div>
 									<p>{review.content}</p>
+									{user?.role === 'ADMIN' ||
+										(user?.role === 'MODERATOR' && (
+											<Button variant='destructive' className='cursor-pointer' onClick={() => deleteReviewMutation.mutate(review.id)}>
+												<Trash />
+												<span>Delete Review</span>
+											</Button>
+										))}
 								</li>
 							))}
 						</ul>

@@ -7,7 +7,7 @@ export const useReviews = () => {
 
 	const useMovieReviewsQuery = (movieId: number) =>
 		useQuery<Review[]>({
-			queryKey: ['reviews', movieId],
+			queryKey: ['userReviews', movieId],
 			queryFn: () => getMovieReviews(movieId),
 			enabled: !!movieId,
 			refetchOnWindowFocus: false,
