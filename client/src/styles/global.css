@@ -904,6 +904,27 @@
 		}
 	}
 
+	/* NotFound page */
+	.notFoundPage {
+		@apply px-[3rem] min-h-screen bg-foreground text-white py-25;
+
+		div {
+			@apply flex flex-col items-center justify-center gap-10;
+
+			h1 {
+				@apply text-6xl font-bebas-neue;
+			}
+
+			p {
+				@apply text-lg;
+			}
+
+			a {
+				@apply mt-5 px-6 py-3 bg-blue-light rounded-md text-white hover:bg-blue-600 transition-colors duration-300;
+			}
+		}
+	}
+
 	/* Loader */
 	.loader {
 		@apply absolute left-0 bottom-0 w-full h-full flex justify-center items-center opacity-90 transition-all duration-500 z-[9999] bg-background;

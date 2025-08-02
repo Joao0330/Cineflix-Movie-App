@@ -14,6 +14,7 @@ import { Profile } from './pages/Profile';
 import { AdminRoute } from './pages/AdminRoute';
 import { AdminPanel } from './pages/AdminPanel';
 import { Faq } from './pages/Faq';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 export const router = createBrowserRouter([
 	{
@@ -57,4 +58,5 @@ export const router = createBrowserRouter([
 			},
 		],
 	},
+	{ path: '*', element: <NotFoundPage /> },
 ]);
