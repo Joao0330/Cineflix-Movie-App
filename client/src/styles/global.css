@@ -304,10 +304,14 @@
 			}
 
 			> div {
-				@apply mt-5 flex items-center gap-10;
+				@apply mt-5 flex flex-col-reverse items-start sm:flex-row sm:items-center gap-10;
+
+				time {
+					@apply font-medium;
+				}
 
 				div {
-					@apply flex items-center gap-5;
+					@apply flex items-center flex-wrap gap-5;
 
 					span {
 						@apply text-sm border border-white rounded-4xl p-2;
@@ -788,6 +792,28 @@
 		}
 	}
 
+	/* FAQ */
+
+	.faq {
+		@apply px-[3rem] min-h-screen bg-background text-white py-25;
+
+		h1 {
+			@apply text-4xl font-medium mb-4;
+		}
+	}
+
+	.faq__content {
+		@apply mt-10;
+
+		h2 {
+			@apply text-xl font-semibold;
+		}
+
+		p {
+			@apply text-gray-300 text-lg mt-4 overflow-hidden leading-10;
+		}
+	}
+
 	/* Welcome page */
 	.welcome {
 		@apply relative min-h-screen bg-[url(/assets/welcome-bg.jpg)] bg-cover bg-center welcome-hero-rounded-effect;
@@ -922,7 +948,7 @@
 
 	/* MobileSidebarToggle */
 	.MobileSidebarToggle {
-		@apply md:hidden mb-5 p-3 border rounded-full cursor-pointer bg-transparent text-white hover:bg-gray-transparent transition-colors duration-200;
+		@apply md:hidden mb-5 p-5 border rounded-full cursor-pointer bg-transparent text-white hover:bg-gray-transparent transition-colors duration-200;
 	}
 }
 

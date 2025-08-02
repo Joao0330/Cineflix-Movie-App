@@ -12,7 +12,7 @@ export const MobileToggleButton = () => {
 			aria-label='Toggle Sidebar'
 			className='MobileSidebarToggle'
 		>
-			<MenuIcon className='h-4 w-4' />
+			<MenuIcon className='h-6 w-6' />
 		</button>
 	);
 };

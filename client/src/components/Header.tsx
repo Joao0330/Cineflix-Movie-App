@@ -15,7 +15,7 @@ export const Header = () => {
 								<Link to='/browse'>Browse</Link>
 							</li>
 							<li>
-								<a href='/register'>FAQ</a>
+								<Link to='/faq'>FAQ</Link>
 							</li>
 						</ul>
 					</nav>

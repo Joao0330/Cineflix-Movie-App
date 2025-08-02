@@ -13,6 +13,7 @@ import { Lists } from './pages/Lists';
 import { Profile } from './pages/Profile';
 import { AdminRoute } from './pages/AdminRoute';
 import { AdminPanel } from './pages/AdminPanel';
+import { Faq } from './pages/Faq';
 
 export const router = createBrowserRouter([
 	{
@@ -42,6 +43,7 @@ export const router = createBrowserRouter([
 					{ path: '/lists', element: <Lists /> },
 					{ path: '/profile', element: <Profile type='ownProfile' /> },
 					{ path: '/user/:userId', element: <Profile type='publicProfile' /> },
+					{ path: '/faq', element: <Faq /> },
 				],
 			},
 		],

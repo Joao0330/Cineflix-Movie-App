@@ -17,7 +17,7 @@ export const HomeMovieInfo = ({ mainMovie }: { mainMovie: Movie }) => {
 			<div className='home__movieInfo'>
 				<h1>{mainMovie.title}</h1>
 				<div>
-					<span>{new Date(mainMovie.release_date).getFullYear()}</span>
+					<time>{new Date(mainMovie.release_date).getFullYear()}</time>
 					<div>
 						{mainMovie.genre_ids.map(genreId => (
 							<span key={genreId}>{genreLookup[genreId]}</span>

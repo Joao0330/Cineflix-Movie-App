@@ -1,4 +1,4 @@
-import { Database, Heart, HomeIcon, List } from 'lucide-react';
+import { Database, Heart, HelpCircle, HomeIcon, List, TextSearch } from 'lucide-react';
 import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { useNavigate } from 'react-router';
 import { SearchDialog } from '../search/SearchDialog';
@@ -10,7 +10,7 @@ export function NavMain() {
 	const { user } = useAuth();
 
 	return (
-		<SidebarMenu className='mt-10'>
+		<SidebarMenu className='mt-3'>
 			<SidebarGroup>
 				<SidebarMenuItem>
 					<SidebarMenuButton
@@ -28,6 +28,20 @@ export function NavMain() {
 				</SidebarMenuItem>
 				<SidebarMenuItem>
 					<SearchDialog />
+				</SidebarMenuItem>
+				<SidebarMenuItem>
+					<SidebarMenuButton
+						tooltip='Browse'
+						className='cursor-pointer'
+						onClick={() => {
+							setOpenMobile(false);
+							navigate('/browse');
+							scrollTo(0, 0);
+						}}
+					>
+						<TextSearch className='size-4' />
+						<span>Browse</span>
+					</SidebarMenuButton>
 				</SidebarMenuItem>
 			</SidebarGroup>
 
@@ -60,10 +74,7 @@ export function NavMain() {
 						<span>Lists</span>
 					</SidebarMenuButton>
 				</SidebarMenuItem>
-			</SidebarGroup>
-
-			{user?.role === 'ADMIN' && (
-				<SidebarGroup className='mt-5'>
+				{user?.role === 'ADMIN' && (
 					<SidebarMenuItem>
 						<SidebarMenuButton
 							tooltip='Admin Panel'
@@ -78,8 +89,25 @@ export function NavMain() {
 							<span>Admin Panel</span>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
-				</SidebarGroup>
-			)}
+				)}
+			</SidebarGroup>
+
+			<SidebarGroup className='mt-5'>
+				<SidebarMenuItem>
+					<SidebarMenuButton
+						tooltip='F.A.Q'
+						className='cursor-pointer'
+						onClick={() => {
+							setOpenMobile(false);
+							navigate('/faq');
+							scrollTo(0, 0);
+						}}
+					>
+						<HelpCircle className='size-4' />
+						<span>FAQ</span>
+					</SidebarMenuButton>
+				</SidebarMenuItem>
+			</SidebarGroup>
 		</SidebarMenu>
 	);
 }
