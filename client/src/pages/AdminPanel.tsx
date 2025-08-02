@@ -1,6 +1,7 @@
 import { EditUserDialog } from '@/components/adminPanel/EditUserDialog';
 import { Button } from '@/components/ui/button';
 import { useProfiles } from '@/hooks/useProfiles';
+import { Link } from 'react-router';
 
 export const AdminPanel = () => {
 	const { useProfileGetUsersQuery, banUserMutation } = useProfiles();
@@ -25,7 +26,9 @@ export const AdminPanel = () => {
 											<article>
 												<div>
 													<img src={user.profile_picture_url || '/assets/userFallback.png'} alt={user.username} />
-													<strong>{user.username}</strong>
+													<Link to={`/user/${user.id}`}>
+														<strong>{user.username}</strong>
+													</Link>
 												</div>
 												<div>
 													<span>Email: {user.email}</span>

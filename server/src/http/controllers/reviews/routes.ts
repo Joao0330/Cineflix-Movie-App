@@ -5,6 +5,7 @@ import { getMovieReviews } from './getMovieReviews';
 import { getUserReviews } from './getUserReviews';
 import { deleteReview } from './deleteReview';
 import { updateReview } from './updateReview';
+import { getReviewsByUserId } from './getReviewsByUserId';
 
 export async function reviewRoutes(app: FastifyInstance) {
 	app.post('/reviews', { onRequest: [verifyJwt] }, addReview);
@@ -12,4 +13,5 @@ export async function reviewRoutes(app: FastifyInstance) {
 	app.get('/reviews', { onRequest: [verifyJwt] }, getUserReviews);
 	app.delete('/reviews', { onRequest: [verifyJwt] }, deleteReview);
 	app.put('/reviews/:reviewId', { onRequest: [verifyJwt] }, updateReview);
+	app.get('/reviews/user/:userId', { onRequest: [verifyJwt] }, getReviewsByUserId);
 }

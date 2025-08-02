@@ -39,3 +39,12 @@ export const changeUserRoleParamsSchema = z.object({
 export const banUserSchema = z.object({
 	is_banned: z.boolean(),
 });
+
+export const searchUserParams = z.object({
+	userId: z
+		.string()
+		.transform(Number)
+		.refine(val => Number.isInteger(val) && val > 0, {
+			message: 'UserID must be a positive integer',
+		}),
+});

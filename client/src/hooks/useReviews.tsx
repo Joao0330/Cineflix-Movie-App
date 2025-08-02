@@ -3,7 +3,7 @@ import { queryClient } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useReviews = () => {
-	const { addReview, getMovieReviews, getUserReviews, deleteReview, updateReview } = useActions();
+	const { addReview, getMovieReviews, getUserReviews, deleteReview, updateReview, getReviewsByUserId } = useActions();
 
 	const useMovieReviewsQuery = (movieId: number) =>
 		useQuery<Review[]>({
@@ -19,9 +19,21 @@ export const useReviews = () => {
 		useQuery<Review[]>({
 			queryKey: ['userReviews'],
 			queryFn: getUserReviews,
+			enabled: true,
 			refetchOnWindowFocus: false,
 			select: data => data ?? [],
 			retry: false,
+		});
+
+	const useUserReviewsByIdQuery = (userId: number, options?: object) =>
+		useQuery<Review[]>({
+			queryKey: ['userReviewsById', userId],
+			queryFn: () => getReviewsByUserId(userId),
+			enabled: !!userId,
+			refetchOnWindowFocus: false,
+			select: data => data ?? [],
+			retry: false,
+			...options,
 		});
 
 	const addReviewMutation = useMutation({
@@ -45,5 +57,5 @@ export const useReviews = () => {
 		},
 	});
 
-	return { addReviewMutation, useMovieReviewsQuery, useUserReviewsQuery, deleteReviewMutation, updateReviewMutation };
+	return { addReviewMutation, useMovieReviewsQuery, useUserReviewsQuery, deleteReviewMutation, updateReviewMutation, useUserReviewsByIdQuery };
 };

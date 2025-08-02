@@ -27,3 +27,12 @@ export const updateReviewBodySchema = z.object({
 	rating: z.number().int().min(1).max(10, { message: 'Rating must be between 1 and 10' }),
 	content: z.string().min(1, { message: 'Comment is required' }),
 });
+
+export const getReviewsByUserIdSchema = z.object({
+	userId: z
+		.string()
+		.transform(Number)
+		.refine(val => Number.isInteger(val) && val > 0, {
+			message: 'Review ID must be a positive integer',
+		}),
+});

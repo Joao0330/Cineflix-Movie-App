@@ -3,7 +3,7 @@ import { queryClient } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useProfiles = () => {
-	const { updateUsername, uploadProfilePicture, getAllUsers, changeUserRole, banUser } = useAuth();
+	const { updateUsername, uploadProfilePicture, getAllUsers, changeUserRole, banUser, searchUser } = useAuth();
 
 	const useProfileGetUsersQuery = () =>
 		useQuery<User[]>({
@@ -11,6 +11,15 @@ export const useProfiles = () => {
 			queryFn: getAllUsers,
 			refetchOnWindowFocus: false,
 			retry: false,
+		});
+
+	const useSearchUserQuery = (userId: number, options?: object) =>
+		useQuery<User | null>({
+			queryKey: ['profileUser', userId],
+			queryFn: () => searchUser(Number(userId)),
+			refetchOnWindowFocus: false,
+			retry: false,
+			...options,
 		});
 
 	const updateUsernameMutation = useMutation({
@@ -43,6 +52,7 @@ export const useProfiles = () => {
 
 	return {
 		useProfileGetUsersQuery,
+		useSearchUserQuery,
 		updateUsernameMutation,
 		uploadProfilePictureMutation,
 		changeUserRoleMutation,

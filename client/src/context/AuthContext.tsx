@@ -20,6 +20,7 @@ interface AuthContextData {
 	getAllUsers: () => Promise<User[]>;
 	changeUserRole: (userId: number, newRole: 'USER' | 'MODERATOR' | 'ADMIN') => Promise<void>;
 	banUser: (userId: number, is_banned: boolean) => Promise<void>;
+	searchUser: (userId: number) => Promise<User | null>;
 }
 
 interface AuthProviderProps {
@@ -166,6 +167,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		}
 	};
 
+	const searchUser = async (userId: number) => {
+		try {
+			const { data } = await api.get(`/users/${userId}`, { withCredentials: true });
+			if (data) {
+				return data;
+			}
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error(error);
+			toast.error(error.response?.data?.error);
+			throw error;
+		}
+	};
+
 	const checkAuth = async () => {
 		try {
 			const response = await api.get('/profile', { withCredentials: true });
@@ -187,7 +202,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 	return (
 		<AuthContext.Provider
-			value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle, updateUsername, uploadProfilePicture, getAllUsers, changeUserRole, banUser }}
+			value={{ user, setUser, login, register, logout, accessToken, checkAuth, isLoading, loginWithGoogle, updateUsername, uploadProfilePicture, getAllUsers, changeUserRole, banUser, searchUser }}
 		>
 			{isLoading ? <Loader /> : children}
 		</AuthContext.Provider>

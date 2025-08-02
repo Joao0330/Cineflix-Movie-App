@@ -18,6 +18,7 @@ interface ActionsContextData {
 	getUserReviews: () => Promise<Review[]>;
 	deleteReview: (reviewId: number) => Promise<void>;
 	updateReview: (reviewId: number, content: string, rating: number) => Promise<void>;
+	getReviewsByUserId: (userId: number) => Promise<Review[]>;
 }
 
 interface ActionsProviderProps {
@@ -200,6 +201,17 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 		}
 	};
 
+	const getReviewsByUserId = async (userId: number) => {
+		try {
+			const { data } = await api.get(`/reviews/user/${userId}`, { withCredentials: true });
+			return data;
+		} catch (err: unknown) {
+			const error = err as axiosErrorResponse;
+			console.error('Error fetching user reviews by ID:', error);
+			throw error;
+		}
+	};
+
 	const deleteReview = async (reviewId: number) => {
 		try {
 			await api.delete('/reviews', {
@@ -247,6 +259,7 @@ export function ActionsProvider({ children }: ActionsProviderProps) {
 				getUserReviews,
 				deleteReview,
 				updateReview,
+				getReviewsByUserId,
 			}}
 		>
 			{children}

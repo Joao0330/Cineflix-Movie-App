@@ -13,6 +13,7 @@ import { getAllUsers } from './getAllUsers';
 import { changeUserRole } from './changeUserRole';
 import { verifyIfBanned } from '../../middlewares/verify-banned';
 import { banUser } from './banUser';
+import { searchUser } from './searchUser';
 
 export async function authRoutes(app: FastifyInstance) {
 	app.post('/register', registerUser);
@@ -22,8 +23,9 @@ export async function authRoutes(app: FastifyInstance) {
 	app.get('/profile', { onRequest: [verifyJwt, verifyIfBanned] }, getCurrentUser);
 	app.get('/auth/google/config', googleConfig);
 	app.put('/update-username', { onRequest: [verifyJwt] }, updateUsername);
-	app.post('/profile/picture', { onRequest: [verifyJwt, verifyIfBanned] }, uploadProfilePic);
+	app.post('/profile/picture', { onRequest: [verifyJwt] }, uploadProfilePic);
 	app.get('/users', { onRequest: [verifyJwt, verifyUserRole('ADMIN')] }, getAllUsers);
 	app.put('/users/:userId/role', { onRequest: [verifyJwt, verifyUserRole('ADMIN')] }, changeUserRole);
-	app.patch('/users/:userId/ban', { onRequest: [verifyJwt, verifyUserRole('ADMIN'), verifyIfBanned] }, banUser);
+	app.patch('/users/:userId/ban', { onRequest: [verifyJwt, verifyUserRole('ADMIN')] }, banUser);
+	app.get('/users/:userId', { onRequest: [verifyJwt] }, searchUser);
 }
