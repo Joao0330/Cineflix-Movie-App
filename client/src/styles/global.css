@@ -277,7 +277,7 @@
 @layer components {
 	/* Header */
 	.header {
-		@apply p-5 absolute left-0 right-0 top-0 z-10 flex justify-start px-[3rem] md:px-0 md:justify-center;
+		@apply py-5 absolute left-0 right-0 top-0 z-10 flex justify-start px-[3rem] md:px-0 md:py-0 md:justify-center;
 
 		nav {
 			@apply hidden md:block text-gray-300 text-lg;
@@ -365,12 +365,12 @@
 			}
 
 			div:nth-child(2) {
-				@apply flex gap-5;
+				@apply flex flex-col gap-5 min-[480px]:flex-row;
 				button {
 					@apply flex items-center gap-2 border  p-4 rounded-4xl cursor-pointer transition-colors duration-300;
 
 					span {
-						@apply font-medium hidden min-[480px]:block;
+						@apply font-medium;
 					}
 				}
 
