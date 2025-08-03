@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,6 +5,67 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int         @id @default(autoincrement())
+  username            String      @unique
+  email               String      @unique
+  password_hash       String      @db.VarChar(60)
+  role                Role        @default(USER)
+  googleId            String?     @unique
+  created_at          DateTime    @default(now())
+  is_banned           Boolean     @default(false)
+  profile_picture_url String?
+  favorites           Favorites[]
+  movieLists          MovieList[]
+  Review              Review[]
+}
+
+model Favorites {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  external_id Int
+  created_at  DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, external_id])
+}
+
+model MovieList {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  title      String
+  created_at DateTime @default(now())
+  movies     Movie[]
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, title])
+}
+
+model Movie {
+  id          Int             @id @default(autoincrement())
+  external_id Int
+  movieListId Int?
+  status      movieListStatus @default(WATCHING)
+  movieList   MovieList?      @relation(fields: [movieListId], references: [id], onDelete: Cascade)
+  Review      Review[]
+
+  @@unique([movieListId, external_id])
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  content    String
+  rating     Int?     @default(0)
+  movieId    Int
+  userId     Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  movie      Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, movieId])
 }
 
 enum Role {
@@ -25,62 +80,4 @@ enum movieListStatus {
   ON_HOLD
   DROPPED
   PLANNING
-}
-
-model User {
-  id                  Int       @id @default(autoincrement())
-  username            String    @unique
-  email               String    @unique
-  password_hash       String    @db.VarChar(60)
-  role                Role      @default(USER)
-  googleId            String?   @unique
-  created_at          DateTime  @default(now())
-  is_banned           Boolean   @default(false)
-  profile_picture_url String?
-  favorites         Favorites[]
-  movieLists        MovieList[]
-  Review            Review[]
-}
-
-model Favorites {
-  id                Int       @id @default(autoincrement())
-  userId            Int
-  external_id       Int    
-  created_at        DateTime  @default(now())
-  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  @@unique([userId, external_id])
-}
-
-model MovieList {
-  id                Int                 @id @default(autoincrement())
-  userId            Int
-  title             String              
-  created_at        DateTime            @default(now())
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  movies            Movie[]             
-  @@unique([userId, title])
-}
-
-model Movie {
-  id                Int                   @id @default(autoincrement())
-  external_id       Int
-  movieListId       Int?
-  status            movieListStatus       @default(WATCHING)
-  movieList         MovieList?            @relation(fields: [movieListId], references: [id], onDelete: Cascade)
-  Review            Review[]
-  @@unique([movieListId, external_id])
-}
-
-model Review {
-  id          Int       @id @default(autoincrement())
-  content     String    @db.Text
-  rating      Int?      @default(0)
-  movieId     Int
-  userId      Int
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  movie       Movie     @relation(fields: [movieId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, movieId])
 }
