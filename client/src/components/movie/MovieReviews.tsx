@@ -11,6 +11,7 @@ export const MovieReviews = ({ movie }: { movie: Movie }) => {
 	const { data: movieReviews = [], isLoading } = useMovieReviewsQuery(movie.id);
 
 	console.log('Movie reviews:', movieReviews);
+	console.log(user);
 
 	return (
 		<section className='movieInfo__details__reviews'>
