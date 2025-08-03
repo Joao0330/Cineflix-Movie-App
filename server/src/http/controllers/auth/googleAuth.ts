@@ -1,49 +1,50 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
-import { OAuth2Client } from 'google-auth-library';
+import { FastifyRequest, FastifyReply } from 'fastify';
 import { prisma } from '../../../lib/prisma';
-
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+import { OAuth2Client } from 'google-auth-library';
 
 export async function googleAuth(request: FastifyRequest, reply: FastifyReply) {
-	const { token } = request.body as { token: string };
-
 	try {
+		const { token } = request.body as { token: string };
+		const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+		// Verify Google ID token
 		const ticket = await client.verifyIdToken({
 			idToken: token,
 			audience: process.env.GOOGLE_CLIENT_ID,
 		});
 		const payload = ticket.getPayload();
-		if (!payload || !payload.email || !payload.sub) {
-			reply.status(400).send({ error: 'Invalid Google token payload' });
-			return;
+		if (!payload) {
+			return reply.status(401).send({ error: 'Invalid Google token' });
 		}
-		const { email, sub: googleId } = payload;
 
-		let user = await prisma.user.findUnique({ where: { email } });
+		const { sub: googleId, email, name } = payload;
+
+		let user = await prisma.user.findUnique({ where: { googleId } });
 		if (!user) {
 			user = await prisma.user.create({
 				data: {
-					username: email.split('@')[0], // Use email prefix as username
-					email,
-					password_hash: '', // No password for Google users
-					googleId, // Optional: store Google ID for reference
+					googleId,
+					email: email!,
+					username: email!.split('@')[0],
+					password_hash: '',
+					role: 'USER',
 				},
 			});
 		}
 
-		const accessToken = await reply.jwtSign({ id: user.id, role: user.role });
-
-		reply.setCookie('accessToken', accessToken, {
+		// Generate JWT
+		const jwtToken = request.server.jwt.sign({ id: user.id }, { expiresIn: '1h' });
+		reply.setCookie('accessToken', jwtToken, {
 			path: '/',
 			httpOnly: true,
 			secure: true,
 			sameSite: 'none',
-			maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
+			maxAge: 3600, // 1 hour
 		});
 
-		reply.status(200).send({ accessToken });
+		reply.status(200).send({ user });
 	} catch (error) {
 		console.error('Google auth error:', error);
-		reply.status(401).send({ error: 'Invalid Google token' });
+		reply.status(500).send({ error: 'Authentication failed' });
 	}
 }

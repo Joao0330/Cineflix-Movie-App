@@ -15,16 +15,15 @@ export async function loginUser(request: FastifyRequest, reply: FastifyReply) {
 			return reply.status(401).send({ error: 'Invalid credentials' });
 		}
 
-		const accessToken = await reply.jwtSign({ id: user.id, role: user.role });
-
-		reply.setCookie('accessToken', accessToken, {
+		const token = request.server.jwt.sign({ id: user.id }, { expiresIn: '1h' });
+		reply.setCookie('accessToken', token, {
 			path: '/',
 			httpOnly: true,
 			secure: true,
 			sameSite: 'none',
-			maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
+			maxAge: 3600,
 		});
-		reply.status(200).send({ accessToken });
+		reply.status(200).send({ user });
 	} catch (error) {
 		reply.status(500).send({ error: 'Error logging in' });
 	}

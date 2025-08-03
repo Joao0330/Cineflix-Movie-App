@@ -37,26 +37,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	const login = async (email: string, password: string) => {
 		try {
 			const { data } = await api.post('/login', { email, password }, { withCredentials: true });
-
 			if (data) {
-				setAccessToken(data.accessToken);
-
-				const userResponse = await api.get('/profile', { withCredentials: true });
-				setUser(userResponse.data);
+				await checkAuth();
 				toast.success('Login successful!');
 				return true;
 			}
-		} catch (err: unknown) {
+			return false;
+		} catch (err) {
 			const error = err as axiosErrorResponse;
 			console.error(error);
-			toast.error(error.response?.data?.error);
+			toast.error(error.response?.data?.error || 'Login failed');
+			return false;
 		}
-		return false;
 	};
 
-	const loginWithGoogle = (accessToken: string) => {
-		setAccessToken(accessToken);
-		toast.success('Login successful!');
+	const loginWithGoogle = async (token: string) => {
+		try {
+			const response = await api.post('/auth/google', { token }, { withCredentials: true });
+			if (response.data) {
+				await checkAuth();
+				toast.success('Google login successful!');
+			}
+		} catch (err) {
+			const error = err as axiosErrorResponse;
+			console.error(error);
+			toast.error(error.response?.data?.error || 'Google login failed');
+		}
 	};
 
 	const register = async (username: string, email: string, password: string, confirmPassword: string) => {

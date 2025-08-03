@@ -9,9 +9,10 @@ import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router';
 import { GoogleLogin } from '@react-oauth/google';
 import { api } from '@/lib/axios';
+import { toast } from 'sonner';
 
 export const AuthForm = ({ type }: AuthProps) => {
-	const { login, register, loginWithGoogle, setUser } = useAuth();
+	const { login, register, setUser } = useAuth();
 	const navigate = useNavigate();
 
 	window.scrollTo(0, 0);
@@ -71,15 +72,19 @@ export const AuthForm = ({ type }: AuthProps) => {
 							onSuccess={async credentialResponse => {
 								try {
 									const res = await api.post('/auth/google', { token: credentialResponse.credential }, { withCredentials: true });
-									loginWithGoogle(res.data.accessToken);
-									const userResponse = await api.get('/profile', { withCredentials: true });
-									setUser(userResponse.data);
+									if (res.data) {
+										const userResponse = await api.get('/profile', { withCredentials: true });
+										setUser(userResponse.data);
+										navigate('/profile');
+									}
 								} catch (error) {
 									console.error('Google login failed', error);
+									toast.error('Google login failed');
 								}
 							}}
 							onError={() => {
 								console.error('Google login failed');
+								toast.error('Google login failed');
 							}}
 						/>
 					)}
