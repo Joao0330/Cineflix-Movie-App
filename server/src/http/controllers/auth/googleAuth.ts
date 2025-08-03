@@ -36,8 +36,8 @@ export async function googleAuth(request: FastifyRequest, reply: FastifyReply) {
 		reply.setCookie('accessToken', accessToken, {
 			path: '/',
 			httpOnly: true,
-			secure: process.env.NODE_ENV === 'production',
-			sameSite: 'strict',
+			secure: true,
+			sameSite: 'none',
 			maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
 		});
 
