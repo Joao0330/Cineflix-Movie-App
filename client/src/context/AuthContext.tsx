@@ -44,7 +44,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				toast.success('Login successful!');
 				return true;
 			}
-			toast.error(data.error || 'Login failed');
+
 			return false;
 		} catch (err) {
 			const error = err as axiosErrorResponse;
