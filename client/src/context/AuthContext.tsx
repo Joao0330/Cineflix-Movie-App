@@ -38,11 +38,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	const login = async (email: string, password: string) => {
 		try {
 			const { data } = await api.post('/login', { email, password }, { withCredentials: true });
-			if (data) {
+			if (data.response.status === 200 && data.success) {
 				await checkAuth();
 				toast.success('Login successful!');
 				return true;
 			}
+			toast.error(data.error || 'Login failed');
 			return false;
 		} catch (err) {
 			const error = err as axiosErrorResponse;
@@ -55,7 +56,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	const loginWithGoogle = async (token: string) => {
 		try {
 			const response = await api.post('/auth/google', { token }, { withCredentials: true });
-			if (response.data) {
+			if (response.data.status === 200 && response.data.success) {
 				await checkAuth();
 				toast.success('Google login successful!');
 			}
