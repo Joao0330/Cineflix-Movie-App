@@ -77,9 +77,10 @@ export const AuthForm = ({ type }: AuthProps) => {
 										setUser(userResponse.data);
 										navigate('/profile');
 									}
-								} catch (error) {
-									console.error('Google login failed', error);
-									toast.error('Google login failed');
+								} catch (err) {
+									const error = err as axiosErrorResponse;
+									console.error(error);
+									toast.error(error.response?.data?.error);
 								}
 							}}
 							onError={() => {
