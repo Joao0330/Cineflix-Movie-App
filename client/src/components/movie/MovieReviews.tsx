@@ -11,7 +11,6 @@ export const MovieReviews = ({ movie }: { movie: Movie }) => {
 	const { data: movieReviews = [], isLoading } = useMovieReviewsQuery(movie.id);
 
 	console.log('Movie reviews:', movieReviews);
-	console.log(user);
 
 	return (
 		<section className='movieInfo__details__reviews'>
@@ -41,13 +40,12 @@ export const MovieReviews = ({ movie }: { movie: Movie }) => {
 										<span>Rated this show {review.rating}/10</span>
 									</div>
 									<p>{review.content}</p>
-									{user?.role === 'ADMIN' ||
-										(user?.role === 'MODERATOR' && (
-											<Button variant='destructive' className='cursor-pointer' onClick={() => deleteReviewMutation.mutate(review.id)}>
-												<Trash />
-												<span>Delete Review</span>
-											</Button>
-										))}
+									{(user?.role === 'ADMIN' || user?.role === 'MODERATOR') && (
+										<Button variant='destructive' className='cursor-pointer' onClick={() => deleteReviewMutation.mutate(review.id)}>
+											<Trash />
+											<span>Delete Review</span>
+										</Button>
+									)}
 								</li>
 							))}
 						</ul>

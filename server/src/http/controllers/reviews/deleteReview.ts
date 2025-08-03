@@ -18,9 +18,9 @@ export async function deleteReview(request: FastifyRequest, reply: FastifyReply)
 			return reply.status(404).send({ error: 'Review not found' });
 		}
 
-		reply.status(204).send();
+		return reply.status(204).send();
 	} catch (error) {
 		console.error(error);
-		reply.status(500).send({ error: 'Failed to delete list' });
+		reply.status(500).send({ error: 'Failed to delete review' });
 	}
 }

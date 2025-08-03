@@ -26,6 +26,6 @@ export async function authRoutes(app: FastifyInstance) {
 	app.post('/profile/picture', { onRequest: [verifyJwt] }, uploadProfilePic);
 	app.get('/users', { onRequest: [verifyJwt, verifyUserRole('ADMIN')] }, getAllUsers);
 	app.put('/users/:userId/role', { onRequest: [verifyJwt, verifyUserRole('ADMIN')] }, changeUserRole);
-	app.patch('/users/:userId/ban', { onRequest: [verifyJwt, verifyUserRole('ADMIN')] }, banUser);
+	app.patch('/users/:userId/ban', { onRequest: [verifyJwt, verifyUserRole('ADMIN', 'MODERATOR')] }, banUser);
 	app.get('/users/:userId', { onRequest: [verifyJwt] }, searchUser);
 }
