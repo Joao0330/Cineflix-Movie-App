@@ -15,7 +15,7 @@ export async function loginUser(request: FastifyRequest, reply: FastifyReply) {
 			return reply.status(401).send({ error: 'Invalid credentials' });
 		}
 
-		const token = request.server.jwt.sign({ id: user.id }, { expiresIn: '1h' });
+		const token = request.server.jwt.sign({ id: user.id, role: user.role }, { expiresIn: '1h' });
 		reply.setCookie('accessToken', token, {
 			path: '/',
 			httpOnly: true,
