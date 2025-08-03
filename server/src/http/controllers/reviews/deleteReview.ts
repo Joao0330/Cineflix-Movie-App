@@ -3,15 +3,14 @@ import { deleteReviewSchema } from '../../../schemas/review.schema';
 import { prisma } from '../../../lib/prisma';
 
 export async function deleteReview(request: FastifyRequest, reply: FastifyReply) {
-	const { id: userId } = request.user;
+	const { id: userId, role } = request.user;
 	const { reviewId } = deleteReviewSchema.parse(request.body);
 
 	try {
+		const whereCondition = role === 'ADMIN' || role === 'MODERATOR' ? { id: reviewId } : { id: reviewId, userId };
+
 		const deletedReview = await prisma.review.delete({
-			where: {
-				id: reviewId,
-				userId: userId,
-			},
+			where: whereCondition,
 		});
 
 		if (!deletedReview) {
