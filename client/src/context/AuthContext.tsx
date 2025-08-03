@@ -43,9 +43,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				await checkAuth();
 				toast.success('Login successful!');
 				return true;
+			} else {
+				throw new Error(data.error);
 			}
-
-			return false;
 		} catch (err) {
 			const error = err as axiosErrorResponse;
 			console.error(error);
@@ -61,6 +61,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 			if (response.status === 200 && data.success) {
 				await checkAuth();
 				toast.success('Google login successful!');
+			} else {
+				throw new Error(data.error);
 			}
 		} catch (err) {
 			const error = err as axiosErrorResponse;
