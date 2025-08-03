@@ -61,7 +61,10 @@ export function NavUser({ user }: { user: User }) {
 						<DropdownMenuSeparator />
 						<DropdownMenuItem
 							onClick={async () => {
-								await logout();
+								const result = await logout();
+								if (result.success) {
+									navigate('/login');
+								}
 							}}
 							className='cursor-pointer'
 						>

@@ -87,10 +87,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 			setUser(null);
 			setAccessToken(null);
 			googleLogout();
-
 			return { success: true };
 		} catch (error) {
 			console.error('Logout failed:', error);
+			toast.error('Logout failed');
 			return { success: false };
 		}
 	};

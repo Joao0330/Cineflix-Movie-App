@@ -32,14 +32,13 @@ export async function googleAuth(request: FastifyRequest, reply: FastifyReply) {
 			});
 		}
 
-		// Generate JWT
 		const jwtToken = request.server.jwt.sign({ id: user.id }, { expiresIn: '1h' });
 		reply.setCookie('accessToken', jwtToken, {
 			path: '/',
 			httpOnly: true,
 			secure: true,
 			sameSite: 'none',
-			maxAge: 3600, // 1 hour
+			maxAge: 3600,
 		});
 
 		reply.status(200).send({ user });

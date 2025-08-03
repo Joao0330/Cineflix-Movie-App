@@ -1,11 +1,17 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 export async function logoutUser(request: FastifyRequest, reply: FastifyReply) {
-	reply.clearCookie('accessToken', {
-		path: '/',
-		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: 'strict',
-	});
-	return reply.send({ message: 'Logged out' });
+	try {
+		reply.clearCookie('accessToken', {
+			path: '/',
+			httpOnly: true,
+			secure: true,
+			sameSite: 'none',
+			maxAge: 0,
+		});
+		reply.status(200).send({ message: 'Logged out' });
+	} catch (error) {
+		console.error('Logout error:', error);
+		reply.status(500).send({ error: 'Logout failed' });
+	}
 }
