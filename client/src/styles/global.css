@@ -549,7 +549,7 @@
 	}
 
 	.browse__content {
-		@apply grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4;
+		@apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4;
 	}
 
 	.browse__search {
@@ -927,7 +927,7 @@
 
 	/* Loader */
 	.loader {
-		@apply absolute left-0 bottom-0 w-full h-full flex justify-center items-center opacity-90 transition-all duration-500 z-[9999] bg-background;
+		@apply absolute left-0 bottom-0 w-full h-full flex justify-center items-center transition-all duration-500 z-[9999] bg-background;
 
 		& svg {
 			width: 3.25em;

@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { v2 as cloudinary } from 'cloudinary';
 import { prisma } from '../../../lib/prisma';
+import { Readable } from 'stream';
 
 export async function uploadProfilePic(request: FastifyRequest, reply: FastifyReply) {
 	const { id: userId } = request.user;
@@ -11,13 +12,27 @@ export async function uploadProfilePic(request: FastifyRequest, reply: FastifyRe
 	}
 
 	try {
+		const chunks: Buffer[] = [];
+		for await (const chunk of profilePicture.file) {
+			chunks.push(chunk);
+		}
+		const fileBuffer = Buffer.concat(chunks);
+
 		const uploadResult: any = await new Promise((resolve, reject) => {
-			const stream = cloudinary.uploader.upload_stream({ folder: 'profile_pics' }, (error, result) => {
+			const stream = cloudinary.uploader.upload_stream({ folder: 'profile_pics', resource_type: 'image' }, (error, result) => {
 				if (error || !result) return reject(error || new Error('No result from Cloudinary'));
 				resolve(result);
 			});
-			profilePicture.file.pipe(stream);
+
+			const readableStream = new Readable();
+			readableStream.push(fileBuffer);
+			readableStream.push(null);
+			readableStream.pipe(stream);
 		});
+
+		if (!uploadResult.secure_url) {
+			throw new Error('Failed to retrieve secure URL from Cloudinary');
+		}
 
 		await prisma.user.update({
 			where: { id: userId },

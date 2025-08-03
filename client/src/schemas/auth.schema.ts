@@ -24,7 +24,7 @@ export const updateUsernameSchema = z
 	});
 
 export const uploadProfilePicSchema = z.object({
-	profile_picture: z.instanceof(File).refine(file => !file || file.size <= 2 * 1024 * 1024, { message: 'Profile picture must be less than 2MB' }),
+	profile_picture: z.instanceof(File).refine(file => !file || file.size <= 5 * 1024 * 1024, { message: 'Profile picture must be less than 5MB' }),
 });
 
 export const changeUserRole = z.object({
