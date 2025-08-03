@@ -32,7 +32,7 @@ export async function googleAuth(request: FastifyRequest, reply: FastifyReply) {
 			});
 		}
 
-		const jwtToken = request.server.jwt.sign({ id: user.id }, { expiresIn: '1h' });
+		const jwtToken = request.server.jwt.sign({ id: user.id, role: user.role }, { expiresIn: '1h' });
 		reply.setCookie('accessToken', jwtToken, {
 			path: '/',
 			httpOnly: true,
