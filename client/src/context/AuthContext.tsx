@@ -37,15 +37,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 	const login = async (email: string, password: string) => {
 		try {
-			const response = await api.post('/login', { email, password }, { withCredentials: true });
-			const { data } = response;
-			if (response.status === 200 && data.success) {
+			const { data } = await api.post('/login', { email, password }, { withCredentials: true });
+			if (data) {
 				await checkAuth();
 				toast.success('Login successful!');
 				return true;
-			} else {
-				throw new Error(data.error);
 			}
+			return false;
 		} catch (err) {
 			const error = err as axiosErrorResponse;
 			console.error(error);
@@ -57,12 +55,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	const loginWithGoogle = async (token: string) => {
 		try {
 			const response = await api.post('/auth/google', { token }, { withCredentials: true });
-			const { data } = response;
-			if (response.status === 200 && data.success) {
+			if (response.data) {
 				await checkAuth();
 				toast.success('Google login successful!');
-			} else {
-				throw new Error(data.error);
 			}
 		} catch (err) {
 			const error = err as axiosErrorResponse;
