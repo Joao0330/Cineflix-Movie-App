@@ -5,7 +5,6 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { toast } from 'sonner';
 import { Loader } from '@/components/Loader';
 import { normalizeImage } from '@/lib/normalizeImage';
-import type { AxiosError } from 'axios';
 
 interface AuthContextData {
 	isLoading: boolean;
@@ -56,18 +55,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	const loginWithGoogle = async (token: string) => {
 		try {
 			const response = await api.post('/auth/google', { token }, { withCredentials: true });
-			if (response.status === 200 && response.data.user) {
+			if (response.data) {
 				await checkAuth();
 				toast.success('Google login successful!');
-			} else {
-				console.log('Non-200 response:', response.data);
-				toast.error(response.data?.error || 'Google login failed');
 			}
-		} catch (err: unknown) {
-			const error = err as AxiosError<{ error?: string }>;
-			console.error('Google login error:', error, error.response?.data);
-			const errorMessage = error.response?.data?.error || 'Google login failed';
-			toast.error(errorMessage);
+		} catch (err) {
+			const error = err as axiosErrorResponse;
+			console.error(error);
+			toast.error(error.response?.data?.error);
 		}
 	};
 

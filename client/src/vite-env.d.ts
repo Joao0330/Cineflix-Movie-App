@@ -24,15 +24,15 @@ type User = {
 	is_banned: boolean;
 };
 
-interface axiosErrorResponse extends AxiosError<{ error?: string }> {
-	message: string;
+type axiosErrorResponse = {
+	message: string | undefined;
 	response?: {
 		data?: {
 			error?: string;
 		};
 		status?: number;
 	};
-}
+};
 
 //? Movies types
 
