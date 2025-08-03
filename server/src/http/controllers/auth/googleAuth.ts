@@ -32,6 +32,10 @@ export async function googleAuth(request: FastifyRequest, reply: FastifyReply) {
 			});
 		}
 
+		if (user.is_banned) {
+			return reply.status(403).send({ error: 'User is banned.' });
+		}
+
 		const jwtToken = request.server.jwt.sign({ id: user.id, role: user.role }, { expiresIn: '1h' });
 		reply.setCookie('accessToken', jwtToken, {
 			path: '/',
