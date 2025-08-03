@@ -76,6 +76,7 @@ export const AuthForm = ({ type }: AuthProps) => {
 										const userResponse = await api.get('/profile', { withCredentials: true });
 										setUser(userResponse.data);
 										navigate('/profile');
+										toast.success('Google login successful!');
 									}
 								} catch (err) {
 									const error = err as axiosErrorResponse;
