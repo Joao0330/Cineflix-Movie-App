@@ -277,7 +277,7 @@
 @layer components {
 	/* Header */
 	.header {
-		@apply py-10 absolute left-0 right-0 top-0 z-10 flex justify-start px-[3rem] md:px-0 md:py-5 md:justify-center;
+		@apply py-5 absolute left-0 right-0 top-0 z-10 flex justify-start px-[3rem] md:px-0 md:justify-center;
 
 		nav {
 			@apply hidden md:block text-gray-300 text-lg;
@@ -549,7 +549,7 @@
 	}
 
 	.browse__content {
-		@apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4;
+		@apply grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4;
 	}
 
 	.browse__search {
@@ -969,7 +969,7 @@
 
 	/* MobileSidebarToggle */
 	.MobileSidebarToggle {
-		@apply md:hidden mb-5 p-5 border rounded-full cursor-pointer bg-transparent text-white hover:bg-gray-transparent transition-colors duration-200;
+		@apply md:hidden mb-4 p-4 border rounded-full cursor-pointer bg-transparent text-white hover:bg-gray-transparent transition-colors duration-200;
 	}
 }
 
