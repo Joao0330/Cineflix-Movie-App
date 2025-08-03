@@ -4,6 +4,7 @@ import { api } from '@/lib/axios';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { toast } from 'sonner';
 import { Loader } from '@/components/Loader';
+import { normalizeImage } from '@/lib/normalizeImage';
 
 interface AuthContextData {
 	isLoading: boolean;
@@ -111,14 +112,30 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 	const uploadProfilePicture = async (file: File) => {
 		try {
+			// Validate file type and size
+			const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/heic', 'image/heif'];
+			const maxFileSize = 5 * 1024 * 1024;
+
+			if (!allowedTypes.includes(file.type)) {
+				throw new Error('Invalid file type. Only JPEG, PNG, GIF, or HEIC allowed.');
+			}
+
+			if (file.size > maxFileSize) {
+				throw new Error('File size exceeds 5MB limit.');
+			}
+
+			// Normalize image using canvas to handle mobile gallery issues
+			const normalizedFile = await normalizeImage(file);
+			console.log('Normalized file:', { name: normalizedFile.name, size: normalizedFile.size, type: normalizedFile.type });
+
 			const formData = new FormData();
-			formData.append('profile_picture', file);
+			formData.append('profile_picture', normalizedFile);
 
 			const { data } = await api.post('/profile/picture', formData, {
 				withCredentials: true,
 			});
 
-			console.log(data);
+			console.log('Upload response:', data);
 
 			if (data) {
 				await checkAuth();
@@ -126,8 +143,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 			}
 		} catch (err: unknown) {
 			const error = err as axiosErrorResponse;
-			console.error(error);
-			toast.error(error.response?.data?.error);
+			console.error('Upload error:', error);
+			toast.error('Failed to upload profile picture');
 		}
 	};
 
