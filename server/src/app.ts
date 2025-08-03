@@ -15,7 +15,7 @@ import { v2 as cloudinary } from 'cloudinary';
 export const app = fastify();
 
 app.register(fastifyCors, {
-	origin: 'http://localhost:5173', //React app URL
+	origin: 'https://cineflix-movie-app-client.onrender.com',
 	credentials: true,
 	allowedHeaders: ['Content-Type', 'Authorization'],
 	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
