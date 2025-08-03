@@ -16,10 +16,18 @@ export const normalizeImage = async (file: File): Promise<File> => {
 				const ctx = canvas.getContext('2d')!;
 				if (!ctx) return reject(new Error('Failed to get canvas context'));
 
-				// Get EXIF orientation
-				const orientation = await new Promise<number>(resolve => {
-					EXIF.getData(img as unknown as string, () => resolve(EXIF.getTag(img, 'Orientation') || 1));
-				});
+				// Get EXIF orientation with fallback
+				let orientation = 1;
+				try {
+					orientation = await new Promise<number>(resolve => {
+						EXIF.getData(img as unknown as string, () => {
+							const exifOrientation = EXIF.getTag(img, 'Orientation');
+							resolve(exifOrientation !== undefined ? exifOrientation : 1);
+						});
+					});
+				} catch (exifError) {
+					console.warn('EXIF parsing failed, using default orientation:', exifError);
+				}
 
 				// Get adjusted dimensions with resizing
 				const maxDimension = 1000;
