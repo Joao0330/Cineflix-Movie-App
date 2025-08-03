@@ -25,6 +25,7 @@ type User = {
 };
 
 type axiosErrorResponse = {
+	message: string | undefined;
 	response?: {
 		data?: {
 			error?: string;

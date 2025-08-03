@@ -114,7 +114,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		try {
 			// Validate file type and size
 			const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/heic', 'image/heif'];
-			const maxFileSize = 5 * 1024 * 1024;
+			const maxFileSize = 5 * 1024 * 1024; // 5MB
 
 			if (!allowedTypes.includes(file.type)) {
 				throw new Error('Invalid file type. Only JPEG, PNG, GIF, or HEIC allowed.');
@@ -124,7 +124,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				throw new Error('File size exceeds 5MB limit.');
 			}
 
-			// Normalize image using canvas to handle mobile gallery issues
+			// Normalize image
 			const normalizedFile = await normalizeImage(file);
 			console.log('Normalized file:', { name: normalizedFile.name, size: normalizedFile.size, type: normalizedFile.type });
 
@@ -144,7 +144,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		} catch (err: unknown) {
 			const error = err as axiosErrorResponse;
 			console.error('Upload error:', error);
-			toast.error('Failed to upload profile picture');
+			toast.error(error.message || error.response?.data?.error || 'Failed to upload profile picture');
 		}
 	};
 

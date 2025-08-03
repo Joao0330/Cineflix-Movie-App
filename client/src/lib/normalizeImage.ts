@@ -16,18 +16,14 @@ export const normalizeImage = async (file: File): Promise<File> => {
 				const ctx = canvas.getContext('2d')!;
 				if (!ctx) return reject(new Error('Failed to get canvas context'));
 
-				// Get EXIF orientation and adjust dimensions
+				// Get EXIF orientation
 				const orientation = await new Promise<number>(resolve => {
 					EXIF.getData(img as unknown as string, () => resolve(EXIF.getTag(img, 'Orientation') || 1));
 				});
 
-				let { width, height } = img;
-
-				// Adjust dimensions based on orientation
-				if (orientation >= 5 && orientation <= 8) {
-					[width, height] = [height, width]; // Swap for rotated images
-				}
-
+				// Get adjusted dimensions with resizing
+				const maxDimension = 1000;
+				const { width, height } = await getRotatedDimensions(img, orientation, maxDimension);
 				canvas.width = width;
 				canvas.height = height;
 
@@ -36,7 +32,7 @@ export const normalizeImage = async (file: File): Promise<File> => {
 				switch (orientation) {
 					case 2:
 						ctx.translate(width, 0);
-						ctx.scale(-1, 1); // Flip horizontally
+						ctx.scale(-1, 1);
 						break;
 					case 3:
 						ctx.translate(width, height);
@@ -44,12 +40,12 @@ export const normalizeImage = async (file: File): Promise<File> => {
 						break;
 					case 4:
 						ctx.translate(0, height);
-						ctx.scale(1, -1); // Flip vertically
+						ctx.scale(1, -1);
 						break;
 					case 5:
 						ctx.translate(width, height);
 						ctx.rotate((90 * Math.PI) / 180);
-						ctx.scale(1, -1); // Flip vertically
+						ctx.scale(1, -1);
 						break;
 					case 6:
 						ctx.translate(width, 0);
@@ -58,14 +54,13 @@ export const normalizeImage = async (file: File): Promise<File> => {
 					case 7:
 						ctx.translate(0, height);
 						ctx.rotate((270 * Math.PI) / 180);
-						ctx.scale(1, -1); // Flip vertically
+						ctx.scale(1, -1);
 						break;
 					case 8:
 						ctx.translate(0, height);
 						ctx.rotate((270 * Math.PI) / 180);
 						break;
 					default:
-						// No transformation needed
 						break;
 				}
 
@@ -79,10 +74,11 @@ export const normalizeImage = async (file: File): Promise<File> => {
 						const normalizedFile = new File([blob], file.name.replace(/\.[^/.]+$/, '.jpg'), {
 							type: 'image/jpeg',
 						});
+						console.log('Normalized file size:', normalizedFile.size);
 						resolve(normalizedFile);
 					},
 					'image/jpeg',
-					0.8, // JPEG quality (0 to 1)
+					0.7,
 				);
 			} catch (error) {
 				reject(error);
@@ -92,5 +88,18 @@ export const normalizeImage = async (file: File): Promise<File> => {
 		img.onerror = () => reject(new Error('Failed to load image'));
 		reader.onerror = () => reject(new Error('Failed to read file'));
 		reader.readAsDataURL(file);
+	});
+};
+
+const getRotatedDimensions = async (img: HTMLImageElement, orientation: number, maxDimension: number): Promise<{ width: number; height: number }> => {
+	return new Promise(resolve => {
+		let { width, height } = img;
+		const scale = Math.min(maxDimension / width, maxDimension / height, 1);
+		width = Math.round(width * scale);
+		height = Math.round(height * scale);
+		if (orientation >= 5 && orientation <= 8) {
+			[width, height] = [height, width];
+		}
+		resolve({ width, height });
 	});
 };
