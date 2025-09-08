@@ -930,7 +930,15 @@
 		@apply absolute left-0 bottom-0 w-full h-full flex flex-col justify-center items-center gap-4 transition-all duration-500 z-[9999] bg-background;
 
 		div {
-			@apply text-white;
+			@apply text-white flex flex-col items-center gap-3 text-center max-w-md;
+
+			span {
+				@apply font-medium text-lg;
+			}
+
+			p {
+				@apply text-sm text-gray-400;
+			}
 		}
 
 		& svg {
