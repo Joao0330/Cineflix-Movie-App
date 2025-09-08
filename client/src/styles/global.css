@@ -927,7 +927,11 @@
 
 	/* Loader */
 	.loader {
-		@apply absolute left-0 bottom-0 w-full h-full flex justify-center items-center gap-4 transition-all duration-500 z-[9999] bg-background;
+		@apply absolute left-0 bottom-0 w-full h-full flex flex-col justify-center items-center gap-4 transition-all duration-500 z-[9999] bg-background;
+
+		div {
+			@apply text-white;
+		}
 
 		& svg {
 			width: 3.25em;
